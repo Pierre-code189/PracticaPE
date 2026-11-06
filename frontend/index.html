@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticaPE — Prácticas y empleos en Piura</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<canvas id="field-bg" aria-hidden="true"></canvas>
+<header class="topbar">
+  <a href="#/" class="logo">Practica<span>PE</span></a>
+  <nav class="nav">
+    <a href="#/">Ofertas</a><a href="#/mapa">Mapa</a><a href="#/empresas">Empresas</a>
+    <a href="#/contacto">Contacto</a>
+  </nav>
+  <div class="user-menu" id="user-menu">
+    <button id="user-btn" class="btn ghost">Ingresar</button>
+    <div id="user-dropdown" class="dropdown hidden">
+      <div class="dd-head" id="dd-head">—</div>
+      <a href="#/panel">Mi panel</a>
+      <a href="#/notificaciones">Notificaciones <b id="notif-badge"></b></a>
+      <a href="#/guardadas">Guardadas</a>
+      <a href="#/cv">Descargar CV</a>
+      <button id="logout-btn" class="btn ghost">Salir</button>
+    </div>
+  </div>
+</header>
+<main id="app"></main>
+<footer>PracticaPE · Piura, Perú · Field.io</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/field.js"></script>
+<script src="/static/js/map.js"></script>
+<script src="/static/js/views.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
+</html>
