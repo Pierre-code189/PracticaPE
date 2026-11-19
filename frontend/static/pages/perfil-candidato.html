@@ -1,5 +1,5 @@
 <div class="pp-screen" data-page="perfil-candidato">
-<main class="w-full pt-16 bg-background min-h-screen">
+<main class="w-full pt-6 md:pt-16 bg-background min-h-screen">
 <div class="max-w-[1200px] mx-auto px-margin pb-space-3xl flex flex-col gap-space-xl">
 
 <div class="pp-loading" id="pf-cargando"><span class="pp-spin"></span>Cargando tu perfil…</div>
@@ -11,7 +11,7 @@
 <section class="w-full bg-surface rounded-2xl shadow-sm overflow-hidden">
 <div class="h-40 md:h-52 bg-gradient-to-r from-primary-container via-surface-elevated to-accent-container relative" id="pf-cover">
 <img id="pf-cover-img" alt="Portada del perfil" class="w-full h-full object-cover" style="display:none"/>
-<span class="absolute bottom-3 right-4 px-3 py-1 rounded-full bg-surface/80 backdrop-blur font-label text-label text-ink-primary flex items-center gap-1.5">
+<span class="absolute top-3 right-4 px-3 py-1 rounded-full bg-surface/80 backdrop-blur font-label text-label text-ink-primary flex items-center gap-1.5">
 <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Perfil público activo
 </span>
 </div>
@@ -22,13 +22,13 @@
 <div id="pf-avatar-iniciales" class="w-28 h-28 md:w-32 md:h-32 rounded-full bg-primary text-on-primary font-display text-headline-l flex items-center justify-center ring-4 ring-surface shadow-md">·</div>
 </div>
 <div class="flex-1 min-w-0 text-center sm:text-left">
-<h1 class="font-headline-l text-headline-l text-ink-primary tracking-tight" id="pf-nombre">Tu nombre</h1>
+<h1 class="font-headline-l text-headline-l text-ink-primary tracking-tight break-words min-w-0" style="overflow-wrap:anywhere" id="pf-nombre">Tu nombre</h1>
 <p class="font-body-l text-body-l text-primary font-medium mt-1" id="pf-headline"></p>
 <p class="font-body-m text-body-m text-ink-secondary mt-2 max-w-3xl leading-relaxed" id="pf-resumen"></p>
-<div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-space-md gap-y-1 mt-3 font-body-s text-body-s text-ink-secondary">
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">location_on</span><span id="pf-ubicacion">Piura</span></span>
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">call</span><span id="pf-telefono">Sin teléfono</span></span>
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">mail</span><span id="pf-email"></span></span>
+<div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-space-md gap-y-1 mt-3 font-body-s text-body-s text-ink-secondary min-w-0">
+<span class="flex items-center gap-1.5 min-w-0"><span class="material-symbols-outlined text-primary text-[18px]">location_on</span><span id="pf-ubicacion" class="truncate max-w-full">Piura</span></span>
+<span class="flex items-center gap-1.5 min-w-0"><span class="material-symbols-outlined text-primary text-[18px]">call</span><span id="pf-telefono" class="truncate max-w-full">Sin teléfono</span></span>
+<span class="flex items-center gap-1.5 min-w-0"><span class="material-symbols-outlined text-primary text-[18px]">mail</span><span id="pf-email" class="truncate max-w-full"></span></span>
 </div>
 <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-3" id="pf-skills"></div>
 </div>

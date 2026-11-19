@@ -1,5 +1,5 @@
 <div class="pp-screen" data-page="ofertas">
-<main class="w-full pt-16 bg-background min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
+<main class="w-full pt-6 md:pt-16 bg-background min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
 <!-- Top Ambient Glow (Coastal Daylight Aura) -->
 <div class="relative w-full max-w-[1200px] mx-auto px-margin pt-space-xl">
 <div class="absolute -top-10 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
@@ -69,25 +69,18 @@
 </button>
 </div>
 <div class="flex items-center gap-space-sm ml-auto">
-<button class="inline-flex items-center gap-1 font-body-s text-body-s font-medium text-ink-secondary hover:text-primary transition-colors py-1 px-2 rounded-lg hover:bg-surface-container-low" type="button">
+<button class="inline-flex items-center gap-1 font-body-s text-body-s font-medium text-ink-secondary hover:text-primary transition-colors py-1 px-2 rounded-lg hover:bg-surface-container-low" type="button" id="of-limpiar-filtros">
 <span class="material-symbols-outlined text-[16px]">restart_alt</span>
 <span>Limpiar filtros</span>
-</button>
-<!-- Toggle Demo Empty State -->
-<button class="inline-flex items-center gap-1 font-body-s text-body-s font-semibold text-secondary hover:text-primary transition-colors py-1 px-2.5 rounded-full bg-accent-container" type="button">
-<span class="material-symbols-outlined text-[15px]">visibility</span>
-<span id="demoStateText">Ver estado sin resultados</span>
 </button>
 </div>
 </div>
 </form>
 </section>
 <!-- Context Bar: Active Filters Count and Sorters -->
-<div class="flex items-center justify-between mb-space-lg px-1">
-<div class="flex items-center gap-space-xs font-body-s text-body-s text-ink-secondary">
-<span>Mostrando</span>
-<span class="font-bold text-ink-primary">6 ofertas</span>
-<span>destacadas de la semana</span>
+<div class="flex flex-wrap items-center justify-between gap-y-2 mb-space-lg px-1">
+<div class="flex items-center gap-1.5 font-body-s text-body-s text-ink-secondary">
+<span id="of-contador" class="font-bold text-ink-primary">Mostrando 6 ofertas</span>
 </div>
 <div class="flex items-center gap-space-xs font-body-s text-body-s text-ink-secondary">
 <span class="material-symbols-outlined text-[16px]">sort</span>

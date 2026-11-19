@@ -157,7 +157,7 @@ const PPF = (() => {
     const form = $("#filterForm", root), kw = $("#keywordInput", root);
     const modSel = $("#modalitySelect", root), distSel = $("#districtSelect", root);
     const empty = $("#emptyState", root), pagination = $("#paginationBlock", root);
-    const loadMore = $("#loadMoreBtn", root), demo = $("#demoStateText", root);
+    const loadMore = $("#loadMoreBtn", root), limpiar = $("#of-limpiar-filtros", root);
     const PAGE = 6;
     let all = [], page = 1;
     const totalPages = () => Math.max(1, Math.ceil(all.length / PAGE));
@@ -218,6 +218,8 @@ const PPF = (() => {
           setText(s, `Mostrando ${slice.length} de ${all.length}`);
         }
       });
+      const cont = $("#of-contador", root);
+      if (cont) setText(cont, `Mostrando ${slice.length} de ${all.length}`);
     }
 
     async function load() {
@@ -237,7 +239,7 @@ const PPF = (() => {
 
     if (form) form.addEventListener("submit", e => { e.preventDefault(); load(); });
     if (loadMore) loadMore.addEventListener("click", () => { if (page < totalPages()) { page += 1; render(); } });
-    if (demo) { setText(demo, "Limpiar filtros"); demo.addEventListener("click", () => { if (kw) kw.value = ""; if (modSel) modSel.value = ""; if (distSel) distSel.value = ""; load(); }); }
+    if (limpiar) limpiar.addEventListener("click", () => { if (kw) kw.value = ""; if (modSel) modSel.value = ""; if (distSel) distSel.value = ""; load(); });
 
     // Chips de tipo de oferta: busqueda por texto.
     const CHIP_Q = [
@@ -644,7 +646,7 @@ const PPF = (() => {
 
   function renderPerfil(root, st, reload) {
     const me = st.me, p = st.p;
-    const name = me.name || me.email || "Mi perfil";
+    const name = me.name || (me.email || "").split("@")[0] || "Mi perfil";
     setText($("#pf-nombre", root), name);
     setText($("#pf-headline", root), p.headline || "Añade un titular que te describa");
     setText($("#pf-resumen", root), p.summary || "Aún no has escrito tu resumen profesional.");
