@@ -1,0 +1,31 @@
+# Contexto de build: excluir todo lo que no debe entrar en la imagen
+.git
+.github
+.venv
+venv
+env
+node_modules
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Datos y secretos (se generan/montan en el volumen, nunca se copian)
+data
+backend/data
+*.db
+*.db-shm
+*.db-wal
+.secret
+.env
+*.log
+data/admin_credentials.txt
+data/otp_outbox.log
+
+# Docs y capturas (no hacen falta en el runtime)
+docs/capturas
+tests
+backend/__pycache__
+backend/app/__pycache__
