@@ -120,6 +120,34 @@ const PPF = (() => {
     const btn = $("#home-search-btn", root);
     if (btn) btn.addEventListener("click", go);
     [role, dist, mod].forEach(el => el && el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); go(); } }));
+
+    // Chips de distrito: llevan al listado filtrado.
+    const DISTRICTS = ["Piura Centro", "Castilla", "Catacaos", "Veintiséis de Octubre", "Sullana", "Paita", "Talara"];
+    $$("button", root).forEach(b => {
+      const t = (b.innerText || "").replace(/\s+/g, " ").trim();
+      const d = DISTRICTS.find(x => t === x || t.includes(x));
+      if (d && !b.dataset.href) b.dataset.href = "#/ofertas?district=" + encodeURIComponent(d);
+    });
+
+    // Enlaces del diseno con data-path: destino real.
+    $$("a[data-path]", root).forEach(a => {
+      const p = a.getAttribute("data-path");
+      const href = p === "ofertas" ? "#/ofertas" : p === "para-empleadores" ? "#/panel-empresa" : "";
+      if (href) { a.setAttribute("href", href); a.setAttribute("data-href", href); }
+    });
+
+    // Contador real de ofertas en "Ver todas las ofertas".
+    const all = await getJobs({ status: "published", limit: 500 }).catch(() => []);
+    const total = Array.isArray(all) ? all.length : 0;
+    $$("a", root).forEach(a => {
+      a.childNodes.forEach(n => {
+        if (n.nodeType === 3 && /Ver todas las ofertas/i.test(n.nodeValue || "")) {
+          a.setAttribute("href", "#/ofertas");
+          a.setAttribute("data-href", "#/ofertas");
+          n.nodeValue = total ? " Ver todas las ofertas (" + total + ")" : " Ver todas las ofertas";
+        }
+      });
+    });
   }
 
   /* ── Ofertas ────────────────────────────────────────────────────── */
@@ -131,7 +159,8 @@ const PPF = (() => {
     const empty = $("#emptyState", root), pagination = $("#paginationBlock", root);
     const loadMore = $("#loadMoreBtn", root), demo = $("#demoStateText", root);
     const PAGE = 6;
-    let all = [], shown = PAGE;
+    let all = [], page = 1;
+    const totalPages = () => Math.max(1, Math.ceil(all.length / PAGE));
 
     try {
       const districts = await getDistricts();
@@ -148,14 +177,47 @@ const PPF = (() => {
     if (params.district && distSel) distSel.value = params.district;
 
     function render() {
-      const slice = all.slice(0, shown);
+      const slice = all.slice((page - 1) * PAGE, page * PAGE);
       renderJobs(grid, tpl, slice);
       if (empty) empty.style.display = all.length ? "none" : "";
       if (pagination) pagination.style.display = all.length ? "" : "none";
       if (loadMore) {
-        loadMore.style.display = shown < all.length ? "" : "none";
-        setText(loadMore, `Cargar más ofertas (mostrando ${slice.length} de ${all.length})`);
+        loadMore.style.display = (page * PAGE) < all.length ? "" : "none";
+        const lm = loadMore.querySelector("span:last-child") || loadMore;
+        setText(lm, `Cargar más ofertas (mostrando ${Math.min(page * PAGE, all.length)} de ${all.length})`);
       }
+      // Paginacion por numero y flechas.
+      $$("#paginationBlock button", root).forEach(b => {
+        const n = (b.innerText || "").trim();
+        if (/^\d+$/.test(n)) {
+          const p = parseInt(n, 10);
+          const on = p === page;
+          b.disabled = on || p > totalPages();
+          b.setAttribute("aria-current", on ? "page" : "false");
+          b.onclick = e => { e.preventDefault(); if (p >= 1 && p <= totalPages()) { page = p; render(); } };
+        } else if (/anterior|siguiente/i.test(b.getAttribute("title") || "")) {
+          const delta = /siguiente/i.test(b.getAttribute("title") || "") ? 1 : -1;
+          b.disabled = (page + delta) < 1 || (page + delta) > totalPages();
+          b.onclick = e => { e.preventDefault(); page = Math.min(totalPages(), Math.max(1, page + delta)); render(); };
+        }
+      });
+      $$("#paginationBlock span", root).forEach(s => {
+        if (/Página \d+ de \d+/.test(s.textContent || "")) setText(s, `Página ${page} de ${totalPages()}`);
+      });
+      $$("span", root).forEach(s => {
+        const t = s.textContent || "";
+        if (/ofertas activas/i.test(t) && all.length) setText(s, all.length + " ofertas activas");
+        if (/^Nuevas hoy/i.test(t) && all.length) setText(s, "Nuevas hoy");
+        if (/^Convenios/i.test(t)) setText(s, "Convenios vigentes");
+        if (/^\+\d+ ofertas/i.test(t)) setText(s, "");
+        if (/^\d+%$/.test(t.trim())) setText(s, "");
+      });
+      $$("span", root).forEach(s => {
+        const t = s.textContent || "";
+        if (/^Mostrando \d+ (ofertas|de )/i.test(t) || /^Mostrando \d+ ofertas$/i.test(t)) {
+          setText(s, `Mostrando ${slice.length} de ${all.length}`);
+        }
+      });
     }
 
     async function load() {
@@ -169,13 +231,33 @@ const PPF = (() => {
           limit: 200
         });
       } catch (e) { all = []; }
-      shown = PAGE;
+      page = 1;
       render();
     }
 
     if (form) form.addEventListener("submit", e => { e.preventDefault(); load(); });
-    if (loadMore) loadMore.addEventListener("click", () => { shown += PAGE; render(); });
+    if (loadMore) loadMore.addEventListener("click", () => { if (page < totalPages()) { page += 1; render(); } });
     if (demo) { setText(demo, "Limpiar filtros"); demo.addEventListener("click", () => { if (kw) kw.value = ""; if (modSel) modSel.value = ""; if (distSel) distSel.value = ""; load(); }); }
+
+    // Chips de tipo de oferta: busqueda por texto.
+    const CHIP_Q = [
+      [/prácticas preprofesionales|prácticas pre/i, "prácticas preprofesionales"],
+      [/part[\s-]?time/i, "part-time"],
+      [/recién egresados|recien egresados/i, "recién egresados"],
+      [/prácticas profesionales/i, "prácticas profesionales"]
+    ];
+    $$("button.tag-chip", root).forEach(b => {
+      const t = (b.innerText || "").replace(/\s+/g, " ").trim();
+      const hit = CHIP_Q.find(([re]) => re.test(t));
+      if (hit && !b.dataset.href) {
+        b.dataset.href = "#/ofertas?q=" + encodeURIComponent(hit[1]);
+        b.setAttribute("type", "button");
+      }
+    });
+
+    // Botones del estado vacio.
+    if (empty) $$("button, a", empty).forEach(b => { b.dataset.href = "#/ofertas"; });
+
     load();
   }
 
@@ -266,7 +348,7 @@ const PPF = (() => {
 
   function wireDetail(root, job) {
     const applyMain = $("#btn-apply-main", root), applyMobile = $("#btn-apply-mobile", root);
-    const saveJob = $("#btn-save-job", root), saveMobile = $("#btn-save-mobile", root);
+    const saveBtn = $("#btn-save-job", root), saveBtnMobile = $("#btn-save-mobile", root);
     const modal = $("#modal-application", root), close = $("#btn-close-modal", root);
     const form = $("#quick-apply-form", root);
     const saveText = $("#save-text", root), saveIcon = $("#save-icon", root);
@@ -287,7 +369,7 @@ const PPF = (() => {
         ic.textContent = saved ? "bookmark" : "bookmark_border";
         ic.style.fontVariationSettings = saved ? "'FILL' 1" : "";
       });
-      [saveJob, saveMobile].forEach(b => { if (b) b.setAttribute("aria-pressed", saved ? "true" : "false"); });
+      [saveBtn, saveBtnMobile].forEach(b => { if (b) b.setAttribute("aria-pressed", saved ? "true" : "false"); });
     };
     setSaved(!!job.saved);
 
@@ -309,13 +391,17 @@ const PPF = (() => {
         else { await saveJob(job.id); job.saved = true; setSaved(true); toast("Oferta guardada"); }
       } catch (e) { toast(e.message || "No se pudo guardar", "error"); }
     };
-    [saveJob, saveMobile].forEach(b => b && b.addEventListener("click", toggleSave));
+    [saveBtn, saveBtnMobile].forEach(b => b && b.addEventListener("click", toggleSave));
 
     if (share) {
       const url = location.origin + "/#/oferta/" + job.id;
-      share.setAttribute("href", "https://wa.me/?text=" + encodeURIComponent(job.title + " — " + url));
-      share.setAttribute("target", "_blank");
-      share.setAttribute("rel", "noopener");
+      const wa = "https://wa.me/?text=" + encodeURIComponent(job.title + " — " + url);
+      share.setAttribute("href", wa);
+      share.setAttribute("aria-label", "Compartir por WhatsApp");
+      share.addEventListener("click", e => {
+        e.preventDefault();
+        window.open(wa, "_blank", "noopener");
+      });
     }
 
     if (form) form.addEventListener("submit", async e => {
