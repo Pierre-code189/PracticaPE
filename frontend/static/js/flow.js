@@ -479,7 +479,8 @@ const PPF = (() => {
         if (step2) { step2.classList.remove("hidden"); step2.style.display = ""; }
         if (displayEmail) setText(displayEmail, email);
         if (inputs[0]) inputs[0].focus();
-        if (d && d.dev_code) toast("Código de desarrollo: " + d.dev_code);
+        if (d && d.channel === "none") toast("El servidor no pudo enviar el código. Escríbenos si persiste.", "error");
+        else if (d && d.dev_code) toast("Código de desarrollo: " + d.dev_code);
       } catch (e) {
         toast(e.message || "No se pudo enviar el código", "error");
       } finally {
