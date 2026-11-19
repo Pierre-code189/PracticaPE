@@ -112,9 +112,64 @@ function getMyApplications() { return api("/me/applications"); }
 function getBusinessProfile() { return api("/business/profile"); }
 function updateBusinessProfile(payload) { return api("/business/profile", { method: "PUT", body: JSON.stringify(payload) }); }
 function getBusinessDashboard() { return api("/business/dashboard"); }
+function getBusinessJobs() { return api("/business/jobs"); }
 function getCompanies() { return api("/companies"); }
 function getCompany(id) { return api("/companies/" + id); }
 function getPublicProfile(userId) { return api("/profile/" + userId); }
+
+/* ── Notificaciones y cuenta ────────────────────────────────────── */
+function getMyNotifications() { return api("/me/notifications"); }
+function markNotificationRead(nid) { return api(`/me/notifications/${nid}/read`, { method: "PATCH" }); }
+function markAllNotificationsRead() { return api("/me/notifications/read-all", { method: "POST" }); }
+function deleteMyAccount() { return api("/me", { method: "DELETE" }); }
+
+/* ── Items y fotos del perfil ──────────────────────────────────── */
+function addProfileItem(payload) { return api("/me/profile/items", { method: "POST", body: JSON.stringify(payload) }); }
+function deleteProfileItem(id) { return api(`/me/profile/items/${id}`, { method: "DELETE" }); }
+function addProfilePhoto(payload) { return api("/me/profile/photos", { method: "POST", body: JSON.stringify(payload) }); }
+function deleteProfilePhoto(id) { return api(`/me/profile/photos/${id}`, { method: "DELETE" }); }
+
+/* ── Subidas de archivos (FormData, sin Content-Type) ───────────── */
+async function apiUpload(path, file, field = "file") {
+  const fd = new FormData();
+  fd.append(field, file);
+  const headers = {};
+  if (store.token) headers.Authorization = "Bearer " + store.token;
+  const res = await fetch(API + path, { method: "POST", headers, body: fd });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(typeof data.detail === "string" ? data.detail : (data.detail || res.statusText || "Error"));
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+function uploadAvatar(file) { return apiUpload("/me/profile/avatar", file); }
+function uploadCover(file) { return apiUpload("/me/profile/cover", file); }
+function uploadBusinessLogo(file) { return apiUpload("/business/logo", file); }
+
+/* ── CV en texto plano ─────────────────────────────────────────── */
+async function getMyCv() {
+  const headers = {};
+  if (store.token) headers.Authorization = "Bearer " + store.token;
+  const res = await fetch(API + "/me/cv", { headers });
+  if (!res.ok) {
+    let detail = res.statusText;
+    try { const d = await res.json(); detail = typeof d.detail === "string" ? d.detail : detail; } catch (e) { /* texto plano */ }
+    const err = new Error(detail || "No se pudo obtener el CV");
+    err.status = res.status;
+    throw err;
+  }
+  return res.text();
+}
+
+/* ── Mapa y guardadas ──────────────────────────────────────────── */
+function getJobsMap() { return api("/jobs/map"); }
+function getSavedJobs() { return api("/jobs/saved/mine"); }
+
+/* ── Gestión de ofertas (empresa) ──────────────────────────────── */
+function updateJob(id, payload) { return api(`/jobs/${id}`, { method: "PUT", body: JSON.stringify(payload) }); }
+function deleteJob(id) { return api(`/jobs/${id}`, { method: "DELETE" }); }
 
 /* ── Admin ──────────────────────────────────────────────────────── */
 function getAdminDashboard() { return api("/admin/dashboard"); }
@@ -124,6 +179,7 @@ function getAdminCompanies() { return api("/admin/companies"); }
 function patchAdminCompany(id, payload) { return api(`/admin/companies/${id}`, { method: "PATCH", body: JSON.stringify(payload) }); }
 function getAdminQueue() { return api("/admin/queue"); }
 function reviewAdminQueue(id, action) { return api(`/admin/queue/${id}?action=${action}`, { method: "PATCH" }); }
+function getAdminOtps() { return api("/admin/otps"); }
 function getAdminLeads() { return api("/admin/leads"); }
 function patchAdminLead(id, status) { return api(`/admin/leads/${id}`, { method: "PATCH", body: JSON.stringify({ status }) }); }
 

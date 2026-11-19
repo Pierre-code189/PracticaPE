@@ -95,6 +95,7 @@ function resolveSlug(path, parts) {
   if (path === "/ofertas") return { slug: "ofertas" };
   if (path.startsWith("/oferta/")) return { slug: "oferta-detalle", id: parts[1] };
   if (path === "/auth") return { slug: "auth" };
+  if (path.startsWith("/perfil/")) return { slug: "perfil-publico", id: parts[1] };
   if (path === "/perfil") return { slug: "perfil-candidato" };
   if (path === "/panel-empresa") return { slug: "panel-empresa" };
   if (path === "/panel-admin") return { slug: "panel-admin" };
