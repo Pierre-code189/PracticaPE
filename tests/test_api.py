@@ -5,10 +5,30 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
-from app.core.database import SessionLocal
+from app.core.database import SessionLocal, init_db
+from app.core.security import email_hash, enc_email
 from app import models
 
 client = TestClient(app)
+
+
+def ensure_admin(email="admin@test.pe", name="Admin"):
+    """El rol admin no se puede pedir por API: se crea por la vía interna (PE01)."""
+    init_db()
+    db = SessionLocal()
+    h = email_hash(email)
+    u = db.query(models.User).filter(models.User.email_hash == h).first()
+    if not u:
+        u = models.User(email="u0@oculto.local", email_hash=h, email_enc=enc_email(email),
+                        name=name, role="admin")
+        db.add(u)
+        db.flush()
+        u.email = f"u{u.id}@oculto.local"
+    else:
+        u.role = "admin"
+    db.commit()
+    db.close()
+
 
 def auth(email, name="", role="candidate"):
     r = client.post("/auth/request-otp", json={"email": email, "name": name, "role": role})
@@ -20,6 +40,7 @@ def auth(email, name="", role="candidate"):
 
 @pytest.fixture(scope="module")
 def users():
+    ensure_admin()
     return {
         "biz": auth("biz@test.pe", "Biz", "business"),
         "cand": auth("cand@test.pe", "Cand", "candidate"),

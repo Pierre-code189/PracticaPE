@@ -1,39 +1,90 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="es" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PracticaPE — Prácticas y empleos en Piura</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="/static/css/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practicape — Empleo y prácticas en Piura</title>
+  <meta name="description" content="Practicape: plataforma de empleo y prácticas preprofesionales en Piura, Perú.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E7C66'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='18' font-weight='700' fill='white' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <script>
+    (function () {
+      var t = localStorage.getItem("pp_theme") ||
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.classList.toggle("dark", t === "dark");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/static/js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/app.css">
 </head>
-<body>
-<canvas id="field-bg" aria-hidden="true"></canvas>
-<header class="topbar">
-  <a href="#/" class="logo">Practica<span>PE</span></a>
-  <nav class="nav">
-    <a href="#/">Ofertas</a><a href="#/mapa">Mapa</a><a href="#/empresas">Empresas</a>
-    <a href="#/contacto">Contacto</a>
-  </nav>
-  <div class="user-menu" id="user-menu">
-    <button id="user-btn" class="btn ghost">Ingresar</button>
-    <div id="user-dropdown" class="dropdown hidden">
-      <div class="dd-head" id="dd-head">—</div>
-      <a href="#/panel">Mi panel</a>
-      <a href="#/notificaciones">Notificaciones <b id="notif-badge"></b></a>
-      <a href="#/guardadas">Guardadas</a>
-      <a href="#/cv">Descargar CV</a>
-      <button id="logout-btn" class="btn ghost">Salir</button>
+<body class="bg-background text-ink-primary font-body-m text-body-m">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-3 focus:py-2 focus:rounded-lg">Saltar al contenido</a>
+
+  <header class="sticky top-0 z-50 w-full bg-surface/90 backdrop-blur-md border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="#/" class="font-headline-m text-headline-m text-ink-primary font-bold tracking-tight">Practicape</a>
+      <nav class="hidden md:flex items-center gap-6" aria-label="Navegación principal">
+        <a href="#/" data-nav class="font-body-m text-body-m text-ink-secondary hover:text-primary transition-colors">Ofertas</a>
+        <a href="#/empresas" data-nav class="font-body-m text-body-m text-ink-secondary hover:text-primary transition-colors">Empresas</a>
+        <a href="#/mapa" data-nav class="font-body-m text-body-m text-ink-secondary hover:text-primary transition-colors">Mapa</a>
+        <a href="#/panel-empresa" data-nav class="font-body-m text-body-m text-ink-secondary hover:text-primary transition-colors">Para empleadores</a>
+      </nav>
+      <div class="flex items-center gap-1.5">
+        <button type="button" data-theme-toggle class="pp-icon-btn" aria-label="Cambiar tema" title="Cambiar tema">
+          <span class="material-symbols-outlined pp-icon-moon">dark_mode</span>
+          <span class="material-symbols-outlined pp-icon-sun">light_mode</span>
+        </button>
+        <div id="user-area" class="hidden sm:block"></div>
+        <button type="button" data-menu-toggle class="md:hidden pp-icon-btn" aria-label="Abrir menú">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
     </div>
-  </div>
-</header>
-<main id="app"></main>
-<footer>PracticaPE · Piura, Perú · Field.io</footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="/static/js/api.js"></script>
-<script src="/static/js/field.js"></script>
-<script src="/static/js/map.js"></script>
-<script src="/static/js/views.js"></script>
-<script src="/static/js/main.js"></script>
+  </header>
+
+  <main id="app" class="min-h-[calc(100vh-4rem)]"></main>
+
+  <footer class="mt-space-3xl border-t border-border bg-surface">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 py-space-2xl grid gap-space-xl md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div class="space-y-space-sm">
+        <a href="#/" class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-primary text-on-primary font-headline-s font-bold flex items-center justify-center">P</span>
+          <span class="font-headline-m text-headline-m text-ink-primary font-bold">Practicape</span>
+        </a>
+        <p class="font-body-s text-body-s text-ink-secondary leading-relaxed">
+          Plataforma de empleo y prácticas preprofesionales en Piura. Subvencionada por UDEP y UNP.
+        </p>
+      </div>
+      <div class="space-y-space-sm">
+        <h4 class="font-label text-label text-ink-primary font-bold">Candidatos</h4>
+        <a href="#/" class="block font-body-s text-body-s text-ink-secondary hover:text-primary">Buscar ofertas</a>
+        <a href="#/mapa" class="block font-body-s text-body-s text-ink-secondary hover:text-primary">Mapa de empleo</a>
+        <a href="#/perfil" class="block font-body-s text-body-s text-ink-secondary hover:text-primary">Mi perfil</a>
+      </div>
+      <div class="space-y-space-sm">
+        <h4 class="font-label text-label text-ink-primary font-bold">Empresas</h4>
+        <a href="#/empresas" class="block font-body-s text-body-s text-ink-secondary hover:text-primary">Directorio</a>
+        <a href="#/panel-empresa" class="block font-body-s text-body-s text-ink-secondary hover:text-primary">Publicar oferta</a>
+      </div>
+      <div class="space-y-space-sm">
+        <h4 class="font-label text-label text-ink-primary font-bold">Contacto</h4>
+        <p class="font-body-s text-body-s text-ink-secondary">hola@practicape.pe</p>
+        <p class="font-body-s text-body-s text-ink-secondary">Piura, Perú</p>
+      </div>
+    </div>
+    <div class="border-t border-border py-space-md text-center font-body-s text-body-s text-ink-secondary">
+      © 2026 Practicape — Hecho en Piura
+    </div>
+  </footer>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/flow.js"></script>
+  <script src="/static/js/main.js"></script>
 </body>
 </html>
