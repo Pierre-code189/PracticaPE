@@ -536,6 +536,27 @@ F['panel-empresa'] = async (root) => {
       });
     }
   }
+  // perfil de empresa real (Stitch trae datos de muestra)
+  let bp = null;
+  try { bp = await api.businessProfile(); } catch { /* sin perfil */ }
+  if (bp) {
+    // el nombre de la empresa, donde Stitch puso la sede de muestra
+    qa(root, 'p, span, div').forEach(el => {
+      if (el.children.length) return;
+      if (/puerto pai|sede/i.test(el.textContent || '')) el.textContent = bp.name || '';
+    });
+    qa(root, 'h1, h2, p, span, div').forEach(el => {
+      if (el.children.length) return;
+      const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!t) return;
+      if (bp.name && /puerto pai|sede|empresa de piura|grupo h|municipal/i.test(t)) el.textContent = bp.name;
+      if (bp.sector && /sector|rubro|industria/i.test(t)) el.textContent = bp.sector;
+      if (bp.city && /\b(piura|paita|sullana|talara|chulucanas)\b/i.test(t) && t.length < 60) {
+        el.textContent = [bp.district, bp.city].filter(Boolean).join(', ') || bp.city;
+      }
+      if (/^\d{11}$/.test(t) && bp.ruc) el.textContent = bp.ruc;
+    });
+  }
   let jobs = [];
   try { const res = await api.businessJobs(); jobs = Array.isArray(res) ? res : (res.items || []); }
   catch { /* sin ofertas */ }
