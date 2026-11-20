@@ -101,7 +101,7 @@ function stripFakeCounters(root, scopeSel) {
   if (!scope) return;
   qa(scope, 'label span, button span, a span').forEach(sp => {
     const t = (sp.textContent || '').trim();
-    if (/^\d+(\s*\+\s*\d+)?$/.test(t) || /^\d+\s*(ofertas?|vacantes?|resultados?|nuevos?)$/i.test(t)) sp.remove();
+    if (/^\d+(\s*\+\s*\d+)?$/.test(t) || /^\d+\s*(ofertas?|vacantes?|resultados?|nuevos?)$/i.test(t)) sp.style.display = 'none';
   });
 }
 
@@ -302,7 +302,7 @@ F['oferta-detalle'] = async (root, ctx) => {
     } else {
       statusBox.classList.add('pp-hidden');
       qa(root, 'div, section').forEach(box => {
-        if (/¡Postulación Enviada!/.test(box.textContent || '') && box.children.length <= 3) box.remove();
+        if (/¡Postulación Enviada!/.test(box.textContent || '') && box.children.length <= 3) box.style.display = 'none';
       });
     }
   }
@@ -441,7 +441,7 @@ F.postulaciones = async (root) => {
   qa(root, 'div, section').forEach(box => {
     if (/¡Enhorabuena!/.test(box.textContent || '') && box.children.length <= 4) {
       box.innerHTML = '';
-      box.remove();
+      box.style.display = 'none';
     }
   });
   const list = q(root, '#applications-container') || findList(root, []);
@@ -801,7 +801,7 @@ F['panel-admin'] = async (root) => {
       const hit = mapa.find(([re]) => re.test(label.textContent || ''));
       if (hit) num.textContent = String(hit[1]);
       // los "+38 esta semana" de Stitch no tienen endpoint: se retiran
-      qa(card, 'span').forEach(s => { if (/^\+\d+/.test((s.textContent || '').trim())) s.remove(); });
+      qa(card, 'span').forEach(s => { if (/^\+\d+/.test((s.textContent || '').trim())) s.style.display = 'none'; });
     });
     // insignias de la barra de secciones
     qa(root, 'a').forEach(a => {
@@ -873,7 +873,7 @@ F.notificaciones = async (root) => {
     if (lista) lista.innerHTML = `<div class="pp-empty"><span class="material-symbols-outlined">notifications</span>
       <p class="font-headline-s text-headline-s">Inicia sesión para ver tus notificaciones</p>
       <a class="pp-btn pp-btn-primary" href="#/auth">Iniciar sesión</a></div>`;
-    chips.forEach(c => c.remove());
+    chips.forEach(c => { c.style.display = 'none'; });
     return;
   }
   let items = [];
@@ -995,7 +995,7 @@ F['publicar-oferta'] = async (root) => {
   const guard = byText(root, 'button', 'Guardar borrador');
   const next = byText(root, 'button', 'Continuar');
   const postular = byText(root, 'button', 'Postular ahora');
-  if (postular) postular.parentElement.remove();   // no tiene sentido en un panel de empresa
+  if (postular) postular.style.display = 'none';   // no tiene sentido en un panel de empresa
   const submit = async () => {
     const val = (sel) => (q(root, sel) || {}).value || '';
     const payload = {
