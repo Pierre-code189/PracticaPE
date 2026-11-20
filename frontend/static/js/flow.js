@@ -165,11 +165,34 @@ F.ofertas = async (root) => {
 
   const chips = qa(root, 'aside button, aside label');
   stripFakeCounters(root, 'aside');
+  // Stitch deja filtros marcados y chips de "filtros aplicados": se parte limpio
+  qa(root, 'aside input[type="checkbox"]').forEach(c => { c.checked = false; c.removeAttribute('checked'); });
+  qa(root, 'aside select').forEach(s => { if (s.options.length) s.selectedIndex = 0; });
+  qa(root, 'span').forEach(s => {
+    if ((s.textContent || '').trim() === 'Filtros aplicados:') {
+      const c = s.parentElement;
+      if (c) c.innerHTML = '';
+    }
+  });
+  qa(root, 'span, p').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/más de \d+ empresas e instituciones/.test(t) && el.children.length === 0) {
+      el.textContent = 'Conéctate con empresas e instituciones locales formalizadas ante SUNEDU y el Ministerio de Trabajo y Promoción del Empleo.';
+    }
+  });
 
   async function load() {
     const n = await fillJobs(list, { q: state.q, district: state.district, modality: state.modality, category: state.category, limit: state.limit });
     const contador = q(root, '#results-count') || byText(root, 'span', 'Mostrando') || byText(root, 'p', 'Mostrando');
     if (contador) contador.textContent = `Mostrando ${n} de ${n}`;
+    // contador grande del hero ("N ofertas activas en Piura")
+    qa(root, 'span.font-headline-m, span').forEach(el => {
+      const t = (el.textContent || '').trim();
+      if (/^\d+$/.test(t)) {
+        const hermano = el.nextElementSibling;
+        if (hermano && /ofertas activas/.test(hermano.textContent || '')) el.textContent = String(n);
+      }
+    });
     const vacio = q(root, '#empty-state');
     if (vacio) ui.show(vacio, n === 0);
   }
