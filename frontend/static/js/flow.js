@@ -293,6 +293,48 @@ F['oferta-detalle'] = async (root, ctx) => {
   if (desc) desc.textContent = job.description || 'La empresa no publicó una descripción detallada.';
   const sal = q(root, '#jobSalary');
   if (sal) sal.textContent = job.salary || 'No indicado';
+  // Stitch trae una ficha completa de muestra (Grupo H&M): se sustituye por lo real
+  const empresa = job.company_name || 'Oferta encontrada en Internet';
+  qa(root, 'p, span, h1, h2, h3, div').forEach(el => {
+    if (el.children.length) return;
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!t) return;
+    if (/^grupo h&m/i.test(t) || t === 'GHM') { el.textContent = empresa; return; }
+    if (/^RUC:/.test(t)) {
+      el.textContent = [job.district, job.modality, job.salary].filter(Boolean).join(' · ') || 'Oferta de la región Piura';
+      return;
+    }
+    if (/\d+\s*estudiantes han enviado/i.test(t)) { el.style.display = 'none'; return; }
+    if (/validada administrativamente/i.test(t)) { el.style.display = 'none'; return; }
+    if (/empresa líder|distribución de consumo masivo|flota de distribución|convenios activos/i.test(t)) {
+      el.textContent = job.description || 'La empresa no publicó una descripción detallada.';
+    }
+  });
+  // la descripción larga de muestra, si quedó algún párrafo con esas frases
+  qa(root, 'p').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (t.length > 160 && /Grupo H&amp;M|consumo masivo|almacenaje en Castilla/i.test(t)) {
+      el.textContent = job.description || 'La empresa no publicó una descripción detallada.';
+    }
+  });
+  // el toast de demostración con texto de muestra
+  const toast = q(root, '#toastNotification');
+  if (toast) {
+    const spans = qa(toast, 'div span');
+    if (spans[0]) spans[0].textContent = 'Postulación enviada';
+    if (spans[1]) spans[1].textContent = 'Tu CV fue remitido a ' + empresa + '.';
+  }
+  qa(root, 'h1, h2, h3, span, div').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/^Practicante de Sistemas y Soporte Cloud$/.test(t)) el.textContent = job.title;
+  });
+  // cualquier titular de muestra que no sea el de la oferta real
+  qa(root, 'h1, h2, h3').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (t && t !== job.title && /practicante de sistemas|soporte cloud|oferta/i.test(t) && el.children.length === 0) {
+      el.textContent = job.title;
+    }
+  });
   // rellenar campos sueltos por etiqueta
   qa(root, 'span, p, div').forEach(el => {
     const t = (el.textContent || '').trim();
