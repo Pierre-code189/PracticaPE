@@ -115,12 +115,17 @@ F.home = async (root) => {
   const items = Array.isArray(res) ? res : (res.items || []);
   const empresas = Array.isArray(comps) ? comps.length
     : (Array.isArray(comps.items) ? comps.items.length : (Number(comps.total) || 0));
-  qa(root, 'span, p, a, div').forEach(el => {
+  // enlace "Ver todas las ofertas (N disponibles)"
+  qa(root, 'a').forEach(a => {
+    const t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!/Ver todas las ofertas \(\d+ disponibles\)/.test(t)) return;
+    const span = qa(a, 'span').find(s => /disponibles/.test(s.textContent || '')) || a.querySelector('span');
+    if (span) span.textContent = 'Ver todas las ofertas (' + items.length + ' disponibles)';
+    else a.textContent = 'Ver todas las ofertas (' + items.length + ' disponibles)';
+  });
+  qa(root, 'span, p, div').forEach(el => {
     const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-    if (/Ver todas las ofertas \(\d+ disponibles\)/.test(t)) {
-      el.innerHTML = 'Ver todas las ofertas (' + items.length + ' disponibles)';
-    }
-    if (/más de \d+ empresas y entidades verificadas/.test(t)) {
+    if (/más de \d+ empresas y entidades verificadas/.test(t) && el.children.length === 0) {
       el.textContent = 'Conectamos a estudiantes y recién egresados de universidades e institutos de la región con ' + empresas + ' empresas y entidades verificadas.';
     }
     if (/^\d+ empresas activas hoy$/.test(t)) el.textContent = empresas + ' empresas activas hoy';
