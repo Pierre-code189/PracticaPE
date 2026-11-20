@@ -849,3 +849,182 @@ F['panel-admin'] = async (root) => {
     }
   }
 };
+
+// ---------- NOTIFICACIONES ----------
+F.notificaciones = async (root) => {
+  const user = await currentUser();
+  const lista = gridWithArticles(root) || q(root, 'main');
+  // chips de filtro: se reconstruyen con los conteos reales
+  const chips = qa(root, 'button').filter(b => /Todas|Postulaciones|Mensajes|Recordatorios/.test(b.textContent || '') && /\d/.test(b.textContent || ''));
+  qa(root, 'button').forEach(b => {
+    if (/Marcar todas como leídas/.test(b.textContent || '')) {
+      b.addEventListener('click', async () => {
+        const items = Array.isArray((await api.myNotifications().catch(() => ({ items: [] }))).items) ? (await api.myNotifications()).items : [];
+        for (const n of items.filter(x => !x.is_read)) { try { await api.markNotification(n.id); } catch { /* noop */ } }
+        F.notificaciones(root);
+      });
+    }
+    if (/Configurar alertas/.test(b.textContent || '')) {
+      b.addEventListener('click', () => ui.toast('La configuración de alertas llegará pronto', 'info'));
+    }
+  });
+  if (!user) {
+    if (lista) lista.innerHTML = `<div class="pp-empty"><span class="material-symbols-outlined">notifications</span>
+      <p class="font-headline-s text-headline-s">Inicia sesión para ver tus notificaciones</p>
+      <a class="pp-btn pp-btn-primary" href="#/auth">Iniciar sesión</a></div>`;
+    chips.forEach(c => c.remove());
+    return;
+  }
+  let items = [];
+  try { const r = await api.myNotifications(); items = Array.isArray(r) ? r : (r.items || []); } catch (e) { ui.toast(e.message, 'error'); }
+  const pend = items.filter(x => !x.is_read).length;
+  const badge = q(root, '#unread-counter-badge');
+  if (badge) badge.textContent = pend ? pend + ' pendientes' : 'Sin pendientes';
+  chips.forEach(c => {
+    const t = (c.textContent || '').replace(/\s+/g, ' ').trim();
+    const m = t.match(/^(Todas|Postulaciones|Mensajes|Recordatorios)\s*(\d+)?$/);
+    if (!m) return;
+    const tipo = m[1];
+    const n = tipo === 'Todas' ? items.length
+      : items.filter(x => (x.type || '').toLowerCase().includes(tipo.slice(0, 6).toLowerCase())).length;
+    c.textContent = tipo + ' ' + n;
+  });
+  if (!lista) return;
+  if (!items.length) {
+    lista.innerHTML = `<div class="pp-empty"><span class="material-symbols-outlined">notifications_none</span>
+      <p class="font-headline-s text-headline-s">Sin novedades</p>
+      <p class="text-body-s text-ink-secondary-light">Aquí aparecerán tus postulaciones, mensajes y recordatorios.</p></div>`;
+    return;
+  }
+  lista.innerHTML = items.map(n => `
+    <article class="bg-surface-light rounded-2xl p-space-lg border border-border-light flex items-start gap-3 ${n.is_read ? 'opacity-70' : ''}">
+      <span class="material-symbols-outlined text-primary mt-0.5">${n.is_read ? 'mark_email_read' : 'mark_email_unread'}</span>
+      <div class="min-w-0 flex-1">
+        <p class="font-headline-s text-headline-s text-ink-light">${ui.esc(n.title)}</p>
+        <p class="text-body-s text-ink-secondary-light">${ui.esc(n.body || '')}</p>
+        <p class="text-body-s text-ink-secondary-light mt-1">${ui.fecha(n.created_at)}</p>
+      </div>
+      ${n.is_read ? '' : `<button class="px-3 py-1.5 rounded-full border border-primary text-primary text-body-s font-bold" data-leer="${n.id}">Marcar leída</button>`}
+    </article>`).join('');
+  qa(lista, '[data-leer]').forEach(b => b.addEventListener('click', async () => {
+    try { await api.markNotification(b.dataset.leer); F.notificaciones(root); } catch (e) { ui.toast(e.message, 'error'); }
+  }));
+};
+
+// ---------- CONTACTO ----------
+F.contacto = async (root) => {
+  const form = q(root, 'form');
+  if (!form) return;
+  // el tipo se elige con los chips de Stitch: se sincronizan con el campo oculto
+  const select = q(root, 'input[name="query_type"]') || q(root, 'select');
+  qa(root, 'button').filter(b => /Soy Candidato|Soy Empresa|Soporte Técnico/.test(b.textContent || '')).forEach(b => {
+    b.addEventListener('click', () => {
+      qa(root, 'button').filter(x => /Soy Candidato|Soy Empresa|Soporte Técnico/.test(x.textContent || '')).forEach(x => x.classList.remove('bg-primary', 'text-on-primary'));
+      b.classList.add('bg-primary', 'text-on-primary');
+      const map = { 'Soy Candidato': 'candidate', 'Soy Empresa': 'business', 'Soporte Técnico': 'support' };
+      if (select) select.value = map[(b.textContent || '').trim()] || 'contact';
+    });
+  });
+  // el select de motivo es obligatorio: se ofrece el primer motivo real
+  const motivo = q(root, 'select[name="subject"]');
+  if (motivo && !motivo.value && motivo.options.length > 1) motivo.selectedIndex = 1;
+  // los placeholders de Stitch traen nombres de muestra
+  qa(root, 'input[placeholder], textarea[placeholder]').forEach(i => {
+    const ph = i.getAttribute('placeholder') || '';
+    if (/Valeria|Carlos|Ej\./.test(ph)) i.setAttribute('placeholder', ph.replace(/Ej\.\s*/, '').replace(/Valeria Mendoza o Carlos Silva/, 'Tu nombre y apellidos'));
+  });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const get = (sel) => (q(root, sel) || {}).value || '';
+    const payload = {
+      name: get('input[name="fullname"]') || get('input[type="text"]') || get('input:not([type])'),
+      email: get('input[type="email"]'),
+      phone: get('input[type="tel"]'),
+      message: get('textarea'),
+      type: select ? select.value : 'contact',
+    };
+    try {
+      const r = await api.intake(payload);
+      ui.toast('Mensaje enviado. Te responderemos pronto.', 'success');
+      form.reset();
+      if (r && r.lead_id) ui.toast('Hemos recibido tu mensaje (n.º ' + r.lead_id + ').', 'success');
+    } catch (err) { ui.toast(err.message || 'No se pudo enviar', 'error'); }
+  });
+};
+
+// ---------- PERFIL PÚBLICO ----------
+F['perfil-publico'] = async (root, ctx) => {
+  const uid = ctx && ctx.params && ctx.params[0];
+  const main = q(root, 'main') || root;
+  if (!uid) {
+    main.innerHTML = `<div class="pp-empty"><span class="material-symbols-outlined">person_search</span>
+      <p class="font-headline-s text-headline-s">No se indicó ninguna candidata</p>
+      <a class="pp-btn pp-btn-primary" href="#/ofertas">Ver ofertas</a></div>`;
+    return;
+  }
+  let p;
+  try { p = await api.publicProfile(uid); } catch (e) { main.innerHTML = `<div class="pp-empty"><p class="font-headline-s text-headline-s">Perfil no encontrado</p></div>`; return; }
+  qa(root, 'h1, h2').forEach(h => { if (/candidata|perfil/i.test(h.textContent || '')) h.textContent = p.name || 'Candidata'; });
+  const sum = q(root, 'p.font-body-l, p');
+  qa(root, 'p').forEach(el => { if (/años de experiencia|disponible|me apasiona/i.test(el.textContent || '')) el.textContent = p.headline || p.summary || ''; });
+  const skills = qa(root, 'span').filter(s => /^(T|)[A-Za-zÁÉÍÓÚáéíóúñ ]{3,20}$/.test((s.textContent || '').trim()));
+  // habilidades: se pintan donde Stitch puso las de muestra
+  const chipHost = skills.length ? skills[0].parentElement : null;
+  if (chipHost) {
+    const reales = (p.skills || []).slice(0, 8);
+    if (reales.length) chipHost.innerHTML = reales.map(s => `<span class="px-2.5 py-1 rounded-full bg-surface-container text-ink-secondary-light text-body-s font-semibold">${ui.esc(s)}</span>`).join('');
+  }
+  const cv = byText(root, 'button', 'Descargar CV');
+  if (cv) { cv.disabled = true; cv.textContent = 'CV no disponible'; cv.classList.add('opacity-60'); }
+  const inv = byText(root, 'button', 'Enviar invitación');
+  if (inv) inv.addEventListener('click', () => ui.toast('La conversación formal llega con el convenio activo', 'info'));
+};
+
+// ---------- PUBLICAR OFERTA ----------
+F['publicar-oferta'] = async (root) => {
+  const user = await currentUser();
+  const main = q(root, 'main') || root;
+  if (!user || user.role !== 'business') {
+    main.innerHTML = `<div class="pp-empty"><span class="material-symbols-outlined">work</span>
+      <p class="font-headline-s text-headline-s">Solo las empresas pueden publicar ofertas</p>
+      <p class="text-body-s text-ink-secondary-light">Entra con tu cuenta de empresa para continuar.</p>
+      <a class="pp-btn pp-btn-primary" href="#/auth">Iniciar sesión</a></div>`;
+    return;
+  }
+  const guard = byText(root, 'button', 'Guardar borrador');
+  const next = byText(root, 'button', 'Continuar');
+  const postular = byText(root, 'button', 'Postular ahora');
+  if (postular) postular.parentElement.remove();   // no tiene sentido en un panel de empresa
+  const submit = async () => {
+    const val = (sel) => (q(root, sel) || {}).value || '';
+    const payload = {
+      title: val('input[type="text"]'),
+      district: val('select') || 'Piura',
+      description: val('textarea'),
+    };
+    if (!payload.title || payload.title.trim().length < 4) { ui.toast('Escribe el nombre del puesto', 'error'); return; }
+    try {
+      await api.createJob(payload);
+      ui.toast('Oferta enviada a revisión', 'success');
+      location.hash = '#/panel-empresa';
+    } catch (e) { ui.toast(e.message || 'No se pudo publicar', 'error'); }
+  };
+  if (guard) guard.addEventListener('click', submit);
+  if (next) next.addEventListener('click', submit);
+  // rellenar distritos reales en los select de la pantalla
+  const sels = qa(root, 'select');
+  if (sels.length) { try { const d = await api.districts(); const list = Array.isArray(d) ? d : (d.districts || []); } catch { /* noop */ } }
+};
+
+// ---------- PANTALLAS LEGALES / GUÍA ----------
+F.legales = async (root) => {
+  qa(root, 'p, li, span, a').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/@\w+\.(com|pe|cl|local)/.test(t) && el.children.length === 0) el.textContent = 'contacto@practicape.pe';
+    if (/\b\d{7,}\b/.test(t) && /tel|fono|anexo|whast/i.test(t)) el.textContent = t.replace(/\b\d{7,}\b/g, '073 000 000');
+  });
+};
+F.privacidad = F.legales;
+F.terminos = F.legales;
+F.guias = F.legales;
+F['libro-de-reclamaciones'] = F.legales;

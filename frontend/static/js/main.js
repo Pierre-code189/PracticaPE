@@ -22,6 +22,15 @@ const ROUTES = {
   'mis-postulaciones': 'postulaciones',
   'panel-admin': 'panel-admin',
   'panel-administracion': 'panel-admin',
+  'panel-empresa/oferta': 'publicar-oferta',
+  'perfil-publico': 'perfil-publico',
+  'publicar-oferta': 'publicar-oferta',
+  'notificaciones': 'notificaciones',
+  'contacto': 'contacto',
+  'privacidad': 'privacidad',
+  'terminos': 'terminos',
+  'libro-de-reclamaciones': 'libro-de-reclamaciones',
+  'guias': 'guias',
 };
 
 const state = { page: null, params: [], loaded: {}, handlers: {} };
@@ -64,7 +73,7 @@ async function render() {
   // en flow.js si compiten con los datos reales.
   const scripts = Array.from(root.querySelectorAll('script'));
   for (const s of scripts) {
-    try { (new Function(s.textContent)).call(window); } catch (e) { /* prototipo: no rompe la app */ }
+    try { (0, eval)(s.textContent); } catch (e) { /* prototipo: no rompe la app */ }
   }
   scripts.forEach(s => s.remove());
 
