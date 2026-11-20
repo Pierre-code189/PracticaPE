@@ -1,0 +1,155 @@
+/* PrácticaPE — design tokens y utilidades (Field.io / Stitch). */
+@layer base {
+  html, body { margin: 0; padding: 0; }
+  body { overscroll-behavior: none; }
+  main > :first-child { margin-top: 0 !important; }
+  main > :last-child { margin-bottom: 0 !important; }
+}
+
+/* Scrollbar discreta, como en los diseños de Stitch */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(14, 124, 102, .25); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Utilidades de estado ---------- */
+.pp-hidden { display: none !important; }
+.pp-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* ---------- Toast ---------- */
+.pp-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 16px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--pp-ink, #14201B);
+  color: #fff;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .22);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease-out, transform .2s ease-out;
+  max-width: min(92vw, 520px);
+}
+.pp-toast.pp-show { opacity: 1; transform: translate(-50%, 0); }
+.pp-toast[data-kind="error"] { background: var(--pp-error, #C0392B); }
+.pp-toast[data-kind="success"] { background: var(--pp-primary, #0E7C66); }
+
+/* ---------- Spinner ---------- */
+.pp-spin {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255, 255, 255, .35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: pp-spin .7s linear infinite;
+  display: inline-block;
+}
+@keyframes pp-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Skeleton (carga) ---------- */
+.pp-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(14, 124, 102, .08);
+  border-radius: 10px;
+}
+.pp-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(14, 124, 102, .12), transparent);
+  animation: pp-shimmer 1.4s infinite;
+}
+@keyframes pp-shimmer { to { transform: translateX(100%); } }
+
+/* ---------- Estados vacíos ---------- */
+.pp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 48px 24px;
+  text-align: center;
+  border: 1.5px dashed rgba(14, 124, 102, .25);
+  border-radius: 16px;
+  background: rgba(14, 124, 102, .04);
+}
+.pp-empty .material-symbols-outlined { font-size: 44px; color: var(--pp-primary, #0E7C66); }
+
+/* ---------- Tablas ---------- */
+.pp-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.pp-table th, .pp-table td { padding: 10px 12px; text-align: left; }
+.pp-table th {
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--pp-ink-secondary, #5A6B63);
+  border-bottom: 1px solid var(--pp-border, #E3E0D5);
+}
+.pp-table tbody tr { border-bottom: 1px solid var(--pp-border, #E3E0D5); }
+.pp-table tbody tr:last-child { border-bottom: 0; }
+
+/* ---------- Responsive: nada de scroll horizontal ---------- */
+html, body { overflow-x: clip; }
+img, svg, video { max-width: 100%; }
+.pp-nowrap-clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+/* ---------- Ajustes sobre los diseños de Stitch ---------- */
+/* el botón "Buscar" del mapa quedaba con texto blanco sobre verde claro */
+#geo-search-input + button,
+#geo-search-input ~ button { background: var(--pp-primary, #0E7C66) !important; color: #fff !important; }
+/* los chips de distrito deben indicar que se pueden desplazar */
+#district-chips-container { scrollbar-width: thin; }
+#district-chips-container::-webkit-scrollbar { height: 4px; }
+#district-chips-container::-webkit-scrollbar-thumb { background: var(--pp-border, #E3E0D5); border-radius: 4px; }
+/* los pines del mapa: las etiquetas de texto se solapan en pantallas estrechas */
+#map-pins a, #map-viewport > a { max-width: 120px; }
+#map-pins .whitespace-nowrap, #map-viewport > a .whitespace-nowrap { max-width: 110px; overflow: hidden; }
+@media (max-width: 640px) {
+  #map-pins .whitespace-nowrap, #map-viewport > a .whitespace-nowrap { display: none; }
+  #map-pins a, #map-viewport > a { max-width: none; }
+}
+/* Stitch pinta un toast de muestra: nunca debe aparecer */
+#toastNotification { display: none !important; }
+/* tablas y tarjetas no deben romper el ancho en móvil */
+.pp-screen table { display: block; overflow-x: auto; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* ---------- Mapa real (Leaflet + OpenStreetMap) ---------- */
+.pp-pin {
+  background: var(--pp-primary, #0E7C66);
+  color: #fff;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.pp-pin .material-symbols-outlined { font-size: 18px; }
+.leaflet-container { font: inherit; }
+.leaflet-popup-content a { color: var(--pp-primary, #0E7C66); font-weight: 700; }

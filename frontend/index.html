@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0E7C66">
+  <meta name="description" content="PrácticaPE — prácticas preprofesionales y primer empleo en Piura.">
+  <title>PrácticaPE · Prácticas y empleo en Piura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/static/js/tailwind-config.js"></script>
+  <script>
+    // El frontend se sirve del mismo origen que el proxy de API.
+    window.PP_API_BASE = window.PP_API_BASE || "/api";
+  </script>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body-m text-body-m text-on-surface antialiased">
+  <a href="#pp-main" class="pp-visually-hidden">Saltar al contenido</a>
+  <div id="pp-header-host"></div>
+  <main id="pp-main" class="w-full pt-16 min-h-screen"></main>
+  <script type="module" src="/static/js/main.js"></script>
+</body>
+</html>
