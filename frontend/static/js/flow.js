@@ -108,6 +108,23 @@ function stripFakeCounters(root, scopeSel) {
 // ---------- HOME ----------
 F.home = async (root) => {
   const list = findList(root, ['#ofertas .grid', '#ofertas']);
+  const jobsP = api.jobs({ status: 'published', limit: 6 }).catch(() => ({ items: [] }));
+  // los contadores de Stitch son de muestra: se sustituyen por los reales
+  const compP = api.companies().catch(() => ({ items: [] }));
+  const [res, comps] = await Promise.all([jobsP, compP]);
+  const items = Array.isArray(res) ? res : (res.items || []);
+  const empresas = Array.isArray(comps) ? comps.length
+    : (Array.isArray(comps.items) ? comps.items.length : (Number(comps.total) || 0));
+  qa(root, 'span, p, a, div').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/Ver todas las ofertas \(\d+ disponibles\)/.test(t)) {
+      el.innerHTML = 'Ver todas las ofertas (' + items.length + ' disponibles)';
+    }
+    if (/más de \d+ empresas y entidades verificadas/.test(t)) {
+      el.textContent = 'Conectamos a estudiantes y recién egresados de universidades e institutos de la región con ' + empresas + ' empresas y entidades verificadas.';
+    }
+    if (/^\d+ empresas activas hoy$/.test(t)) el.textContent = empresas + ' empresas activas hoy';
+  });
   await fillJobs(list, { limit: 6 }, { vacioTexto: 'Aún no hay ofertas publicadas. Volvemos pronto.' });
   const form = q(root, '#hero-search-form') || q(root, 'form');
   const kw = q(root, '#search-keyword') || q(root, 'input[type="text"]');
@@ -271,7 +288,11 @@ F['oferta-detalle'] = async (root, ctx) => {
 F.auth = async (root) => {
   const step1 = q(root, '#auth-step-1');
   const step2 = q(root, '#auth-step-2');
+  // Stitch añade un campo de teléfono que no forma parte del acceso OTP
+  const phone = q(root, '#phone-input');
+  if (phone) { const w = phone.closest('div'); if (w) w.style.display = 'none'; }
   const email = q(root, '#email-input') || q(root, 'input[type="email"]') || q(root, 'input[type="text"]');
+  if (email && /valeria\.mendoza/i.test(email.placeholder || '')) email.placeholder = 'tucorreo@unp.edu.pe';
   const send = q(root, '#send-code-btn') || byText(root, 'button', 'Enviar código');
   const candBtn = q(root, '#role-candidate-btn') || byText(root, 'button', 'Soy candidato');
   const compBtn = q(root, '#role-company-btn') || byText(root, 'button', 'Soy empresa');
@@ -462,10 +483,18 @@ F['panel-empresa'] = async (root) => {
   let dash = null;
   try { dash = await api.businessDashboard(); } catch (e) { ui.toast('No se pudo cargar el panel', 'error'); }
   if (dash) {
-    qa(root, 'div, span').forEach(el => {
+    qa(root, 'div, span, button').forEach(el => {
       const t = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
       if (/^ofertas\s*\d*$/.test(t)) el.textContent = 'Ofertas ' + dash.published;
       if (/^postulantes?\s*\d*\s*(nuevos?)?$/.test(t)) el.textContent = 'Postulantes ' + dash.candidates;
+    });
+    // insignias de las pestañas del panel
+    qa(root, 'button').forEach(b => {
+      const t = (b.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      const badge = qa(b, 'span').find(s => /^\d+(\s*nuevos?)?$/.test((s.textContent || '').trim()));
+      if (!badge) return;
+      if (t.includes('ofertas') && !t.includes('publicadas')) badge.textContent = String(dash.published);
+      if (t.includes('postulantes')) badge.textContent = String(dash.candidates);
     });
     const n = byText(root, 'span, p', 'ofertas');
     if (n && /^\d+\s*ofertas$/.test((n.textContent || '').trim())) n.textContent = dash.published + ' ofertas';
@@ -731,15 +760,35 @@ F['panel-admin'] = async (root) => {
   let d = null;
   try { d = await api.adminDashboard(); } catch (e) { ui.toast('No se pudo cargar el panel', 'error'); }
   if (d) {
-    const kpis = [
-      ['Usuarios', d.users], ['Candidatos', d.candidates], ['Empresas', d.companies],
-      ['Ofertas publicadas', d.jobs_published], ['En moderación', d.queue], ['Postulaciones', d.applications],
-      ['Leads', d.leads],
+    const mapa = [
+      [/usuario/i, d.users], [/candidat/i, d.candidates], [/empresa/i, d.companies],
+      [/oferta/i, d.jobs_published], [/moderaci/i, d.queue], [/postulaci/i, d.applications], [/lead/i, d.leads],
     ];
-    const num = qa(root, 'div, span').filter(el => el.children.length === 0 && /^\d+$/.test((el.textContent || '').trim()));
-    let i = 0;
-    num.forEach(el => { if (i < kpis.length) { el.textContent = String(kpis[i][1]); i++; } });
+    // tarjetas KPI: etiqueta + número
+    qa(root, 'section.grid > div, div.grid > div').forEach(card => {
+      const label = qa(card, 'span, p').find(e => e.children.length === 0 && e.textContent.trim().length > 3);
+      const num = qa(card, '.font-display, .text-3xl, .text-2xl').find(e => e.children.length === 0);
+      if (!label || !num) return;
+      const hit = mapa.find(([re]) => re.test(label.textContent || ''));
+      if (hit) num.textContent = String(hit[1]);
+      // los "+38 esta semana" de Stitch no tienen endpoint: se retiran
+      qa(card, 'span').forEach(s => { if (/^\+\d+/.test((s.textContent || '').trim())) s.remove(); });
+    });
+    // insignias de la barra de secciones
+    qa(root, 'a').forEach(a => {
+      const badge = qa(a, 'span').find(s => /^[\d.,]+(\s*nuevos?)?$/.test((s.textContent || '').trim()));
+      if (!badge) return;
+      const t = (a.textContent || '').toLowerCase();
+      const hit = mapa.find(([re]) => re.test(t));
+      if (hit) badge.textContent = String(hit[1]);
+    });
   }
+  // fecha real
+  qa(root, 'span').forEach(s => {
+    if (/^Hoy,\s*\d{1,2}\s+\w+\s+\d{4}$/.test((s.textContent || '').trim())) {
+      s.textContent = 'Hoy, ' + ui.fecha(new Date().toISOString());
+    }
+  });
   // cola de moderación
   const cola = q(root, '#moderation-cards-container');
   if (cola) {

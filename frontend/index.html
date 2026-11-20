@@ -14,6 +14,10 @@
   <script>
     // El frontend se sirve del mismo origen que el proxy de API.
     window.PP_API_BASE = window.PP_API_BASE || "/api";
+    // registro de errores para la verificación asistida
+    window.__errs = [];
+    window.addEventListener('error', e => window.__errs.push(String(e.message)));
+    window.addEventListener('unhandledrejection', e => window.__errs.push('promesa: ' + String(e.reason)));
   </script>
   <link rel="stylesheet" href="/static/css/app.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
