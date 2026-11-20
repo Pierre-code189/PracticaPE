@@ -1,12 +1,20 @@
 // PrácticaPE — cromo compartido: cabecera, menú móvil y modo claro/oscuro.
 // Monta el header una sola vez; las pantallas de Stitch no lo traen.
 (function () {
-  const NAV = [
+  const NAV_BASE = [
     { href: '#/ofertas', label: 'Ofertas', key: 'ofertas' },
     { href: '#/mapa', label: 'Mapa', key: 'mapa' },
     { href: '#/empresas', label: 'Empresas', key: 'empresas' },
-    { href: '#/postulaciones', label: 'Mis postulaciones', key: 'postulaciones' },
+    { href: '#/guias', label: 'Guía', key: 'guias' },
   ];
+
+  function navItems() {
+    const u = user();
+    const extra = [];
+    if (u) extra.push({ href: '#/notificaciones', label: 'Notificaciones', key: 'notificaciones' });
+    if (u) extra.push({ href: '#/postulaciones', label: 'Mis postulaciones', key: 'postulaciones' });
+    return NAV_BASE.concat(extra);
+  }
 
   function user() {
     try { return JSON.parse(localStorage.getItem('pp_user') || 'null'); } catch { return null; }
@@ -64,13 +72,13 @@
     const nav = document.getElementById('pp-nav');
     const mnav = document.getElementById('pp-mobile-nav');
     if (!nav) return;
-    const links = NAV.map(n => {
+    const links = navItems().map(n => {
       const active = here === n.key;
       return `<a href="${n.href}" class="${active ? 'bg-primary-container-light text-primary font-bold' : 'text-on-surface-variant hover:text-ink-light hover:bg-surface-container-low'} px-space-md py-1.5 rounded-full transition-colors font-body-m text-body-m">${n.label}</a>`;
     }).join('');
     nav.innerHTML = links;
     if (mnav) {
-      mnav.innerHTML = NAV.map(n =>
+      mnav.innerHTML = navItems().map(n =>
         `<a href="${n.href}" class="px-3 py-2.5 rounded-xl font-body-m text-body-m ${here === n.key ? 'bg-primary-container-light text-primary font-bold' : 'text-ink-light'}">${n.label}</a>`
       ).join('');
     }
