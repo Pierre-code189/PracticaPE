@@ -153,3 +153,48 @@ img, svg, video { max-width: 100%; }
 .pp-pin .material-symbols-outlined { font-size: 18px; }
 .leaflet-container { font: inherit; }
 .leaflet-popup-content a { color: var(--pp-primary, #0E7C66); font-weight: 700; }
+
+/* ---------- Modo oscuro sobre los fragmentos de Stitch ----------
+   Stitch usa las variantes "-light" sin prefijo dark:. Esta capa las
+   re-mapea a los tokens oscuros del propio design system. */
+.dark .bg-surface-light,
+.dark .bg-surface,
+.dark .bg-surface-bright { background-color: #12201B !important; }
+.dark .bg-surface-container,
+.dark .bg-surface-container-low,
+.dark .bg-surface-container-high,
+.dark .bg-surface-container-highest,
+.dark .bg-surface-container-lowest,
+.dark .bg-surface-variant,
+.dark .bg-surface-dim { background-color: #1A2E27 !important; }
+.dark .bg-surface-elevated { background-color: #1A2E27 !important; }
+.dark .bg-background-light { background-color: #0B1512 !important; }
+.dark .bg-primary-container-light { background-color: #14382F !important; }
+.dark .bg-primary-container { background-color: #14382F !important; }
+.dark .bg-accent-container-light { background-color: #3A2A12 !important; }
+.dark .bg-accent-container { background-color: #3A2A12 !important; }
+.dark .bg-secondary-container { background-color: #22332D !important; }
+.dark .bg-error-container { background-color: #3A1614 !important; }
+
+.dark .text-ink-light,
+.dark .text-on-surface,
+.dark .text-on-background { color: #EAF4EF !important; }
+.dark .text-ink-secondary-light,
+.dark .text-on-surface-variant { color: #9DB3AA !important; }
+.dark .text-primary,
+.dark .text-primary-container { color: #4FC3A7 !important; }
+.dark .text-primary-deep { color: #2E9B85 !important; }
+.dark .text-accent-light { color: #F2B85C !important; }
+.dark .text-ink-secondary { color: #9DB3AA !important; }
+.dark .text-ink { color: #EAF4EF !important; }
+.dark .text-tertiary { color: #E0A79C !important; }
+.dark .text-error { color: #F2B8B2 !important; }
+.dark .text-on-primary { color: #06251E !important; }
+.dark .text-on-primary-fixed-variant,
+.dark .text-on-primary-container { color: #D7F0E7 !important; }
+
+.dark .border-border-light,
+.dark .border-border { border-color: #243833 !important; }
+.dark .divide-border-light > * + * { border-color: #243833 !important; }
+.dark .ring-primary { --tw-ring-color: #14382F !important; }
+.dark .shadow-sm, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-xl { --tw-shadow-color: rgba(0,0,0,.5) !important; }
