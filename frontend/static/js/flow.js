@@ -316,9 +316,10 @@ F['oferta-detalle'] = async (root, ctx) => {
 F.auth = async (root) => {
   const step1 = q(root, '#auth-step-1');
   const step2 = q(root, '#auth-step-2');
-  // Stitch añade un campo de teléfono que no forma parte del acceso OTP
+  // Stitch añade un campo de teléfono que no forma parte del acceso OTP: se retira
+  // del DOM (ocultarlo no basta, puede robar el foco y perderse un dígito)
   const phone = q(root, '#phone-input');
-  if (phone) { const w = phone.closest('div'); if (w) w.style.display = 'none'; }
+  if (phone) phone.remove();
   const email = q(root, '#email-input') || q(root, 'input[type="email"]') || q(root, 'input[type="text"]');
   if (email && /valeria\.mendoza/i.test(email.placeholder || '')) email.placeholder = 'tucorreo@unp.edu.pe';
   const send = q(root, '#send-code-btn') || byText(root, 'button', 'Enviar código');

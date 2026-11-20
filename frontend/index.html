@@ -13,7 +13,7 @@
   <script src="/static/js/tailwind-config.js"></script>
   <script>
     // El frontend se sirve del mismo origen que el proxy de API.
-    window.PP_API_BASE = window.PP_API_BASE || "/api";
+    window.PP_API_BASE = window.PP_API_BASE || "";
     // registro de errores para la verificación asistida
     window.__errs = [];
     window.addEventListener('error', e => window.__errs.push(String(e.message)));
