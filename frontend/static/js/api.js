@@ -46,6 +46,8 @@ export const api = {
     return request('/jobs/map' + (qs ? '?' + qs : ''));
   },
   districts: () => request('/jobs/districts'),
+  jobSources: () => request('/jobs/sources'),
+  submitJob: (payload) => request('/jobs/submit', { method: 'POST', body: JSON.stringify(payload) }),
   apply: (id, payload = {}) =>
     request(`/jobs/${id}/apply`, { method: 'POST', body: JSON.stringify(payload) }),
   saveJob: (id, on) =>

@@ -31,6 +31,8 @@ const ROUTES = {
   'terminos': 'terminos',
   'libro-de-reclamaciones': 'libro-de-reclamaciones',
   'guias': 'guias',
+  'enviar': 'enviar',
+  'publicar-chamba': 'enviar',
 };
 
 const state = { page: null, params: [], loaded: {}, handlers: {} };

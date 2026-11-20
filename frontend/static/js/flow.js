@@ -46,6 +46,17 @@ const CLASS_STATUS = {
 };
 
 // ---------- tarjetas ----------
+const FUENTES = {
+  web: { label: 'Internet', cls: 'bg-accent-container-light text-accent-strong-light' },
+  user: { label: 'Enviada por usuarios', cls: 'bg-primary-container-light text-primary' },
+  seed: { label: 'PrácticaPE', cls: 'bg-surface-container-low text-ink-secondary-light' },
+};
+function fuenteChip(src) {
+  const f = FUENTES[src];
+  if (!f) return '';
+  return `<span class="px-2.5 py-1 rounded-full ${f.cls} font-semibold">${f.label}</span>`;
+}
+
 function jobCard(j) {
   const salario = ui.salario(j) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent-container-light text-ink-light text-body-s font-bold tabular-nums">${ui.esc(ui.salario(j))}</span>` : '';
   return `<article class="relative flex flex-col justify-between bg-surface-light rounded-2xl p-5 border border-border-light hover:border-primary hover:-translate-y-0.5 transition-all shadow-[0_1px_2px_rgba(20,32,27,0.05)]">
@@ -57,6 +68,7 @@ function jobCard(j) {
       ${salario}
     </div>
     <div class="flex flex-wrap gap-1.5 text-body-s mt-3">
+      ${fuenteChip(j.source)}
       <span class="px-2.5 py-1 rounded-full bg-primary-container-light text-primary font-semibold">${ui.esc(j.district || 'Piura')}</span>
       <span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light capitalize">${ui.esc(j.modality || 'presencial')}</span>
       ${j.positions ? `<span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light tabular-nums">${j.positions} vacante(s)</span>` : ''}
@@ -108,6 +120,7 @@ function stripFakeCounters(root, scopeSel) {
 // ---------- HOME ----------
 F.home = async (root) => {
   const list = findList(root, ['#ofertas .grid', '#ofertas']);
+  const state = { source: '' };
   const jobsP = api.jobs({ status: 'published', limit: 6 }).catch(() => ({ items: [] }));
   // los contadores de Stitch son de muestra: se sustituyen por los reales
   const compP = api.companies().catch(() => ({ items: [] }));
@@ -130,7 +143,34 @@ F.home = async (root) => {
     }
     if (/^\d+ empresas activas hoy$/.test(t)) el.textContent = empresas + ' empresas activas hoy';
   });
-  await fillJobs(list, { limit: 6 }, { vacioTexto: 'Aún no hay ofertas publicadas. Volvemos pronto.' });
+  await fillJobs(list, { limit: 6, source: state.source }, { vacioTexto: 'Aún no hay ofertas publicadas. Volvemos pronto.' });
+  // chips por fuente: el feed se filtra por dónde salió la oferta
+  try {
+    const res = await api.jobSources();
+    const fuentes = res.sources || {};
+    const orden = [['', 'Todas'], ['web', 'Internet'], ['user', 'Enviadas por usuarios'], ['empresas', 'Empresas']];
+    const caja = document.createElement('div');
+    caja.id = 'pp-fuentes';
+    caja.className = 'flex flex-wrap items-center gap-2 mb-3';
+    caja.innerHTML = orden.map(([k, label]) => {
+      let n = 0;
+      if (k === 'empresas') n = (fuentes.manual ? fuentes.manual.published || 0 : 0) + (fuentes.seed ? fuentes.seed.published || 0 : 0);
+      else { const d = fuentes[k]; n = d ? (d.published || 0) : 0; }
+      if (k && !n) return '';
+      return `<button type="button" data-src="${k}" class="px-3 py-1.5 rounded-full border border-border-light text-body-s font-semibold ${k === '' ? 'bg-primary text-on-primary' : 'bg-surface-light text-ink-light'}">${ui.esc(label)}${n ? ` · ${n}` : ''}</button>`;
+    }).join('');
+    list.parentElement.insertBefore(caja, list);
+    caja.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-src]');
+      if (!b) return;
+      state.source = b.dataset.src === 'empresas' ? 'manual' : (b.dataset.src || '');
+      qa(caja, 'button').forEach(x => {
+        const on = x.dataset.src === state.source;
+        x.className = `px-3 py-1.5 rounded-full border border-border-light text-body-s font-semibold ${on ? 'bg-primary text-on-primary' : 'bg-surface-light text-ink-light'}`;
+      });
+      fillJobs(list, { limit: 6, source: state.source });
+    });
+  } catch { /* sin fuentes */ }
   const form = q(root, '#hero-search-form') || q(root, 'form');
   const kw = q(root, '#search-keyword') || q(root, 'input[type="text"]');
   if (form) form.addEventListener('submit', (e) => {
@@ -1050,3 +1090,60 @@ F.privacidad = F.legales;
 F.terminos = F.legales;
 F.guias = F.legales;
 F['libro-de-reclamaciones'] = F.legales;
+
+// ---------- PUBLICA TU CHAMBA (envío de oferta por enlace) ----------
+F.enviar = async (root) => {
+  const form = q(root, '#publicaChambaForm') || q(root, 'form');
+  if (!form) return;
+  if (!currentUser()) {
+    ui.toast('Ingresa con tu correo para publicar una chamba', 'error');
+    location.hash = '#/auth';
+    return;
+  }
+  const urlInput = q(root, '#urlOferta') || q(root, 'input[type="url"]') || q(root, 'input[name="urlOferta"]');
+  const titleInput = q(root, '#tituloOferta') || q(root, 'input[name="tituloOferta"]');
+  const radios = qa(root, 'input[name="fuente"]');
+  // Stitch trae datos de muestra (empresa, RUC, correo): se quitan
+  qa(root, 'span, p, div, a').forEach(el => {
+    if (el.children.length) return;
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/agropiura/i.test(t)) el.textContent = '';
+    if (/^\d{11}$/.test(t)) el.textContent = '';
+    if (/empresas@practica\.pe/i.test(t)) el.textContent = 'hola@practicape.apioai.online';
+  });
+  // el prototipo de Stitch hace su propio submit: se desactiva
+  form.removeAttribute('onsubmit');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = (urlInput && urlInput.value || '').trim();
+    if (!url) {
+      ui.toast('Pega el enlace de la oferta', 'error');
+      if (urlInput) urlInput.focus();
+      return;
+    }
+    const btn = q(form, 'button[type="submit"]') || byText(form, 'button', 'Enviar');
+    if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
+    try {
+      const res = await api.submitJob({
+        url,
+        title: (titleInput && titleInput.value || '').trim(),
+      });
+      const aviso = q(root, '#aviso-envio') || q(root, '.pp-envio-ok');
+      if (aviso) aviso.style.display = '';
+      ui.toast(res.message || 'Oferta enviada a revisión. La publicaremos tras verificarla.', 'ok');
+      form.reset();
+      if (radios[0]) radios[0].checked = true;
+      if (urlInput) urlInput.focus();
+    } catch (err) {
+      const st = (err && err.status) || 0;
+      if (st === 401) {
+        ui.toast('Ingresa con tu correo para enviar una oferta', 'error');
+        location.hash = '#/auth';
+        return;
+      }
+      ui.toast((err && err.message) || 'No se pudo enviar la oferta', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Enviar a revisión'; }
+    }
+  });
+};

@@ -6,6 +6,7 @@
     { href: '#/mapa', label: 'Mapa', key: 'mapa' },
     { href: '#/empresas', label: 'Empresas', key: 'empresas' },
     { href: '#/guias', label: 'Guía', key: 'guias' },
+    { href: '#/enviar', label: 'Publica tu chamba', key: 'enviar' },
   ];
 
   function navItems() {
