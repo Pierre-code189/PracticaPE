@@ -841,13 +841,20 @@ F.mapa = async (root) => {
     }).join('');
   }
 
-  // chips de distrito con conteos reales
+  // chips de distrito con conteos reales — scroll horizontal en móvil, sin overflow de página
   const chipBox = q(root, '#district-chips-container') || byText(root, 'button', 'Todos');
   if (chipBox) {
     const holder = chipBox.closest('div') || chipBox;
+    // Forzar contenedor con scroll interno, nunca expande el body
+    holder.style.overflowX = 'auto';
+    holder.style.overflowY = 'hidden';
+    holder.style.maxWidth = '100%';
+    holder.style.webkitOverflowScrolling = 'touch';
+    holder.style.flexWrap = 'nowrap';
     const chips = qa(holder, 'button');
     if (chips.length) {
       chips.forEach(b => {
+        b.style.flexShrink = '0'; // evitar que se compriman
         const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
         const name = t.replace(/\s*\(\d+\)\s*$/, '').trim();
         if (name === 'Todos') { b.textContent = 'Todos (' + items.length + ')'; return; }

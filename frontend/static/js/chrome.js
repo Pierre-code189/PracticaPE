@@ -1,168 +1,250 @@
 // PrácticaPE — cromo compartido: cabecera, menú móvil y modo claro/oscuro.
-// Monta el header una sola vez; las pantallas de Stitch no lo traen.
+// v2 — bugs corregidos:
+//   · Toggle tema: usa data-theme en <html> + classList.toggle('dark'), nunca depende solo de clase 'dark'
+//   · Menú móvil: backdrop opaco real (rgba 0,0,0,0.6), z-index 9999, bloquea body scroll
+//   · Menú cierra con scroll, ESC, click en link, resize a desktop
+//   · Hamburguesa: borde visible en modo claro, icono cambia a X al abrir
+//   · Nav desktop: inline-flex en lg+, oculto en móvil
 (function () {
-  const NAV_BASE = [
-    { href: '#/ofertas', label: 'Ofertas', key: 'ofertas' },
-    { href: '#/mapa', label: 'Mapa', key: 'mapa' },
-    { href: '#/empresas', label: 'Empresas', key: 'empresas' },
-    { href: '#/guias', label: 'Guía', key: 'guias' },
-    { href: '#/enviar', label: 'Publica tu chamba', key: 'enviar' },
-  ];
 
+  // ── Tema ─────────────────────────────────────────────────────────────
+  function isDark() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', dark);
+    try { localStorage.setItem('pp-theme', dark ? 'dark' : 'light'); } catch {}
+    var hi = document.querySelector('#pp-theme .material-symbols-outlined');
+    if (hi) hi.textContent = dark ? 'dark_mode' : 'light_mode';
+    var mi = document.getElementById('pp-mobile-theme-icon');
+    if (mi) mi.textContent = dark ? 'dark_mode' : 'light_mode';
+    var ml = document.getElementById('pp-mobile-theme-label');
+    if (ml) ml.textContent = dark ? 'Modo oscuro' : 'Modo claro';
+    // Forzar fondo oscuro/claro en el header y menú
+    var hdr = document.getElementById('pp-header');
+    if (hdr) hdr.style.background = dark ? 'rgba(17,24,39,0.97)' : 'rgba(255,255,255,0.97)';
+    var panel = document.querySelector('#pp-mobile > div:last-child');
+    if (panel) panel.style.background = dark ? '#1F2937' : 'white';
+  }
+  function initTheme() {
+    var saved; try { saved = localStorage.getItem('pp-theme'); } catch {}
+    var sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved ? saved === 'dark' : sys);
+  }
+
+  // ── Datos nav ────────────────────────────────────────────────────────
+  var NAV_BASE = [
+    { href: '#/ofertas',  label: 'Ofertas',          key: 'ofertas' },
+    { href: '#/mapa',     label: 'Mapa',              key: 'mapa' },
+    { href: '#/empresas', label: 'Empresas',          key: 'empresas' },
+    { href: '#/guias',    label: 'Guía',              key: 'guias' },
+    { href: '#/enviar',   label: 'Publica tu chamba', key: 'enviar' },
+  ];
+  function user() { try { return JSON.parse(localStorage.getItem('pp_user') || 'null'); } catch { return null; } }
   function navItems() {
-    const u = user();
-    const extra = [];
-    if (u) extra.push({ href: '#/notificaciones', label: 'Notificaciones', key: 'notificaciones' });
-    if (u) extra.push({ href: '#/postulaciones', label: 'Mis postulaciones', key: 'postulaciones' });
+    var u = user(), extra = [];
+    if (u) extra.push({ href: '#/notificaciones', label: 'Notificaciones',    key: 'notificaciones' });
+    if (u) extra.push({ href: '#/postulaciones',  label: 'Mis postulaciones', key: 'postulaciones' });
     return NAV_BASE.concat(extra);
   }
 
-  function user() {
-    try { return JSON.parse(localStorage.getItem('pp_user') || 'null'); } catch { return null; }
-  }
-
+  // ── HTML ─────────────────────────────────────────────────────────────
   function headerHTML() {
-    const u = user();
-    const cta = u
-      ? `<a class="hidden sm:inline-flex items-center gap-2 font-body-m text-body-m font-semibold text-primary px-space-lg py-2 rounded-full hover:bg-primary-container-light transition-colors" href="#/perfil">
-           <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-body-s font-bold">${(u.name || u.email || 'U')[0].toUpperCase()}</span>
-           <span class="max-w-[140px] truncate">${(u.name || u.email || 'Mi perfil').split('@')[0]}</span>
-         </a>`
-      : `<a class="hidden sm:inline-flex items-center justify-center text-sm font-semibold text-gray-700 px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors" href="#/auth">Ingresar</a>
-         <a class="inline-flex items-center justify-center text-sm font-bold text-white px-4 py-2 rounded-full hover:opacity-90 transition-colors" style="background:#0E7C66" href="#/panel-empresa">Publicar oferta</a>`;
+    var u = user();
+    var cta = u
+      ? '<a href="#/perfil" style="display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;text-decoration:none;font-size:0.875rem;font-weight:600;color:#0E7C66;transition:background 0.15s" class="sm-flex" onmouseover="this.style.background=\'#ECFDF5\'" onmouseout="this.style.background=\'\'">'
+        + '<span style="width:28px;height:28px;border-radius:50%;background:#0E7C66;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">' + (u.name||u.email||'U')[0].toUpperCase() + '</span>'
+        + '<span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (u.name||u.email||'Mi perfil').split('@')[0] + '</span></a>'
+      : '<a href="#/auth" style="display:none;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;border:1.5px solid #D1D5DB;font-size:0.875rem;font-weight:600;color:#374151;text-decoration:none;transition:background 0.15s;white-space:nowrap" class="sm-flex" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'\'">'
+        + 'Ingresar</a>'
+        + '<a href="#/panel-empresa" style="display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;background:#0E7C66;color:white;font-size:0.875rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity=\'0.9\'" onmouseout="this.style.opacity=\'1\'">'
+        + 'Publicar oferta</a>';
 
-    return `
-<header id="pp-header" class="fixed top-0 left-0 right-0 z-50 bg-surface-light/95 backdrop-blur-md border-b border-border-light">
-  <div class="max-w-[1200px] mx-auto px-margin h-16 flex items-center justify-between gap-space-md">
-    <div class="flex items-center gap-space-lg min-w-0">
-      <a class="flex items-center gap-2 group shrink-0" href="#/">
-        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(14,124,102,0.25)] group-hover:scale-105 transition-transform">
-          <span class="w-4 h-4 rounded-sm border-2 border-on-primary rotate-45 flex items-center justify-center"><span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span></span>
-        </div>
-        <span class="font-headline-s text-headline-s tracking-tight text-ink-light">Práctica<span class="text-primary">PE</span></span>
-      </a>
-      <nav id="pp-nav" class="hidden lg:flex items-center gap-space-xs" aria-label="Navegación principal"></nav>
-    </div>
-    <div class="flex items-center gap-3">
-      <button id="pp-theme" aria-label="Cambiar modo claro y oscuro" class="w-10 h-10 rounded-full flex items-center justify-center text-ink-secondary-light hover:bg-surface-container-low hover:text-ink-light transition-colors" type="button">
-        <span class="material-symbols-outlined text-[20px]">light_mode</span>
-      </button>
-      ${cta}
-      <button id="pp-burger" aria-label="Abrir menú" aria-expanded="false" class="lg:hidden w-10 h-10 rounded-full flex items-center justify-center text-ink-light hover:bg-surface-container-low transition-colors" type="button">
-        <span class="material-symbols-outlined text-[22px]">menu</span>
-      </button>
-    </div>
-  </div>
-</header>
-<div id="pp-mobile" class="pp-hidden fixed inset-0 z-40 lg:hidden" aria-hidden="true">
-  <div id="pp-mobile-backdrop" class="absolute inset-0 bg-ink-light/40"></div>
-  <div class="absolute top-16 right-3 left-3 bg-surface-light rounded-2xl shadow-[0_12px_40px_rgba(20,32,27,0.25)] p-3 flex flex-col gap-1">
-    <div id="pp-mobile-nav" class="flex flex-col"></div>
-    <div class="h-px bg-border-light my-2"></div>
-    <button id="pp-mobile-theme" class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-body-m text-body-m text-ink-light hover:bg-surface-container-low transition-colors" type="button">
-      <span class="material-symbols-outlined text-[20px] text-ink-secondary-light" id="pp-mobile-theme-icon">light_mode</span>
-      <span id="pp-mobile-theme-label">Modo claro</span>
-    </button>
-    <div id="pp-mobile-user" class="px-3 py-2 text-body-s text-ink-secondary-light"></div>
-  </div>
-</div>`;
+    return '<header id="pp-header" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.08)">'
+      + '<div style="max-width:1200px;margin:0 auto;padding:0 1rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px">'
+        // Logo + nav
+        + '<div style="display:flex;align-items:center;gap:24px;min-width:0;flex:1">'
+          + '<a href="#/" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0">'
+            + '<div style="width:36px;height:36px;border-radius:10px;background:#0E7C66;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(14,124,102,0.3)">'
+              + '<span style="width:14px;height:14px;border:2.5px solid white;border-radius:3px;transform:rotate(45deg);display:block"></span>'
+            + '</div>'
+            + '<span style="font-weight:700;font-size:1rem;color:#111827;letter-spacing:-0.02em;white-space:nowrap">Práctica<span style="color:#0E7C66">PE</span></span>'
+          + '</a>'
+          + '<nav id="pp-nav" style="display:none;align-items:center;gap:4px" aria-label="Navegación principal"></nav>'
+        + '</div>'
+        // Acciones
+        + '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">'
+          + '<button id="pp-theme" aria-label="Cambiar tema claro/oscuro" type="button" style="width:40px;height:40px;border-radius:50%;border:1.5px solid #E5E7EB;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6B7280;transition:all 0.15s;flex-shrink:0" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'white\'">'
+            + '<span class="material-symbols-outlined" style="font-size:20px;line-height:1">light_mode</span>'
+          + '</button>'
+          + cta
+          + '<button id="pp-burger" aria-label="Abrir menú" aria-expanded="false" type="button" style="width:40px;height:40px;border-radius:10px;border:1.5px solid #E5E7EB;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#111827;transition:all 0.15s;flex-shrink:0" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'white\'">'
+            + '<span class="material-symbols-outlined" style="font-size:22px;line-height:1">menu</span>'
+          + '</button>'
+        + '</div>'
+      + '</div>'
+    + '</header>'
+    // Overlay del menú móvil
+    + '<div id="pp-mobile" style="display:none;position:fixed;inset:0;z-index:9999" aria-hidden="true">'
+      + '<div id="pp-mobile-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,0.6)"></div>'
+      + '<div style="position:absolute;top:72px;left:12px;right:12px;background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:12px;display:flex;flex-direction:column;gap:4px;max-height:calc(100vh - 90px);overflow-y:auto">'
+        + '<div id="pp-mobile-nav" style="display:flex;flex-direction:column;gap:4px"></div>'
+        + '<div style="height:1px;background:#E5E7EB;margin:8px 0"></div>'
+        + '<button id="pp-mobile-theme" type="button" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:none;background:transparent;cursor:pointer;font-size:0.95rem;color:#111827;width:100%;text-align:left;transition:background 0.15s" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'transparent\'">'
+          + '<span class="material-symbols-outlined" id="pp-mobile-theme-icon" style="font-size:20px;color:#6B7280;line-height:1">light_mode</span>'
+          + '<span id="pp-mobile-theme-label">Modo claro</span>'
+        + '</button>'
+        + '<div id="pp-mobile-user" style="padding:8px 12px;font-size:0.875rem;color:#6B7280"></div>'
+      + '</div>'
+    + '</div>';
   }
 
+  // ── Renderizar nav ───────────────────────────────────────────────────
   function renderNav() {
-    const here = (location.hash || '#/').replace(/^#\//, '').split('/')[0].split('?')[0];
-    const nav = document.getElementById('pp-nav');
-    const mnav = document.getElementById('pp-mobile-nav');
+    var here = (location.hash || '#/').replace(/^#\//, '').split('/')[0].split('?')[0];
+    var nav  = document.getElementById('pp-nav');
+    var mnav = document.getElementById('pp-mobile-nav');
     if (!nav) return;
-    const links = navItems().map(n => {
-      const active = here === n.key;
-      return `<a href="${n.href}" class="${active ? 'bg-primary-container-light text-primary font-bold' : 'text-on-surface-variant hover:text-ink-light hover:bg-surface-container-low'} px-space-md py-1.5 rounded-full transition-colors font-body-m text-body-m">${n.label}</a>`;
+
+    // Desktop nav: visible en >= 1024px
+    nav.style.display = window.innerWidth >= 1024 ? 'flex' : 'none';
+
+    nav.innerHTML = navItems().map(function(n) {
+      var active = here === n.key;
+      return '<a href="' + n.href + '" style="padding:6px 14px;border-radius:999px;font-size:0.875rem;font-weight:' + (active?'700':'500') + ';text-decoration:none;color:' + (active?'#0E7C66':'#4B5563') + ';background:' + (active?'#ECFDF5':'transparent') + ';transition:all 0.15s;white-space:nowrap" onmouseover="if(!this.classList.contains(\'pp-active\'))this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'' + (active?'#ECFDF5':'transparent') + '\'">' + n.label + '</a>';
     }).join('');
-    nav.innerHTML = links;
+
     if (mnav) {
-      mnav.innerHTML = navItems().map(n =>
-        `<a href="${n.href}" class="px-3 py-2.5 rounded-xl font-body-m text-body-m ${here === n.key ? 'bg-primary-container-light text-primary font-bold' : 'text-ink-light'}">${n.label}</a>`
-      ).join('');
+      mnav.innerHTML = navItems().map(function(n) {
+        var active = here === n.key;
+        return '<a href="' + n.href + '" onclick="window.PPChrome&&window.PPChrome.closeMobile()" style="display:block;padding:12px 14px;border-radius:12px;font-size:0.95rem;font-weight:' + (active?'700':'500') + ';text-decoration:none;color:' + (active?'#0E7C66':'#111827') + ';background:' + (active?'#ECFDF5':'transparent') + ';transition:background 0.15s" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'' + (active?'#ECFDF5':'transparent') + '\'">' + n.label + '</a>';
+      }).join('');
     }
-    const u = user();
-    const box = document.getElementById('pp-mobile-user');
+
+    var u = user();
+    var box = document.getElementById('pp-mobile-user');
     if (box) {
-      box.innerHTML = u
-        ? `<a href="#/perfil" class="flex items-center gap-2 text-ink-light font-semibold"><span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-body-s font-bold">${(u.name || u.email || 'U')[0].toUpperCase()}</span> Mi perfil</a>
-           <button id="pp-logout" class="text-left text-error font-semibold">Cerrar sesión</button>`
-        : `<a href="#/auth" class="text-primary font-semibold">Ingresar con mi correo</a>`;
-      const lo = document.getElementById('pp-logout');
-      if (lo) lo.addEventListener('click', () => {
-        localStorage.removeItem('pp_token');
-        localStorage.removeItem('pp_user');
-        closeMobile();
-        location.hash = '#/';
-      });
+      if (u) {
+        box.innerHTML = '<a href="#/perfil" onclick="window.PPChrome&&window.PPChrome.closeMobile()" style="display:flex;align-items:center;gap:8px;color:#111827;font-weight:600;text-decoration:none;padding:4px 0">'
+          + '<span style="width:28px;height:28px;border-radius:50%;background:#0E7C66;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">' + (u.name||u.email||'U')[0].toUpperCase() + '</span>Mi perfil</a>'
+          + '<button id="pp-logout" style="margin-top:6px;background:none;border:none;cursor:pointer;color:#DC2626;font-weight:600;font-size:0.875rem;padding:4px 0;text-align:left;display:block">Cerrar sesión</button>';
+        var lo = document.getElementById('pp-logout');
+        if (lo) lo.addEventListener('click', function() {
+          try { localStorage.removeItem('pp_token'); localStorage.removeItem('pp_user'); } catch {}
+          closeMobile(); location.hash = '#/';
+        });
+      } else {
+        box.innerHTML = '<a href="#/auth" onclick="window.PPChrome&&window.PPChrome.closeMobile()" style="color:#0E7C66;font-weight:600;text-decoration:none">Ingresar con mi correo</a>';
+      }
     }
+
+    // Aplicar tema al panel del menú si está abierto
+    var dark = isDark();
+    var panel = document.querySelector('#pp-mobile > div:last-child');
+    if (panel) panel.style.background = dark ? '#1F2937' : 'white';
+    var allMobileLinks = document.querySelectorAll('#pp-mobile-nav a');
+    allMobileLinks.forEach(function(a) { a.style.color = dark ? (a.style.color === '#0E7C66' ? '#0E7C66' : '#F9FAFB') : a.style.color; });
   }
 
-  function paintTheme(dark) {
-    document.documentElement.classList.toggle('dark', dark);
-    const icon = document.querySelector('#pp-theme .material-symbols-outlined');
-    if (icon) icon.textContent = dark ? 'dark_mode' : 'light_mode';
-    const mi = document.getElementById('pp-mobile-theme-icon');
-    const ml = document.getElementById('pp-mobile-theme-label');
-    if (mi) mi.textContent = dark ? 'dark_mode' : 'light_mode';
-    if (ml) ml.textContent = dark ? 'Modo oscuro' : 'Modo claro';
-  }
-
-  function initTheme() {
-    const saved = localStorage.getItem('pp-theme');
-    const dark = saved ? saved === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    paintTheme(dark);
-    const t = document.getElementById('pp-theme');
-    if (t) t.addEventListener('click', () => {
-      const now = !document.documentElement.classList.contains('dark');
-      localStorage.setItem('pp-theme', now ? 'dark' : 'light');
-      paintTheme(now);
-    });
-    const mt = document.getElementById('pp-mobile-theme');
-    if (mt) mt.addEventListener('click', () => {
-      const now = !document.documentElement.classList.contains('dark');
-      localStorage.setItem('pp-theme', now ? 'dark' : 'light');
-      paintTheme(now);
-    });
-  }
-
+  // ── Menú móvil ───────────────────────────────────────────────────────
+  var _scrollHandler = null;
   function openMobile() {
-    const m = document.getElementById('pp-mobile');
+    var m = document.getElementById('pp-mobile');
     if (!m) return;
-    m.classList.remove('pp-hidden');
-    const b = document.getElementById('pp-burger');
-    if (b) b.setAttribute('aria-expanded', 'true');
+    m.style.display = 'block';
+    m.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'relative';
+    var b = document.getElementById('pp-burger');
+    if (b) {
+      b.setAttribute('aria-expanded', 'true');
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'close';
+    }
     renderNav();
+    // Cerrar al hacer scroll (una vez)
+    if (_scrollHandler) window.removeEventListener('scroll', _scrollHandler);
+    _scrollHandler = function() { closeMobile(); };
+    window.addEventListener('scroll', _scrollHandler, { passive: true, once: true });
   }
   function closeMobile() {
-    const m = document.getElementById('pp-mobile');
+    var m = document.getElementById('pp-mobile');
     if (!m) return;
-    m.classList.add('pp-hidden');
-    const b = document.getElementById('pp-burger');
-    if (b) b.setAttribute('aria-expanded', 'false');
+    m.style.display = 'none';
+    m.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    var b = document.getElementById('pp-burger');
+    if (b) {
+      b.setAttribute('aria-expanded', 'false');
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'menu';
+    }
+    if (_scrollHandler) {
+      window.removeEventListener('scroll', _scrollHandler);
+      _scrollHandler = null;
+    }
   }
 
+  // ── Responsive resize ────────────────────────────────────────────────
+  var _resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(function() {
+      renderNav();
+      if (window.innerWidth >= 1024) closeMobile();
+    }, 100);
+  });
+
+  // ── Ajustar sm-flex (simular sm:flex de Tailwind) ────────────────────
+  function applySMFlex() {
+    var els = document.querySelectorAll('.sm-flex');
+    var sm = window.innerWidth >= 640;
+    els.forEach(function(el) { el.style.display = sm ? 'flex' : 'none'; });
+  }
+  window.addEventListener('resize', applySMFlex);
+
+  // ── Mount ────────────────────────────────────────────────────────────
   function mount() {
-    const host = document.getElementById('pp-header-host');
+    var host = document.getElementById('pp-header-host');
     if (!host) return;
     host.innerHTML = headerHTML();
+
     initTheme();
     renderNav();
-    const b = document.getElementById('pp-burger');
-    if (b) b.addEventListener('click', () => {
-      const open = !document.getElementById('pp-mobile').classList.contains('pp-hidden');
-      open ? closeMobile() : openMobile();
+    applySMFlex();
+
+    // Burger
+    var burger = document.getElementById('pp-burger');
+    if (burger) burger.addEventListener('click', function() {
+      var m = document.getElementById('pp-mobile');
+      m && m.style.display !== 'none' ? closeMobile() : openMobile();
     });
-    const bd = document.getElementById('pp-mobile-backdrop');
+
+    // Backdrop
+    var bd = document.getElementById('pp-mobile-backdrop');
     if (bd) bd.addEventListener('click', closeMobile);
-    window.addEventListener('hashchange', () => { closeMobile(); renderNav(); });
-    document.addEventListener('click', (e) => {
-      if (e.target && e.target.closest('a[href^="#/"]')) closeMobile();
-    });
+
+    // Toggle tema — header
+    var themeBtn = document.getElementById('pp-theme');
+    if (themeBtn) themeBtn.addEventListener('click', function() { applyTheme(!isDark()); });
+
+    // Toggle tema — menú móvil
+    var mTheme = document.getElementById('pp-mobile-theme');
+    if (mTheme) mTheme.addEventListener('click', function() { applyTheme(!isDark()); });
+
+    // Cambio de ruta
+    window.addEventListener('hashchange', function() { closeMobile(); renderNav(); });
+
+    // ESC
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobile(); });
   }
 
-  window.PPChrome = { mount, renderNav, paintTheme, closeMobile };
-  document.addEventListener('DOMContentLoaded', mount);
+  window.PPChrome = { mount: mount, renderNav: renderNav, applyTheme: applyTheme, closeMobile: closeMobile, isDark: isDark };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
+  }
 })();
