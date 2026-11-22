@@ -71,7 +71,7 @@ function jobCard(j) {
       ${fuenteChip(j.source)}
       <span class="px-2.5 py-1 rounded-full bg-primary-container-light text-primary font-semibold">${ui.esc(j.district || 'Piura')}</span>
       <span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light capitalize">${ui.esc(j.modality || 'presencial')}</span>
-      ${j.positions ? `<span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light tabular-nums">${j.positions} vacante(s)</span>` : ''}
+      ${j.positions ? `<span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light tabular-nums">${j.positions} ${j.positions === 1 ? 'vacante' : 'vacantes'}</span>` : ''}
     </div>
     <div class="flex items-center justify-between pt-3 mt-2">
       <span class="text-body-s text-ink-secondary-light">${ui.fecha(j.created_at)}</span>
@@ -202,6 +202,33 @@ F.ofertas = async (root) => {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   state.q = params.get('q') || '';
   if (search && state.q) search.value = state.q;
+
+  // ── Collapse de filtros en móvil ──────────────────────────────────────
+  if (aside && window.innerWidth < 1024) {
+    aside.style.display = 'none';
+    // Crear botón toggle si no existe
+    if (!document.getElementById('pp-filter-toggle')) {
+      const toggleBtn = document.createElement('button');
+      toggleBtn.id = 'pp-filter-toggle';
+      toggleBtn.className = 'lg:hidden flex items-center gap-2 px-4 py-2 rounded-full border border-border-light text-ink-light font-semibold text-sm mb-4 hover:bg-surface-container-low transition-colors';
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">tune</span> Filtros <span id="pp-filter-badge" class="hidden bg-primary text-on-primary text-xs font-bold rounded-full px-1.5 py-0.5">0</span>';
+      aside.parentElement && aside.parentElement.insertBefore(toggleBtn, aside);
+      toggleBtn.addEventListener('click', () => {
+        const open = aside.style.display !== 'none';
+        aside.style.display = open ? 'none' : 'block';
+        toggleBtn.querySelector('.material-symbols-outlined').textContent = open ? 'tune' : 'close';
+      });
+      // Cerrar al aplicar filtros
+      window.addEventListener('pp:filter-applied', () => {
+        if (window.innerWidth < 1024) {
+          aside.style.display = 'none';
+          if (document.getElementById('pp-filter-toggle')) {
+            document.getElementById('pp-filter-toggle').querySelector('.material-symbols-outlined').textContent = 'tune';
+          }
+        }
+      });
+    }
+  }
 
   const chips = qa(root, 'aside button, aside label');
   stripFakeCounters(root, 'aside');

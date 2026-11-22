@@ -28,8 +28,8 @@
            <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-body-s font-bold">${(u.name || u.email || 'U')[0].toUpperCase()}</span>
            <span class="max-w-[140px] truncate">${(u.name || u.email || 'Mi perfil').split('@')[0]}</span>
          </a>`
-      : `<a class="hidden sm:inline-flex items-center justify-center font-body-m text-body-m font-semibold text-secondary px-space-lg py-2 rounded-full hover:bg-surface-container-low transition-colors" href="#/auth">Ingresar</a>
-         <a class="inline-flex items-center justify-center font-body-m text-body-m font-bold bg-primary text-on-primary px-space-lg py-2 rounded-full hover:bg-primary-deep transition-colors" href="#/panel-empresa">Publicar oferta</a>`;
+      : `<a class="hidden sm:inline-flex items-center justify-center text-sm font-semibold text-gray-700 px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors" href="#/auth">Ingresar</a>
+         <a class="inline-flex items-center justify-center text-sm font-bold text-white px-4 py-2 rounded-full hover:opacity-90 transition-colors" style="background:#0E7C66" href="#/panel-empresa">Publicar oferta</a>`;
 
     return `
 <header id="pp-header" class="fixed top-0 left-0 right-0 z-50 bg-surface-light/95 backdrop-blur-md border-b border-border-light">
@@ -43,7 +43,7 @@
       </a>
       <nav id="pp-nav" class="hidden lg:flex items-center gap-space-xs" aria-label="Navegación principal"></nav>
     </div>
-    <div class="flex items-center gap-space-sm">
+    <div class="flex items-center gap-3">
       <button id="pp-theme" aria-label="Cambiar modo claro y oscuro" class="w-10 h-10 rounded-full flex items-center justify-center text-ink-secondary-light hover:bg-surface-container-low hover:text-ink-light transition-colors" type="button">
         <span class="material-symbols-outlined text-[20px]">light_mode</span>
       </button>
