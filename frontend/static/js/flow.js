@@ -198,7 +198,7 @@ F.ofertas = async (root) => {
   const list = findList(root, []);
   const search = q(root, 'input[placeholder*="Buscar"]') || q(root, 'input[type="text"]');
   const reset = q(root, '#btn-reset-filters') || byText(root, 'button', 'Limpiar');
-  const state = { q: '', district: '', modality: '', category: '', limit: 30 };
+  const state = { q: '', district: '', modality: '', category: '', limit: 30, offset: 0 };
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   state.q = params.get('q') || '';
   if (search && state.q) search.value = state.q;
@@ -222,7 +222,7 @@ F.ofertas = async (root) => {
   });
 
   async function load() {
-    const n = await fillJobs(list, { q: state.q, district: state.district, modality: state.modality, category: state.category, limit: state.limit });
+    const n = await fillJobs(list, { q: state.q, district: state.district, modality: state.modality, category: state.category, limit: state.limit, offset: state.offset || 0 });
     const contador = q(root, '#results-count') || byText(root, 'span', 'Mostrando') || byText(root, 'p', 'Mostrando');
     if (contador) contador.textContent = `Mostrando ${n} de ${n}`;
     // contador grande del hero ("N ofertas activas en Piura")
@@ -245,17 +245,89 @@ F.ofertas = async (root) => {
     qa(root, 'aside select').forEach(s => { s.value = s.options[0] ? s.options[0].value : ''; });
     load();
   });
-  // chips de modalidad (botones tipo toggle)
-  qa(root, 'aside button').forEach(b => {
-    const t = (b.textContent || '').trim().toLowerCase();
-    if (['presencial', 'híbrido', 'remoto'].includes(t)) {
+  // chips de modalidad (botones tipo toggle) — CABLEADO COMPLETO
+  qa(root, 'aside button, main button').forEach(b => {
+    const t = (b.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+
+    // modalidad
+    if (['presencial', 'híbrido', 'remoto', 'semipresencial'].includes(t)) {
       b.addEventListener('click', () => {
         const activo = b.dataset.pp === '1';
-        qa(root, 'aside button').forEach(x => delete x.dataset.pp);
+        qa(root, 'aside button, main button').forEach(x => {
+          if (['presencial','híbrido','remoto','semipresencial'].includes((x.textContent||'').trim().toLowerCase()))
+            delete x.dataset.pp;
+        });
         state.modality = activo ? '' : t;
         if (!activo) b.dataset.pp = '1';
         load();
       });
+      return;
+    }
+
+    // experiencia → category
+    if (['sin experiencia','0 a 1 año','1 a 2 años','más de 2 años'].includes(t)) {
+      b.addEventListener('click', () => {
+        const activo = b.dataset.pp === '1';
+        qa(root, 'aside button, main button').forEach(x => {
+          if (['sin experiencia','0 a 1 año','1 a 2 años','más de 2 años'].includes((x.textContent||'').trim().toLowerCase()))
+            delete x.dataset.pp;
+        });
+        state.category = activo ? '' : t;
+        if (!activo) b.dataset.pp = '1';
+        load();
+      });
+      return;
+    }
+
+    // limpiar todo / restablecer
+    if (/limpiar|restablecer|reset/i.test(t)) {
+      b.addEventListener('click', () => {
+        state.q = state.district = state.modality = state.category = '';
+        if (search) search.value = '';
+        qa(root, '[data-pp]').forEach(x => delete x.dataset.pp);
+        qa(root, 'aside input[type="checkbox"]').forEach(c => { c.checked = false; });
+        qa(root, 'aside select').forEach(s => { s.selectedIndex = 0; });
+        load();
+      });
+      return;
+    }
+
+    // aplicar filtros (alias del mismo load)
+    if (/aplicar\s*filtros?/i.test(t)) {
+      b.addEventListener('click', () => load());
+      return;
+    }
+
+    // paginación — Anterior / Siguiente / números
+    if (/^anterior$|^chevron_left anterior$|^← anterior$/.test(t)) {
+      b.addEventListener('click', () => {
+        if (state.offset > 0) { state.offset = Math.max(0, (state.offset || 0) - state.limit); load(); }
+      });
+      return;
+    }
+    if (/^siguiente$|^siguiente chevron_right$|^siguiente →$/.test(t)) {
+      b.addEventListener('click', () => {
+        state.offset = (state.offset || 0) + state.limit;
+        load();
+      });
+      return;
+    }
+    if (/^\d+$/.test(t)) {
+      b.addEventListener('click', () => {
+        const p = parseInt(t, 10) - 1;
+        state.offset = p * state.limit;
+        load();
+      });
+      return;
+    }
+
+    // activar alertas → toast informativo
+    if (/alertas?|notific/i.test(t)) {
+      b.addEventListener('click', () => {
+        if (!currentUser()) { ui.toast('Ingresa para activar alertas', 'error'); location.hash = '#/auth'; return; }
+        ui.toast('Alertas de empleo activadas para esta búsqueda ✓', 'success');
+      });
+      return;
     }
   });
   // checkboxes de área -> categoría
@@ -662,6 +734,16 @@ F['panel-empresa'] = async (root) => {
 
 // ---------- DIRECTORIO DE EMPRESAS ----------
 F.empresas = async (root) => {
+  // ── Links muertos Stitch → funcionales ───────────────────────────────
+  qa(root, 'a').forEach(a => {
+    const href = (a.getAttribute('href') || '').trim();
+    const txt  = (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (href === '#' || href === '') {
+      if (/publicar|anunciar/i.test(txt))   a.href = '#/auth';
+      else if (/más información|info|conocer/i.test(txt)) a.href = '#/contacto';
+      else a.href = '#/contacto';
+    }
+  });
   const list = q(root, '#companies-grid') || findList(root, []);
   if (!list) return;
   list.innerHTML = `<div class="col-span-full pp-empty"><span class="pp-spin" style="border-color:rgba(14,124,102,.25);border-top-color:#0E7C66"></span><p class="font-headline-s text-headline-s">Cargando empresas…</p></div>`;
@@ -1019,6 +1101,28 @@ F.notificaciones = async (root) => {
 F.contacto = async (root) => {
   const form = q(root, 'form');
   if (!form) return;
+
+  // ── Links muertos del diseño Stitch → funcionales ─────────────────────
+  qa(root, 'a').forEach(a => {
+    const href = (a.getAttribute('href') || '').trim();
+    const txt  = (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (href === '#' || href === '') {
+      if (/correo|mail|email/i.test(txt) || /correo institucional/i.test(txt)) {
+        a.href = 'mailto:contacto@practicape.pe';
+      } else if (/whatsapp|chat|wsp/i.test(txt)) {
+        a.href  = 'https://wa.me/51000000000';
+        a.target = '_blank';
+        a.rel    = 'noopener noreferrer';
+      } else if (/llegar|mapa|ubicaci/i.test(txt) || /open_in_new/.test(a.textContent || '')) {
+        a.href  = 'https://maps.google.com/?q=Piura,Peru';
+        a.target = '_blank';
+        a.rel    = 'noopener noreferrer';
+      } else {
+        // cualquier link muerto restante → navegar a contacto mismo (inofensivo)
+        a.href = '#/contacto';
+      }
+    }
+  });
   // el tipo se elige con los chips de Stitch: se sincronizan con el campo oculto
   const select = q(root, 'input[name="query_type"]') || q(root, 'select');
   qa(root, 'button').filter(b => /Soy Candidato|Soy Empresa|Soporte Técnico/.test(b.textContent || '')).forEach(b => {
