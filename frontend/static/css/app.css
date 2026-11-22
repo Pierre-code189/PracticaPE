@@ -154,47 +154,307 @@ img, svg, video { max-width: 100%; }
 .leaflet-container { font: inherit; }
 .leaflet-popup-content a { color: var(--pp-primary, #0E7C66); font-weight: 700; }
 
-/* ---------- Modo oscuro sobre los fragmentos de Stitch ----------
-   Stitch usa las variantes "-light" sin prefijo dark:. Esta capa las
-   re-mapea a los tokens oscuros del propio design system. */
+/* ---------- Modo oscuro — rediseño completo ----------
+   Paleta: base #0F1A14 (verde casi negro), surface #17261E,
+   card #1E3028, accent #34D399 (esmeralda claro), texto #E6F4EE.
+   Regla: todo lo que lleve "-light" en Stitch se re-mapea aquí.
+   Los inputs, banners, chips y botones también tienen overrides. */
+
+/* ── Fondo de página ─────────────────────────────────────── */
+.dark body,
+.dark [data-theme="dark"] body,
+[data-theme="dark"] body {
+  background-color: #0F1A14 !important;
+  color: #E6F4EE !important;
+}
+
+/* ── Superficies ─────────────────────────────────────────── */
 .dark .bg-surface-light,
 .dark .bg-surface,
-.dark .bg-surface-bright { background-color: #12201B !important; }
+.dark .bg-surface-bright,
+.dark .bg-background,
+.dark .bg-background-light { background-color: #0F1A14 !important; }
+
 .dark .bg-surface-container,
 .dark .bg-surface-container-low,
+.dark .bg-surface-container-lowest,
 .dark .bg-surface-container-high,
 .dark .bg-surface-container-highest,
-.dark .bg-surface-container-lowest,
 .dark .bg-surface-variant,
-.dark .bg-surface-dim { background-color: #1A2E27 !important; }
-.dark .bg-surface-elevated { background-color: #1A2E27 !important; }
-.dark .bg-background-light { background-color: #0B1512 !important; }
-.dark .bg-primary-container-light { background-color: #14382F !important; }
-.dark .bg-primary-container { background-color: #14382F !important; }
-.dark .bg-accent-container-light { background-color: #3A2A12 !important; }
-.dark .bg-accent-container { background-color: #3A2A12 !important; }
-.dark .bg-secondary-container { background-color: #22332D !important; }
-.dark .bg-error-container { background-color: #3A1614 !important; }
+.dark .bg-surface-dim,
+.dark .bg-surface-elevated { background-color: #17261E !important; }
 
+/* cards/paneles con elevación */
+.dark .rounded-2xl,
+.dark .rounded-xl,
+.dark .rounded-3xl {
+  background-color: #1E3028;
+}
+/* pero no los botones ni elementos de acción */
+.dark button.rounded-2xl,
+.dark button.rounded-xl,
+.dark a.rounded-2xl,
+.dark a.rounded-xl,
+.dark .pp-btn,
+.dark [class*="bg-primary"] { background-color: unset; }
+
+/* ── Textos ──────────────────────────────────────────────── */
 .dark .text-ink-light,
+.dark .text-ink,
 .dark .text-on-surface,
-.dark .text-on-background { color: #EAF4EF !important; }
-.dark .text-ink-secondary-light,
-.dark .text-on-surface-variant { color: #9DB3AA !important; }
-.dark .text-primary,
-.dark .text-primary-container { color: #4FC3A7 !important; }
-.dark .text-primary-deep { color: #2E9B85 !important; }
-.dark .text-accent-light { color: #F2B85C !important; }
-.dark .text-ink-secondary { color: #9DB3AA !important; }
-.dark .text-ink { color: #EAF4EF !important; }
-.dark .text-tertiary { color: #E0A79C !important; }
-.dark .text-error { color: #F2B8B2 !important; }
-.dark .text-on-primary { color: #06251E !important; }
-.dark .text-on-primary-fixed-variant,
-.dark .text-on-primary-container { color: #D7F0E7 !important; }
+.dark .text-on-background,
+.dark h1, .dark h2, .dark h3,
+.dark .font-headline-s,
+.dark .font-headline-m,
+.dark .font-headline-l { color: #E6F4EE !important; }
 
+.dark .text-ink-secondary-light,
+.dark .text-ink-secondary,
+.dark .text-on-surface-variant,
+.dark .text-outline,
+.dark .text-on-surface-muted,
+.dark p, .dark label, .dark span:not([class*="bg-"]) { color: #9DBFB0 !important; }
+
+/* acentos */
+.dark .text-primary,
+.dark .text-primary-light { color: #34D399 !important; }
+
+.dark .text-on-primary { color: #052814 !important; }
+.dark .text-on-primary-fixed-variant,
+.dark .text-on-primary-container { color: #CCF0E2 !important; }
+
+.dark .text-accent-light { color: #FBB045 !important; }
+.dark .text-tertiary    { color: #F0A598 !important; }
+.dark .text-error       { color: #FCA5A5 !important; }
+.dark .text-ink-secondary { color: #9DBFB0 !important; }
+
+/* ── Bordes ──────────────────────────────────────────────── */
 .dark .border-border-light,
-.dark .border-border { border-color: #243833 !important; }
-.dark .divide-border-light > * + * { border-color: #243833 !important; }
-.dark .ring-primary { --tw-ring-color: #14382F !important; }
-.dark .shadow-sm, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-xl { --tw-shadow-color: rgba(0,0,0,.5) !important; }
+.dark .border-border,
+.dark [class*="border-"] { border-color: #243E32 !important; }
+
+/* ── Contenedores de acento ──────────────────────────────── */
+.dark .bg-primary-container-light,
+.dark .bg-primary-container { background-color: #0D3522 !important; }
+
+.dark .bg-accent-container-light,
+.dark .bg-accent-container  { background-color: #3D2608 !important; }
+
+.dark .bg-secondary-container { background-color: #1A3028 !important; }
+.dark .bg-error-container     { background-color: #3A1414 !important; }
+
+/* ── Inputs / formularios ────────────────────────────────── */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #17261E !important;
+  color: #E6F4EE !important;
+  border-color: #2E4A3A !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder { color: #5A8072 !important; }
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #34D399 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52,211,153,0.15) !important;
+}
+
+/* ── Banners / pills / badges ────────────────────────────── */
+/* El banner naranja de "PIURA · REGIÓN GRAU" */
+.dark .bg-primary-container-light.rounded-full,
+.dark [class*="rounded-full"][class*="bg-primary-container"] {
+  background-color: #0D3522 !important;
+  border-color: #1A5438 !important;
+}
+/* badges de modalidad / fuente */
+.dark [class*="rounded-full"][class*="bg-surface-container"] {
+  background-color: #1E3028 !important;
+}
+.dark [class*="rounded-full"][class*="bg-accent-container"] {
+  background-color: #3D2608 !important;
+}
+
+/* ── Header (chrome.js usa inline styles — overrides específicos) ── */
+[data-theme="dark"] #pp-header {
+  background: rgba(10, 20, 14, 0.97) !important;
+  border-bottom-color: #243E32 !important;
+}
+[data-theme="dark"] #pp-header a[href="#/"] span {
+  color: #E6F4EE !important;
+}
+/* Botones del header en modo oscuro */
+[data-theme="dark"] #pp-theme {
+  background: #17261E !important;
+  border-color: #2E4A3A !important;
+  color: #9DBFB0 !important;
+}
+[data-theme="dark"] #pp-burger {
+  background: #17261E !important;
+  border-color: #2E4A3A !important;
+  color: #E6F4EE !important;
+}
+[data-theme="dark"] #pp-header a[href="#/auth"] {
+  color: #9DBFB0 !important;
+  border-color: #2E4A3A !important;
+  background: #17261E !important;
+}
+
+/* ── Menú móvil ──────────────────────────────────────────── */
+[data-theme="dark"] #pp-mobile > div:last-child {
+  background: #17261E !important;
+  border: 1px solid #243E32;
+}
+[data-theme="dark"] #pp-mobile-nav a {
+  color: #E6F4EE !important;
+}
+[data-theme="dark"] #pp-mobile-nav a:hover {
+  background: #1E3028 !important;
+}
+[data-theme="dark"] #pp-mobile-theme {
+  color: #E6F4EE !important;
+}
+[data-theme="dark"] #pp-mobile-theme-icon,
+[data-theme="dark"] #pp-mobile-user { color: #9DBFB0 !important; }
+
+/* ── Hover states ────────────────────────────────────────── */
+.dark .hover\:bg-surface-container-low:hover { background-color: #1E3028 !important; }
+.dark .hover\:bg-primary-container-light:hover { background-color: #0D3522 !important; }
+.dark .hover\:bg-surface-container:hover { background-color: #1E3028 !important; }
+.dark .hover\:bg-secondary-container:hover { background-color: #1A3028 !important; }
+
+/* ── Tarjetas de oferta (jobCard) ────────────────────────── */
+.dark article {
+  background-color: #1E3028 !important;
+  border-color: #243E32 !important;
+}
+.dark article:hover { border-color: #34D399 !important; }
+
+/* ── Aside de filtros ────────────────────────────────────── */
+.dark aside {
+  background-color: #17261E !important;
+  border-color: #243E32 !important;
+}
+
+/* ── Chips activos ───────────────────────────────────────── */
+.dark [data-pp="1"],
+.dark .bg-primary.text-on-primary {
+  background-color: #34D399 !important;
+  color: #052814 !important;
+}
+
+/* ── Scrollbar en dark ───────────────────────────────────── */
+.dark ::-webkit-scrollbar-thumb { background: rgba(52,211,153,.2); }
+
+/* ── Sombras en dark ─────────────────────────────────────── */
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-\[0_1px_2px_rgba\(20\,32\,27\,0\.05\)\] {
+  box-shadow: 0 2px 12px rgba(0,0,0,.5) !important;
+}
+
+/* ── Gradientes del hero (si hay) ────────────────────────── */
+.dark .bg-gradient-to-br,
+.dark [class*="from-primary"],
+.dark [class*="to-primary"] {
+  background: linear-gradient(135deg, #0D3522 0%, #0F1A14 100%) !important;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.dark footer {
+  background-color: #0A1710 !important;
+  border-top-color: #1A2E24 !important;
+}
+
+/* ── Correcciones de contraste críticas ──────────────────── */
+
+/* Botón "Buscar" en contexto dark: texto blanco sobre verde oscuro */
+.dark #geo-search-input + button,
+.dark #geo-search-input ~ button,
+.dark form button[type="submit"],
+.dark .bg-primary.text-on-primary {
+  background-color: #0E7C66 !important;
+  color: #ffffff !important;
+}
+
+/* Banner "PIURA · REGIÓN GRAU" — eliminar el naranja */
+.dark .bg-primary-container-light.rounded-full,
+.dark [class*="rounded-full"][class*="bg-primary-container"],
+.dark .inline-flex.rounded-full.bg-primary-container-light,
+.dark [class*="text-on-primary-fixed-variant"].rounded-full,
+.dark span[class*="bg-primary-container"] {
+  background-color: #0A2E1E !important;
+  border: 1px solid #1A5438 !important;
+  color: #6EDBBA !important;
+}
+/* Icono sol dentro del banner en dark */
+.dark .bg-primary-container-light .material-symbols-outlined,
+.dark [class*="bg-primary-container"] .material-symbols-outlined {
+  color: #34D399 !important;
+}
+
+/* Toggle tema — más visible en dark */
+.dark #pp-theme {
+  background: #1E3028 !important;
+  border: 1.5px solid #2E4A3A !important;
+  color: #34D399 !important;
+}
+/* Hamburguesa — más visible en dark */
+.dark #pp-burger {
+  background: #1E3028 !important;
+  border: 1.5px solid #2E4A3A !important;
+  color: #E6F4EE !important;
+}
+
+/* Pills/badges inferiores del hero */
+.dark [class*="inline-flex"][class*="items-center"][class*="gap"][class*="px-3"],
+.dark [class*="inline-flex"][class*="bg-surface-container"] {
+  background-color: #1E3028 !important;
+  color: #9DBFB0 !important;
+}
+
+/* Select / dropdowns en dark */
+.dark select option { background-color: #1E3028; color: #E6F4EE; }
+.dark [class*="Buscar"],
+.dark button[class*="bg-primary"] { color: #ffffff !important; }
+
+/* Chevrones y íconos de formulario */
+.dark .material-symbols-outlined { color: #9DBFB0; }
+.dark .text-primary .material-symbols-outlined,
+.dark [class*="text-primary"] .material-symbols-outlined { color: #34D399 !important; }
+
+/* Links subrayados en dark (ej "Piura" en el título) */
+.dark a[class*="text-primary"],
+.dark a.text-primary { color: #34D399 !important; }
+
+/* Nav activo en dark */
+.dark nav a[style*="color:#0E7C66"],
+.dark nav a.active { color: #34D399 !important; background-color: #0D3522 !important; }
+
+/* Toast en dark */
+.dark .pp-toast { background: #1E3028 !important; border: 1px solid #2E4A3A; }
+.dark .pp-toast[data-kind="success"] { background: #0D3522 !important; border-color: #34D399; }
+.dark .pp-toast[data-kind="error"]   { background: #3A1414 !important; }
+
+/* ── Badges de modalidad / tipo — contraste mejorado en dark ─ */
+/* Remoto, Presencial, Híbrido, 1 vacante, etc. */
+.dark [class*="inline-flex"][class*="bg-surface-container-low"],
+.dark [class*="inline-flex"][class*="bg-surface-container"],
+.dark [class*="inline-flex"][class*="bg-secondary-container"] {
+  background-color: #243E32 !important;
+  color: #A7D9C5 !important;
+}
+/* Badge categoría (Internet/Logística) — naranja en dark */
+.dark [class*="inline-flex"][class*="bg-accent-container"],
+.dark [class*="inline-flex"][class*="bg-tertiary-container"] {
+  background-color: #3D2608 !important;
+  color: #FBB045 !important;
+}
+/* Badge ubicación (Piura, Castilla) */
+.dark [class*="inline-flex"][class*="bg-primary-container"]:not(.rounded-full) {
+  background-color: #0D3522 !important;
+  color: #34D399 !important;
+}

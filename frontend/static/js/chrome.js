@@ -15,17 +15,55 @@
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', dark);
     try { localStorage.setItem('pp-theme', dark ? 'dark' : 'light'); } catch {}
+
+    // Icono del toggle
     var hi = document.querySelector('#pp-theme .material-symbols-outlined');
-    if (hi) hi.textContent = dark ? 'dark_mode' : 'light_mode';
+    if (hi) hi.textContent = dark ? 'light_mode' : 'dark_mode';
     var mi = document.getElementById('pp-mobile-theme-icon');
-    if (mi) mi.textContent = dark ? 'dark_mode' : 'light_mode';
+    if (mi) mi.textContent = dark ? 'light_mode' : 'dark_mode';
     var ml = document.getElementById('pp-mobile-theme-label');
     if (ml) ml.textContent = dark ? 'Modo oscuro' : 'Modo claro';
-    // Forzar fondo oscuro/claro en el header y menú
+
+    // Header inline styles (el CSS tiene [data-theme="dark"] pero los inline-style tienen mayor especificidad)
     var hdr = document.getElementById('pp-header');
-    if (hdr) hdr.style.background = dark ? 'rgba(17,24,39,0.97)' : 'rgba(255,255,255,0.97)';
+    if (hdr) hdr.style.background = dark ? 'rgba(10,20,14,0.97)' : 'rgba(255,255,255,0.97)';
+    hdr && (hdr.style.borderBottomColor = dark ? '#243E32' : 'rgba(0,0,0,0.08)');
+
+    var themeBtn = document.getElementById('pp-theme');
+    if (themeBtn) {
+      themeBtn.style.background = dark ? '#17261E' : 'white';
+      themeBtn.style.borderColor = dark ? '#2E4A3A' : '#E5E7EB';
+      themeBtn.style.color      = dark ? '#9DBFB0' : '#6B7280';
+    }
+    var burger = document.getElementById('pp-burger');
+    if (burger) {
+      burger.style.background  = dark ? '#17261E' : 'white';
+      burger.style.borderColor = dark ? '#2E4A3A' : '#E5E7EB';
+      burger.style.color       = dark ? '#E6F4EE' : '#111827';
+    }
+    // Texto del logo
+    var logoSpan = document.querySelector('#pp-header a[href="#/"] > span:last-child');
+    if (logoSpan) logoSpan.style.color = dark ? '#E6F4EE' : '#111827';
+    // Botón Ingresar
+    var ingresar = document.querySelector('#pp-header a[href="#/auth"]');
+    if (ingresar) {
+      ingresar.style.color       = dark ? '#9DBFB0' : '#374151';
+      ingresar.style.borderColor = dark ? '#2E4A3A' : '#D1D5DB';
+      ingresar.style.background  = dark ? '#17261E' : '';
+    }
+
+    // Panel del menú móvil
     var panel = document.querySelector('#pp-mobile > div:last-child');
-    if (panel) panel.style.background = dark ? '#1F2937' : 'white';
+    if (panel) {
+      panel.style.background   = dark ? '#17261E' : 'white';
+      panel.style.borderColor  = dark ? '#243E32' : 'transparent';
+    }
+    // Links del menú móvil
+    document.querySelectorAll('#pp-mobile-nav a').forEach(function(a) {
+      a.style.color = dark ? '#E6F4EE' : '#111827';
+    });
+    var mThemeBtn = document.getElementById('pp-mobile-theme');
+    if (mThemeBtn) mThemeBtn.style.color = dark ? '#E6F4EE' : '#111827';
   }
   function initTheme() {
     var saved; try { saved = localStorage.getItem('pp-theme'); } catch {}
@@ -58,8 +96,11 @@
         + '<span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (u.name||u.email||'Mi perfil').split('@')[0] + '</span></a>'
       : '<a href="#/auth" style="display:none;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;border:1.5px solid #D1D5DB;font-size:0.875rem;font-weight:600;color:#374151;text-decoration:none;transition:background 0.15s;white-space:nowrap" class="sm-flex" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'\'">'
         + 'Ingresar</a>'
-        + '<a href="#/panel-empresa" style="display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;background:#0E7C66;color:white;font-size:0.875rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity=\'0.9\'" onmouseout="this.style.opacity=\'1\'">'
-        + 'Publicar oferta</a>';
+        + '<a href="#/panel-empresa" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:999px;background:#0E7C66;color:white;font-size:0.875rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity=\'0.9\'" onmouseout="this.style.opacity=\'1\'">'
+        + '<span class="material-symbols-outlined" style="font-size:18px;line-height:1">add_circle</span>'
+        + '<span class="pp-cta-label" style="display:none">Publicar oferta</span>'
+        + '</a>'
+        + '<style>@media(min-width:640px){.pp-cta-label{display:inline!important}}</style>';
 
     return '<header id="pp-header" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.08)">'
       + '<div style="max-width:1200px;margin:0 auto;padding:0 1rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px">'
