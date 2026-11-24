@@ -58,23 +58,6 @@
 }
 @keyframes pp-spin { to { transform: rotate(360deg); } }
 
-/* ---------- Skeleton (carga) ---------- */
-.pp-skeleton {
-  position: relative;
-  overflow: hidden;
-  background: rgba(14, 124, 102, .08);
-  border-radius: 10px;
-}
-.pp-skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(14, 124, 102, .12), transparent);
-  animation: pp-shimmer 1.4s infinite;
-}
-@keyframes pp-shimmer { to { transform: translateX(100%); } }
-
 /* ---------- Estados vacíos ---------- */
 .pp-empty {
   display: flex;
@@ -89,25 +72,9 @@
 }
 .pp-empty .material-symbols-outlined { font-size: 44px; color: var(--pp-primary, #0E7C66); }
 
-/* ---------- Tablas ---------- */
-.pp-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.pp-table th, .pp-table td { padding: 10px 12px; text-align: left; }
-.pp-table th {
-  font-family: Inter, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--pp-ink-secondary, #5A6B63);
-  border-bottom: 1px solid var(--pp-border, #E3E0D5);
-}
-.pp-table tbody tr { border-bottom: 1px solid var(--pp-border, #E3E0D5); }
-.pp-table tbody tr:last-child { border-bottom: 0; }
-
 /* ---------- Responsive: nada de scroll horizontal ---------- */
 html, body { overflow-x: clip; }
 img, svg, video { max-width: 100%; }
-.pp-nowrap-clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 
 /* ---------- Ajustes sobre los diseños de Stitch ---------- */
 /* el botón "Buscar" del mapa quedaba con texto blanco sobre verde claro */

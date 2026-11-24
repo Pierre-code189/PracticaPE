@@ -147,16 +147,8 @@ export const ui = {
   },
 };
 
-export function saveSession(token, user) {
-  if (token) localStorage.setItem('pp_token', token);
-  if (user) localStorage.setItem('pp_user', JSON.stringify(user));
-}
 export function currentUser() {
   try { return JSON.parse(localStorage.getItem('pp_user') || 'null'); } catch { return null; }
-}
-export function clearSession() {
-  localStorage.removeItem('pp_token');
-  localStorage.removeItem('pp_user');
 }
 
 export function debounce(fn, ms = 300) {

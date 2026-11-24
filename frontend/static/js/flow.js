@@ -63,8 +63,6 @@ function findList(root, prefs) {
   return gridWithArticles(root);
 }
 function setText(root, sel, txt) { const el = q(root, sel); if (el) el.textContent = txt; }
-function setHTML(root, sel, html) { const el = q(root, sel); if (el) el.innerHTML = html; }
-
 const LABEL_STATUS = { applied: 'Aplicada', reviewed: 'En revisión', accepted: 'Aceptada', rejected: 'Rechazada', withdrawn: 'Retirada' };
 const CLASS_STATUS = {
   applied: 'bg-accent-container-light text-ink-light',

@@ -209,13 +209,7 @@
     var bd = document.getElementById('pp-mobile-backdrop');
     if (bd) bd.addEventListener('click', closeMobile);
 
-    // Toggle tema — eliminado (solo modo claro)
-    var themeBtn = document.getElementById('pp-theme');
-    if (themeBtn) themeBtn.addEventListener('click', function() { applyTheme(); });
-
-    // Toggle tema — menú móvil — eliminado (solo modo claro)
-    var mTheme = document.getElementById('pp-mobile-theme');
-    if (mTheme) mTheme.addEventListener('click', function() { applyTheme(); });
+    // El toggle de tema ya no existe (solo modo claro): no hay nada que enlazar.
 
     // Cambio de ruta
     window.addEventListener('hashchange', function() { closeMobile(); renderNav(); });

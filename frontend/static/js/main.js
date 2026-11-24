@@ -1,6 +1,6 @@
 // PrácticaPE — router por hash y cableado de pantallas.
 // Flujo: hash -> cargar fragmento -> montar en #pp-main -> ejecutar scripts -> hydrate().
-import { api, ui, loadPageInto, currentUser, clearSession } from './api.js';
+import { api, ui, loadPageInto, currentUser } from './api.js';
 import './chrome.js';
 import './flow.js';
 
