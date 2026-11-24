@@ -26,30 +26,20 @@
     { href: '#/mapa',     label: 'Mapa',              key: 'mapa' },
     { href: '#/empresas', label: 'Empresas',          key: 'empresas' },
     { href: '#/guias',    label: 'Guía',              key: 'guias' },
-    { href: '#/enviar',   label: 'Publica tu chamba', key: 'enviar' },
   ];
   function user() { try { return JSON.parse(localStorage.getItem('pp_user') || 'null'); } catch { return null; } }
   function navItems() {
-    var u = user(), extra = [];
-    if (u) extra.push({ href: '#/notificaciones', label: 'Notificaciones',    key: 'notificaciones' });
-    if (u) extra.push({ href: '#/postulaciones',  label: 'Mis postulaciones', key: 'postulaciones' });
-    return NAV_BASE.concat(extra);
+    return NAV_BASE.slice();
   }
 
   // ── HTML ─────────────────────────────────────────────────────────────
   function headerHTML() {
     var u = user();
     var cta = u
-      ? '<a href="#/perfil" style="display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;text-decoration:none;font-size:0.875rem;font-weight:600;color:#0E7C66;transition:background 0.15s" class="sm-flex" onmouseover="this.style.background=\'#ECFDF5\'" onmouseout="this.style.background=\'\'">'
-        + '<span style="width:28px;height:28px;border-radius:50%;background:#0E7C66;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">' + (u.name||u.email||'U')[0].toUpperCase() + '</span>'
-        + '<span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (u.name||u.email||'Mi perfil').split('@')[0] + '</span></a>'
+      ? '<button id="pp-logout-cta" type="button" style="display:none;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;border:1.5px solid #D1D5DB;font-size:0.875rem;font-weight:600;color:#374151;background:white;cursor:pointer;transition:background 0.15s;white-space:nowrap" class="sm-flex" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'white\'">'
+        + 'Cerrar sesión</button>'
       : '<a href="#/auth" style="display:none;align-items:center;justify-content:center;padding:8px 16px;border-radius:999px;border:1.5px solid #D1D5DB;font-size:0.875rem;font-weight:600;color:#374151;text-decoration:none;transition:background 0.15s;white-space:nowrap" class="sm-flex" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'\'">'
-        + 'Ingresar</a>'
-        + '<a href="#/panel-empresa" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:999px;background:#0E7C66;color:white;font-size:0.875rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity=\'0.9\'" onmouseout="this.style.opacity=\'1\'">'
-        + '<span class="material-symbols-outlined" style="font-size:18px;line-height:1">add_circle</span>'
-        + '<span class="pp-cta-label" style="display:none">Publicar oferta</span>'
-        + '</a>'
-        + '<style>@media(min-width:640px){.pp-cta-label{display:inline!important}}</style>';
+        + 'Ingresar</a>';
 
     return '<header id="pp-header" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.08)">'
       + '<div style="max-width:1200px;margin:0 auto;padding:0 1rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px">'
@@ -109,9 +99,7 @@
     var box = document.getElementById('pp-mobile-user');
     if (box) {
       if (u) {
-        box.innerHTML = '<a href="#/perfil" onclick="window.PPChrome&&window.PPChrome.closeMobile()" style="display:flex;align-items:center;gap:8px;color:#111827;font-weight:600;text-decoration:none;padding:4px 0">'
-          + '<span style="width:28px;height:28px;border-radius:50%;background:#0E7C66;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">' + (u.name||u.email||'U')[0].toUpperCase() + '</span>Mi perfil</a>'
-          + '<button id="pp-logout" style="margin-top:6px;background:none;border:none;cursor:pointer;color:#DC2626;font-weight:600;font-size:0.875rem;padding:4px 0;text-align:left;display:block">Cerrar sesión</button>';
+        box.innerHTML = '<button id="pp-logout" style="margin-top:6px;background:none;border:none;cursor:pointer;color:#DC2626;font-weight:600;font-size:0.875rem;padding:4px 0;text-align:left;display:block">Cerrar sesión</button>';
         var lo = document.getElementById('pp-logout');
         if (lo) lo.addEventListener('click', function() {
           try { localStorage.removeItem('pp_token'); localStorage.removeItem('pp_user'); } catch {}
@@ -208,6 +196,14 @@
     // Backdrop
     var bd = document.getElementById('pp-mobile-backdrop');
     if (bd) bd.addEventListener('click', closeMobile);
+
+    // Cerrar sesión (CTA del escritorio)
+    var cta = document.getElementById('pp-logout-cta');
+    if (cta) cta.addEventListener('click', function() {
+      try { localStorage.removeItem('pp_token'); localStorage.removeItem('pp_user'); } catch {}
+      location.hash = '#/';
+      renderNav();
+    });
 
     // El toggle de tema ya no existe (solo modo claro): no hay nada que enlazar.
 

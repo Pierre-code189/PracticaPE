@@ -652,7 +652,7 @@ F.auth = async (root) => {
       localStorage.setItem('pp_token', res.access_token);
       localStorage.setItem('pp_user', JSON.stringify(res.user));
       ui.toast('Bienvenido, ' + (res.user.email || ''), 'success');
-      location.hash = res.user.role === 'business' ? '#/panel-empresa' : '#/perfil';
+      location.hash = '#/ofertas';
     } catch (e) { ui.toast(e.message, 'error'); }
   };
   const verify = q(root, '#verify-code-btn') || byText(root, 'button', 'Verificar');

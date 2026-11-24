@@ -4,35 +4,27 @@ import { api, ui, loadPageInto, currentUser } from './api.js';
 import './chrome.js';
 import './flow.js';
 
+// Web pública: solo las pantallas de consulta y contacto.
+// Las pantallas de administración, panel de empresa, perfiles, postulaciones,
+// notificaciones, envío de ofertas y libro de reclamaciones quedan fuera del
+// sitio (sus archivos y sus hidratadores siguen en el repo, pero ninguna ruta
+// los carga: cualquier URL antigua cae al inicio).
 const ROUTES = {
   '': 'home',
   'home': 'home',
+  'inicio': 'home',
   'ofertas': 'ofertas',
   'oferta-detalle': 'oferta-detalle',
   'oferta': 'oferta-detalle',
   'auth': 'auth',
   'login': 'auth',
-  'perfil-candidato': 'perfil-candidato',
-  'perfil': 'perfil-candidato',
-  'panel-empresa': 'panel-empresa',
   'empresas': 'empresas',
   'directorio-empresas': 'empresas',
   'mapa': 'mapa',
-  'postulaciones': 'postulaciones',
-  'mis-postulaciones': 'postulaciones',
-  'panel-admin': 'panel-admin',
-  'panel-administracion': 'panel-admin',
-  'panel-empresa/oferta': 'publicar-oferta',
-  'perfil-publico': 'perfil-publico',
-  'publicar-oferta': 'publicar-oferta',
-  'notificaciones': 'notificaciones',
   'contacto': 'contacto',
   'privacidad': 'privacidad',
   'terminos': 'terminos',
-  'libro-de-reclamaciones': 'libro-de-reclamaciones',
   'guias': 'guias',
-  'enviar': 'enviar',
-  'publicar-chamba': 'enviar',
 };
 
 const state = { page: null, params: [], loaded: {}, handlers: {} };
