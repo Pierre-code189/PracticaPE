@@ -119,7 +119,10 @@ export const ui = {
     t.dataset.kind = kind;
     requestAnimationFrame(() => t.classList.add('pp-show'));
     clearTimeout(t._t);
-    t._t = setTimeout(() => t.classList.remove('pp-show'), 3200);
+    t._t = setTimeout(() => {
+      t.classList.remove('pp-show');
+      setTimeout(() => { if (!t.classList.contains('pp-show')) t.remove(); }, 400);
+    }, 3200);
   },
   money(s) {
     const n = Number(String(s).replace(/[^\d.]/g, ''));

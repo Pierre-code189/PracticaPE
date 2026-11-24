@@ -44,6 +44,8 @@ function parseHash() {
 }
 
 async function render() {
+  // los toasts son por pantalla: no sobreviven a un cambio de ruta
+  document.querySelectorAll('.pp-toast').forEach(t => t.remove());
   const { name, params } = parseHash();
   const slug = ROUTES[name] || 'home';
   const main = document.getElementById('pp-main');
