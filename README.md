@@ -2,6 +2,13 @@
 
 Plataforma peruana de prácticas preprofesionales y primer empleo en Piura.
 
+> **⚠️ Código dividido en dos repos desde el 2026-11-24.** Este repo queda como *referencia*
+> (despliegue en el VPS y vista de conjunto); los cambios nuevos van en:
+> - **[PracticaPE-Backend](https://github.com/Pierre-code189/PracticaPE-Backend)** — API FastAPI,
+>   recolección y base de datos.
+> - **[PracticaPE-Frontend](https://github.com/Pierre-code189/PracticaPE-Frontend)** — React + JSX +
+>   Tailwind (`frontend-react/`).
+
 - **v2** (esta rama): reconstrucción desde cero. Diseño 100% Stitch, backend por capas.
 - **PruebaPE**: copia del intento anterior (`/root/PruebaPE`), conservada solo como referencia.
 
