@@ -117,22 +117,23 @@ function emptyState(titulo, texto, cta) {
 }
 
 async function fillJobs(list, params, opts = {}) {
-  if (!list) return 0;
+  if (!list) return { n: 0, total: 0 };
   list.innerHTML = `<div class="col-span-full pp-empty"><span class="pp-spin" style="border-color:rgba(14,124,102,.25);border-top-color:#0E7C66"></span><p class="font-headline-s text-headline-s">Cargando ofertas…</p></div>`;
   try {
     const res = await api.jobs(Object.assign({ status: 'published', limit: opts.limit || 30 }, params || {}));
     const items = Array.isArray(res) ? res : (res.items || []);
+    const total = Array.isArray(res) ? items.length : (Number(res.total) || items.length);
     if (!items.length) {
       list.innerHTML = emptyState('Sin resultados', opts.vacioTexto || 'Prueba con otra palabra o quita algún filtro.');
-      return 0;
+      return { n: 0, total };
     }
     list.innerHTML = items.map(jobCard).join('');
-    return items.length;
+    return { n: items.length, total };
   } catch (e) {
     list.innerHTML = `<div class="col-span-full pp-empty"><span class="material-symbols-outlined">cloud_off</span>
       <p class="font-headline-s text-headline-s">No se pudieron cargar las ofertas</p>
       <p class="text-body-s text-ink-secondary-light">${ui.esc(e.message)}</p></div>`;
-    return 0;
+    return { n: 0, total: 0 };
   }
 }
 
@@ -172,7 +173,8 @@ F.home = async (root) => {
     }
     if (/^\d+ empresas activas hoy$/.test(t)) el.textContent = empresas + ' empresas activas hoy';
   });
-  await fillJobs(list, { limit: 6, source: state.source }, { vacioTexto: 'Aún no hay ofertas publicadas. Volvemos pronto.' });
+  const r6 = await fillJobs(list, { limit: 6, source: state.source }, { vacioTexto: 'Aún no hay ofertas publicadas. Volvemos pronto.' });
+  void r6;
   // chips por fuente: el feed se filtra por dónde salió la oferta
   try {
     const res = await api.jobSources();
@@ -277,21 +279,60 @@ F.ofertas = async (root) => {
     }
   });
 
-  async function load() {
-    const n = await fillJobs(list, { q: state.q, district: state.district, modality: state.modality, category: state.category, limit: state.limit, offset: state.offset || 0 });
+  const PAGE = 12;
+  let page = 1;
+
+  async function load(pag = 1) {
+    page = pag;
+    const { n, total } = await fillJobs(list, { q: state.q, district: state.district, modality: state.modality, category: state.category, limit: PAGE, offset: (pag - 1) * PAGE });
     const contador = q(root, '#results-count') || byText(root, 'span', 'Mostrando') || byText(root, 'p', 'Mostrando');
-    if (contador) contador.textContent = `Mostrando ${n} de ${n}`;
+    if (contador) {
+      contador.textContent = !n ? 'Sin resultados'
+        : `Mostrando ${(pag - 1) * PAGE + 1} - ${(pag - 1) * PAGE + n} de ${total}`;
+    }
     // contador grande del hero ("N ofertas activas en Piura")
     qa(root, 'span.font-headline-m, span').forEach(el => {
       const t = (el.textContent || '').trim();
       if (/^\d+$/.test(t)) {
         const hermano = el.nextElementSibling;
-        if (hermano && /ofertas activas/.test(hermano.textContent || '')) el.textContent = String(n);
+        if (hermano && /ofertas activas/.test(hermano.textContent || '')) el.textContent = String(total);
       }
     });
     const vacio = q(root, '#empty-state');
     if (vacio) ui.show(vacio, n === 0);
+    pintarPaginacion(total);
   }
+
+  const pagBox = document.createElement('div');
+  pagBox.id = 'pp-paginacion';
+  pagBox.className = 'flex items-center justify-center gap-space-xs pt-space-lg mt-space-sm border-t border-outline-variant/30';
+  list.parentElement && list.parentElement.insertBefore(pagBox, list.nextSibling);
+
+  function pintarPaginacion(total) {
+    pagBox.dataset.total = String(total);
+    const nPag = Math.max(1, Math.ceil(total / PAGE));
+    if (nPag <= 1) { pagBox.innerHTML = ''; return; }
+    const btn = (attr, label, on, icon) => `<button data-pg="${attr}" ${on ? '' : 'disabled'} class="inline-flex items-center justify-center w-9 h-9 rounded-xl border transition-colors ${on ? 'border-outline-variant/50 hover:bg-surface-container text-ink-light' : 'border-outline-variant/40 text-outline-variant opacity-50 cursor-not-allowed'}" type="button" aria-label="${label}"><span class="material-symbols-outlined text-[20px]">${icon}</span></button>`;
+    let nums = '';
+    for (let i = 1; i <= nPag; i++) {
+      nums += i === page
+        ? `<button data-pg="${i}" aria-current="page" class="w-9 h-9 rounded-xl bg-primary text-on-primary font-body-m text-body-m font-semibold flex items-center justify-center shadow-sm" type="button">${i}</button>`
+        : `<button data-pg="${i}" class="w-9 h-9 rounded-xl border border-outline-variant/50 hover:bg-surface-container font-body-m text-body-m font-semibold text-ink-light flex items-center justify-center transition-colors" type="button">${i}</button>`;
+    }
+    pagBox.innerHTML = btn('prev', 'Página anterior', page > 1, 'chevron_left') + nums + btn('next', 'Página siguiente', page < nPag, 'chevron_right');
+  }
+
+  pagBox.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-pg]');
+    if (!b || b.disabled) return;
+    const total = Number(pagBox.dataset.total || 0);
+    const nPag = Math.max(1, Math.ceil(total / PAGE));
+    const v = b.getAttribute('data-pg');
+    const destino = v === 'prev' ? page - 1 : v === 'next' ? page + 1 : Number(v);
+    if (destino < 1 || destino > nPag) return;
+    load(destino);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   if (search) search.addEventListener('input', debounce(() => { state.q = search.value.trim(); load(); }, 350));
   if (reset) reset.addEventListener('click', () => {
