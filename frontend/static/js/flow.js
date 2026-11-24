@@ -86,6 +86,18 @@ function fuenteChip(src) {
   return `<span class="px-2.5 py-1 rounded-full ${f.cls} font-semibold">${f.label}</span>`;
 }
 
+// Enlace al anuncio original: la procedencia de cada oferta scrapeada.
+function fuenteLink(j) {
+  const url = String(j.source_url || '').trim();
+  if (!url) return '';
+  let host = '';
+  try { host = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { host = ''; }
+  return `<a href="${ui.esc(url)}" target="_blank" rel="noopener noreferrer nofollow" title="Ver el anuncio original en ${ui.esc(host || 'la fuente')}" class="inline-flex items-center gap-1 font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors max-w-[9.5rem]">
+    <span class="material-symbols-outlined text-[15px] shrink-0">open_in_new</span>
+    <span class="truncate">${ui.esc(host || 'fuente original')}</span>
+  </a>`;
+}
+
 function jobCard(j) {
   const salario = ui.salario(j) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent-container-light text-ink-light text-body-s font-bold tabular-nums">${ui.esc(ui.salario(j))}</span>` : '';
   return `<article class="relative flex flex-col justify-between bg-surface-light rounded-2xl p-5 border border-border-light hover:border-primary hover:-translate-y-0.5 transition-all shadow-[0_1px_2px_rgba(20,32,27,0.05)]">
@@ -102,9 +114,12 @@ function jobCard(j) {
       <span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light capitalize">${ui.esc(j.modality || 'presencial')}</span>
       ${j.positions ? `<span class="px-2.5 py-1 rounded-full bg-surface-container-low text-ink-secondary-light tabular-nums">${j.positions} ${j.positions === 1 ? 'vacante' : 'vacantes'}</span>` : ''}
     </div>
-    <div class="flex items-center justify-between pt-3 mt-2">
-      <span class="text-body-s text-ink-secondary-light">${ui.fecha(j.created_at)}</span>
-      <a href="#/oferta/${j.id}" class="font-body-m text-body-m font-bold text-primary hover:underline">Ver oferta</a>
+    <div class="flex items-center justify-between gap-3 pt-3 mt-2 border-t border-outline-variant/25">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="text-body-s text-ink-secondary-light shrink-0">${ui.fecha(j.created_at)}</span>
+        ${fuenteLink(j)}
+      </div>
+      <a href="#/oferta/${j.id}" class="font-body-m text-body-m font-bold text-primary hover:underline shrink-0">Ver oferta</a>
     </div>
   </article>`;
 }
@@ -457,6 +472,18 @@ F['oferta-detalle'] = async (root, ctx) => {
   }
   const h1 = q(root, 'h1');
   if (h1) h1.textContent = job.title;
+  // procedencia del anuncio: siempre visible bajo el título si hay URL real
+  if (job.source_url) {
+    const host = (() => { try { return new URL(job.source_url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } })();
+    const link = document.createElement('a');
+    link.href = job.source_url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer nofollow';
+    link.className = 'inline-flex items-center gap-2 mt-space-sm px-space-md py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-primary-container-light hover:text-primary transition-colors w-fit max-w-full';
+    link.title = 'Ver el anuncio original' + (host ? ' en ' + host : '');
+    link.innerHTML = `<span class="material-symbols-outlined text-[18px] shrink-0">open_in_new</span><span class="text-body-s font-semibold truncate">Anuncio original${host ? ': ' + ui.esc(host) : ''}</span>`;
+    h1 && h1.insertAdjacentElement('afterend', link);
+  }
   setText(root, '#jobMeta', [job.company_name, job.district, job.modality].filter(Boolean).join(' · '));
   const desc = q(root, '#jobDescription');
   if (desc) desc.textContent = job.description || 'La empresa no publicó una descripción detallada.';
