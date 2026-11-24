@@ -24,6 +24,16 @@ function sectorKey(s) {
   return t.replace(/\s+/g, '-');
 }
 
+// Los chips del HTML usan slugs cortos; la API puede traer el nombre completo.
+const DISTRICT_ALIASES = {
+  'veintiseis-de-octubre': 'veintiseis', 'veintiseis': 'veintiseis',
+  '26-de-octubre': 'veintiseis', 'veintiseis-de-octubre-region': 'veintiseis'
+};
+function districtKey(s) {
+  const k = String(s || '').trim().toLowerCase().replace(/\s+/g, '-');
+  return DISTRICT_ALIASES[k] || k;
+}
+
 // ---------- localización estructural (los ids de Stitch no son estables) ----------
 async function fillDistricts(select, selected = '') {
   if (!select) return;
@@ -797,58 +807,111 @@ F.empresas = async (root) => {
   try { const res = await api.companies(); items = Array.isArray(res) ? res : (res.items || []); }
   catch (e) { list.innerHTML = `<div class="col-span-full pp-empty"><span class="material-symbols-outlined">cloud_off</span><p class="font-headline-s text-headline-s">No se pudieron cargar las empresas</p></div>`; return; }
   stripFakeCounters(root, null);
+
+  const activeCount = q(root, '#active-count');
+  if (activeCount) activeCount.textContent = items.length;
+
+  const PAGE = 9;
+  let page = 1;
+
   if (!items.length) {
     list.innerHTML = emptyState('Aún no hay empresas registradas', 'Cuando se sumen empresas de Piura, aparecerán aquí.');
+    const pag = q(root, '#pagination'); if (pag) pag.innerHTML = '';
+    const cb = q(root, '#results-count-bottom');
+    if (cb) cb.innerHTML = 'Mostrando <span class="font-semibold text-ink-light tabular-nums">0</span> empresas';
     return;
   }
-  list.innerHTML = items.map(c => {
-    const dKey = String(c.district || '').toLowerCase().replace(/\s+/g, '-');
-    const sKey = sectorKey(c.sector);
-    return `
-    <article class="company-card bg-surface-light rounded-2xl p-space-lg border border-border-light flex flex-col gap-2" data-name="${ui.esc(String(c.name || '').toLowerCase())}" data-district="${ui.esc(dKey)}" data-sector="${ui.esc(sKey)}">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-xl bg-primary-container-light text-primary flex items-center justify-center font-headline-s font-bold shrink-0">${ui.initials(c.name)}</div>
-        <div class="min-w-0">
-          <h3 class="font-headline-s text-headline-s text-ink-light truncate">${ui.esc(c.name)}</h3>
-          <p class="text-body-s text-ink-secondary-light truncate">${ui.esc(c.sector || c.district || 'Piura')}</p>
-        </div>
-      </div>
-      <p class="text-body-s text-ink-secondary-light line-clamp-2">${ui.esc(c.description || '')}</p>
-      <p class="text-body-s text-ink-secondary-light">Ofertas publicadas: ${c.published_jobs || 0}</p>
-    </article>`;
-  }).join('');
 
-  // ── Motor de filtros (búsqueda + distrito + sector) ────────────────────
-  const count = q(root, '#results-count');
+  // ── Tarjeta: datos completos, sin ruido repetido ───────────────────────
+  const tarjeta = (c) => {
+    const dKey = districtKey(c.district);
+    const sKey = sectorKey(c.sector);
+    const sector = ui.esc(c.sector || 'Sector por definir');
+    const distrito = c.district ? ui.esc(c.district) : 'Piura';
+    const desc = (c.description || '').trim();
+    const ofertas = Number(c.published_jobs) || 0;
+    const incompleta = !desc && !String(c.sector || '').trim();
+    const badgeOfertas = ofertas > 0
+      ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container-light text-primary font-body-s text-body-s font-semibold shrink-0"><span class="material-symbols-outlined text-[14px]">work</span>${ofertas}</span>`
+      : '';
+    const badgeIncompleta = incompleta
+      ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-body-s text-body-s font-medium shrink-0"><span class="material-symbols-outlined text-[14px]">edit_note</span>Perfil incompleto</span>`
+      : '';
+    return `
+    <article class="company-card group h-full bg-surface-light rounded-2xl p-space-md border border-outline-variant/30 hover:border-primary/60 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-space-sm" data-name="${ui.esc(String(c.name || '').toLowerCase())}" data-district="${ui.esc(dKey)}" data-sector="${ui.esc(sKey)}">
+      <div class="flex items-start gap-space-sm">
+        <div class="w-11 h-11 rounded-xl bg-primary-container-light text-primary flex items-center justify-center font-headline-s text-body-m font-bold shrink-0">${ui.initials(c.name)}</div>
+        <div class="min-w-0 flex-1">
+          <h3 class="font-headline-s text-headline-s text-ink-light leading-tight truncate" title="${ui.esc(c.name)}">${ui.esc(c.name)}</h3>
+          <p class="text-body-s text-ink-secondary-light truncate mt-0.5">${sector}</p>
+        </div>
+        ${badgeOfertas || badgeIncompleta}
+      </div>
+      <p class="text-body-s text-on-surface-variant leading-relaxed line-clamp-2 min-h-[2.5rem]">${desc ? ui.esc(desc) : (incompleta ? 'Esta empresa aún está completando su perfil.' : 'Sin descripción disponible.')}</p>
+      <div class="mt-auto pt-space-xs border-t border-outline-variant/20 flex items-center gap-space-xs text-body-s text-ink-secondary-light">
+        <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+        <span class="truncate">${distrito}</span>
+      </div>
+    </article>`;
+  };
+  // ── Motor de filtros (búsqueda + distrito + sector) + paginación ───────
+  const countBottom = q(root, '#results-count-bottom');
+  const pagBox = q(root, '#pagination');
   const empty = q(root, '#empty-state');
   const search = q(root, '#company-search');
   const chipDist = qa(root, '.filter-chip-district');
   const chipSect = qa(root, '.filter-chip-sector');
   let fDist = 'all', fSect = 'all', fQuery = '';
 
-  const CHIP_ON  = 'bg-primary text-on-primary shadow-sm';
+  const CHIP_ON  = 'bg-primary text-on-primary shadow-sm ring-1 ring-primary';
   const CHIP_OFF = 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
 
-  function pintar() {
-    let vis = 0;
-    qa(list, '.company-card').forEach(card => {
-      const nombre = card.getAttribute('data-name') || '';
-      const dist   = card.getAttribute('data-district') || '';
-      const sect   = card.getAttribute('data-sector') || '';
-      const ok = (fDist === 'all' || dist === fDist)
-              && (fSect === 'all' || sect === fSect)
-              && (!fQuery || nombre.includes(fQuery) || sect.includes(fQuery) || dist.includes(fQuery));
-      card.classList.toggle('hidden', !ok);
-      if (ok) vis++;
-    });
-    if (count) {
-      count.innerHTML = `Mostrando <strong class="text-ink-light font-semibold tabular-nums">${vis}</strong> empresa${vis === 1 ? '' : 's'}`;
+  const filtradas = () => qa(list, '.company-card').filter(card => {
+    const nombre = card.getAttribute('data-name') || '';
+    const dist   = card.getAttribute('data-district') || '';
+    const sect   = card.getAttribute('data-sector') || '';
+    return (fDist === 'all' || dist === fDist)
+        && (fSect === 'all' || sect === fSect)
+        && (!fQuery || nombre.includes(fQuery) || sect.includes(fQuery) || dist.includes(fQuery));
+  });
+
+  function pintarPaginacion(nPag) {
+    if (!pagBox) return;
+    if (nPag <= 1) { pagBox.innerHTML = ''; return; }
+    let html = `<button aria-label="Página anterior" data-pg="prev" class="inline-flex items-center justify-center w-9 h-9 rounded-xl border transition-colors ${page === 1 ? 'border-outline-variant/40 text-outline-variant opacity-50 cursor-not-allowed' : 'border-outline-variant/50 hover:bg-surface-container text-ink-light'}" ${page === 1 ? 'disabled' : ''} type="button"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>`;
+    for (let i = 1; i <= nPag; i++) {
+      html += i === page
+        ? `<button aria-current="page" data-pg="${i}" class="w-9 h-9 rounded-xl bg-primary text-on-primary font-body-m text-body-m font-semibold flex items-center justify-center shadow-sm" type="button">${i}</button>`
+        : `<button data-pg="${i}" class="w-9 h-9 rounded-xl border border-outline-variant/50 hover:bg-surface-container font-body-m text-body-m font-semibold text-ink-light flex items-center justify-center transition-colors" type="button">${i}</button>`;
     }
+    html += `<button aria-label="Página siguiente" data-pg="next" class="inline-flex items-center justify-center w-9 h-9 rounded-xl border transition-colors ${page === nPag ? 'border-outline-variant/40 text-outline-variant opacity-50 cursor-not-allowed' : 'border-outline-variant/50 hover:bg-surface-container text-ink-light'}" ${page === nPag ? 'disabled' : ''} type="button"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>`;
+    pagBox.innerHTML = html;
+  }
+
+  function pintar() {
+    const cards = qa(list, '.company-card');
+    const ok = filtradas();
+    const nPag = Math.max(1, Math.ceil(ok.length / PAGE));
+    if (page > nPag) page = nPag;
+    const desde = (page - 1) * PAGE;
+    const visibles = ok.slice(desde, desde + PAGE);
+
+    cards.forEach(c => c.classList.toggle('hidden', !visibles.includes(c)));
+    list.querySelectorAll(':scope > .pp-empty').forEach(e => e.remove());
+
+    if (countBottom) {
+      if (!ok.length) countBottom.innerHTML = 'Sin resultados para estos filtros';
+      else countBottom.innerHTML = `Mostrando <span class="font-semibold text-ink-light tabular-nums">${desde + 1}${visibles.length > 1 ? ' - ' + (desde + visibles.length) : ''}</span> de <span class="font-semibold text-ink-light tabular-nums">${ok.length}</span> empresa${ok.length === 1 ? '' : 's'}`;
+    }
+    pintarPaginacion(ok.length ? nPag : 1);
+
     if (empty) {
-      const vacio = vis === 0;
+      const vacio = ok.length === 0;
       empty.classList.toggle('hidden', !vacio);
       empty.classList.toggle('flex', vacio);
     }
+    const reset = q(root, '#reset-filters');
+    if (reset) reset.disabled = (fDist === 'all' && fSect === 'all' && !fQuery);
   }
 
   function marcarChips(chips, activo, attr) {
@@ -857,32 +920,38 @@ F.empresas = async (root) => {
       c.className = c.className.replace(/\bbg-(?:primary|surface-container)\b/g, '').trim();
       c.className = c.className.replace(/\btext-(?:on-primary|on-surface-variant)\b/g, '').trim();
       c.className = c.className.replace(/\bshadow-sm\b/g, '').trim();
+      c.className = c.className.replace(/\bring-1\b/g, '').trim();
       c.classList.add(...(on ? CHIP_ON.split(' ') : CHIP_OFF.split(' ')));
     });
   }
 
-  if (search) search.addEventListener('input', debounce(() => { fQuery = search.value.trim().toLowerCase(); pintar(); }, 250));
-  chipDist.forEach(c => c.addEventListener('click', () => {
-    fDist = c.getAttribute('data-district') || 'all'; marcarChips(chipDist, fDist, 'data-district'); pintar();
-  }));
-  chipSect.forEach(c => c.addEventListener('click', () => {
-    fSect = c.getAttribute('data-sector') || 'all'; marcarChips(chipSect, fSect, 'data-sector'); pintar();
-  }));
+  function aplicarFiltro() { page = 1; marcarChips(chipDist, fDist, 'data-district'); marcarChips(chipSect, fSect, 'data-sector'); pintar(); }
+
+  if (search) search.addEventListener('input', debounce(() => { fQuery = search.value.trim().toLowerCase(); aplicarFiltro(); }, 250));
+  chipDist.forEach(c => c.addEventListener('click', () => { fDist = c.getAttribute('data-district') || 'all'; aplicarFiltro(); }));
+  chipSect.forEach(c => c.addEventListener('click', () => { fSect = c.getAttribute('data-sector') || 'all'; aplicarFiltro(); }));
+
+  if (pagBox) pagBox.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-pg]');
+    if (!b || b.disabled) return;
+    const cards = filtradas();
+    const nPag = Math.max(1, Math.ceil(cards.length / PAGE));
+    const v = b.getAttribute('data-pg');
+    page = v === 'prev' ? Math.max(1, page - 1) : v === 'next' ? Math.min(nPag, page + 1) : Number(v);
+    pintar();
+  });
 
   const reset = q(root, '#reset-filters') || byText(root, 'button', 'Limpiar filtros');
   if (reset) reset.addEventListener('click', () => {
     if (search) search.value = '';
     fQuery = ''; fDist = 'all'; fSect = 'all';
-    marcarChips(chipDist, 'all', 'data-district');
-    marcarChips(chipSect, 'all', 'data-sector');
-    pintar();
+    aplicarFiltro();
   });
   const emptyReset = q(root, '#empty-reset-button');
   if (emptyReset) emptyReset.addEventListener('click', () => { if (reset) reset.click(); });
 
-  marcarChips(chipDist, 'all', 'data-district');
-  marcarChips(chipSect, 'all', 'data-sector');
-  pintar();
+  list.innerHTML = items.map(tarjeta).join('');
+  aplicarFiltro();
 };
 
 // ---------- MAPA ----------
@@ -951,7 +1020,7 @@ F.mapa = async (root) => {
     const panelList = q(root, '#map-list') || (q(root, '#card-job-1') || {}).parentElement;
     if (!panelList) return;
     const key = String(filtro || '').trim().toLowerCase().replace(/\s+/g, '-');
-    const lista = items.filter(j => !key || String(j.district || 'Piura').toLowerCase().replace(/\s+/g, '-') === key).slice(0, 6);
+    const lista = items.filter(j => !key || districtKey(j.district || 'Piura') === key).slice(0, 6);
     panelList.innerHTML = lista.length
       ? lista.map((j, i) => `
         <article class="relative bg-surface-light p-space-md rounded-2xl shadow-md transition-all flex flex-col gap-space-sm hover:-translate-y-0.5 border ${i === 0 ? 'border-primary' : 'border-border-light'}">
@@ -1041,7 +1110,7 @@ F.mapa = async (root) => {
           markers.forEach(m => {
             const ok = !v || (m._pp.title || '').toLowerCase().includes(v)
               || (m._pp.company_name || '').toLowerCase().includes(v)
-              || (m._pp.district || '').toLowerCase().includes(v);
+              || districtKey(m._pp.district).includes(v) || String(m._pp.district||'').toLowerCase().includes(v);
             if (ok) { if (!map.hasLayer(m)) m.addTo(map); } else if (map.hasLayer(m)) map.removeLayer(m);
           });
         }
