@@ -605,42 +605,7 @@
       });
     });
 
-    // 3. Sincronización del botón de Modo Claro / Oscuro con el shell global
-    const themeToggleButtons = document.querySelectorAll('button[aria-label="Cambiar modo claro y oscuro"]');
-    
-    function applyTheme(isDark) {
-      const htmlEl = document.documentElement;
-      if (isDark) {
-        htmlEl.classList.remove('light');
-        htmlEl.classList.add('dark');
-        localStorage.setItem('practicape-theme', 'dark');
-      } else {
-        htmlEl.classList.remove('dark');
-        htmlEl.classList.add('light');
-        localStorage.setItem('practicape-theme', 'light');
-      }
-
-      // Actualizar icono en el header si existe
-      themeToggleButtons.forEach(b => {
-        const iconSpan = b.querySelector('.material-symbols-outlined');
-        if (iconSpan) {
-          iconSpan.textContent = isDark ? 'dark_mode' : 'light_mode';
-        }
-      });
-    }
-
-    // Comprobar preferencia guardada
-    const savedTheme = localStorage.getItem('practicape-theme');
-    if (savedTheme === 'dark') {
-      applyTheme(true);
-    }
-
-    themeToggleButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const isDarkCurrently = document.documentElement.classList.contains('dark');
-        applyTheme(!isDarkCurrently);
-      });
-    });
+    // 3. Tema claro fijo (sin modo oscuro)
   })();
 </script></main><footer class="w-full bg-surface-container-low mt-space-xl pt-space-xl pb-space-lg shadow-[0_-1px_6px_rgba(20,32,27,0.03)]"><div class="max-w-[1200px] mx-auto px-margin"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-2 mb-space-xs"><div class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center"><span class="w-3 h-3 rounded-xs border border-on-primary rotate-45"></span></div><span class="font-headline-s text-headline-s text-ink-light tracking-tight">Práctica<span class="text-primary">PE</span></span></div><p class="font-body-s text-body-s text-ink-secondary-light leading-relaxed">El punto de encuentro lúmino y confiable para las prácticas preprofesionales y profesionales en la Región Grau, Piura.</p><div class="flex items-center gap-2 mt-2"><span class="w-2.5 h-2.5 rounded-full bg-accent-light"></span><span class="font-body-s text-body-s text-ink-secondary-light font-medium">Plataforma regional activa</span></div></div><div class="flex flex-col gap-space-xs"><h4 class="font-headline-s text-[15px] font-bold text-ink-light mb-1">Ofertas por distrito</h4><ul class="flex flex-col gap-1.5"><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Piura Centro</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Castilla</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Veintiséis de Octubre</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Catacaos &amp; Bajo Piura</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Paita &amp; Talara</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Sullana &amp; Chulucanas</li></ul></div><div class="flex flex-col gap-space-xs"><h4 class="font-headline-s text-[15px] font-bold text-ink-light mb-1">Zonas del portal</h4><div class="flex flex-col gap-space-sm"><div class="flex flex-col gap-1"><span class="font-label text-label uppercase tracking-wider text-primary font-bold">Candidatos</span><ul class="flex flex-col gap-1"><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Guía de prácticas universitarias</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Validación de convenios</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Simulador de postulaciones</li></ul></div><div class="flex flex-col gap-1 mt-1"><span class="font-label text-label uppercase tracking-wider text-accent-light font-bold">Empresas</span><ul class="flex flex-col gap-1"><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Publicación rápida de convocatorias</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Alianzas con universidades de Piura</li><li class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors cursor-pointer">Planes institucionales</li></ul></div></div></div><div class="flex flex-col gap-space-xs"><h4 class="font-headline-s text-[15px] font-bold text-ink-light mb-1">Contacto &amp; Legal</h4><ul class="flex flex-col gap-1.5 mb-space-sm"><li class="font-body-s text-body-s text-ink-secondary-light flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-primary">mail</span>contacto@practicape.pe</li><li class="font-body-s text-body-s text-ink-secondary-light flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-primary">location_on</span>Piura, Perú — Región Grau</li></ul><div class="flex flex-col gap-1.5"><a data-nav class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors" data-path="aviso-privacidad" href="#/privacidad">Aviso de Privacidad y Datos</a><a data-nav class="font-body-s text-body-s text-ink-secondary-light hover:text-primary transition-colors" data-path="terminos-condiciones" href="#/terminos">Términos de Servicio</a><a data-nav class="inline-flex items-center gap-2 px-space-sm py-1 rounded bg-surface-light text-ink-secondary-light hover:text-on-surface shadow-[0_1px_4px_rgba(20,32,27,0.04)] font-body-s text-[12px] w-fit" data-path="libro-reclamaciones" href="#/libro-de-reclamaciones"><span class="material-symbols-outlined text-[16px] text-accent-light">menu_book</span>Libro de Reclamaciones</a></div></div></div><div class="pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm"><span class="font-body-s text-body-s text-ink-secondary-light">© 2026 PrácticaPE. Hecho con orgullo en Piura, Región Grau, Perú.</span><div class="flex items-center gap-space-md text-ink-secondary-light font-body-s text-body-s"><span>Convenios MINEDU &amp; SUNEDU</span><span>RUC 20609823411</span></div></div></div></footer>
 </div>

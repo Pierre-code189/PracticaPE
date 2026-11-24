@@ -511,18 +511,8 @@
 
   <!-- Interacciones: Selector de modo oscuro & estado de envío simulado -->
   <script>
-    // Alternar modo claro / oscuro
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    // Alternar modo claro / oscuro — eliminado (solo modo claro)
     const htmlElement = document.documentElement;
-
-    themeToggleBtn.addEventListener('click', () => {
-      htmlElement.classList.toggle('dark');
-      if (htmlElement.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-      }
-    });
 
     // Simulación de estado de carga "Enviando..." en el botón primario
     const submitBtn = document.getElementById('submitBtn');

@@ -7,68 +7,17 @@
 //   · Nav desktop: inline-flex en lg+, oculto en móvil
 (function () {
 
-  // ── Tema ─────────────────────────────────────────────────────────────
-  function isDark() {
-    return document.documentElement.getAttribute('data-theme') === 'dark';
-  }
-  function applyTheme(dark) {
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', dark);
-    try { localStorage.setItem('pp-theme', dark ? 'dark' : 'light'); } catch {}
-
-    // Icono del toggle
-    var hi = document.querySelector('#pp-theme .material-symbols-outlined');
-    if (hi) hi.textContent = dark ? 'light_mode' : 'dark_mode';
-    var mi = document.getElementById('pp-mobile-theme-icon');
-    if (mi) mi.textContent = dark ? 'light_mode' : 'dark_mode';
-    var ml = document.getElementById('pp-mobile-theme-label');
-    if (ml) ml.textContent = dark ? 'Modo oscuro' : 'Modo claro';
-
-    // Header inline styles (el CSS tiene [data-theme="dark"] pero los inline-style tienen mayor especificidad)
-    var hdr = document.getElementById('pp-header');
-    if (hdr) hdr.style.background = dark ? 'rgba(10,20,14,0.97)' : 'rgba(255,255,255,0.97)';
-    hdr && (hdr.style.borderBottomColor = dark ? '#243E32' : 'rgba(0,0,0,0.08)');
-
-    var themeBtn = document.getElementById('pp-theme');
-    if (themeBtn) {
-      themeBtn.style.background = dark ? '#17261E' : 'white';
-      themeBtn.style.borderColor = dark ? '#2E4A3A' : '#E5E7EB';
-      themeBtn.style.color      = dark ? '#9DBFB0' : '#6B7280';
-    }
-    var burger = document.getElementById('pp-burger');
-    if (burger) {
-      burger.style.background  = dark ? '#17261E' : 'white';
-      burger.style.borderColor = dark ? '#2E4A3A' : '#E5E7EB';
-      burger.style.color       = dark ? '#E6F4EE' : '#111827';
-    }
-    // Texto del logo
-    var logoSpan = document.querySelector('#pp-header a[href="#/"] > span:last-child');
-    if (logoSpan) logoSpan.style.color = dark ? '#E6F4EE' : '#111827';
-    // Botón Ingresar
-    var ingresar = document.querySelector('#pp-header a[href="#/auth"]');
-    if (ingresar) {
-      ingresar.style.color       = dark ? '#9DBFB0' : '#374151';
-      ingresar.style.borderColor = dark ? '#2E4A3A' : '#D1D5DB';
-      ingresar.style.background  = dark ? '#17261E' : '';
-    }
-
-    // Panel del menú móvil
-    var panel = document.querySelector('#pp-mobile > div:last-child');
-    if (panel) {
-      panel.style.background   = dark ? '#17261E' : 'white';
-      panel.style.borderColor  = dark ? '#243E32' : 'transparent';
-    }
-    // Links del menú móvil
-    document.querySelectorAll('#pp-mobile-nav a').forEach(function(a) {
-      a.style.color = dark ? '#E6F4EE' : '#111827';
-    });
-    var mThemeBtn = document.getElementById('pp-mobile-theme');
-    if (mThemeBtn) mThemeBtn.style.color = dark ? '#E6F4EE' : '#111827';
+  // ── Tema: solo modo claro ─────────────────────────────────────────────
+  function applyTheme() {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('light');
+    try { localStorage.setItem('pp-theme', 'light'); } catch {}
   }
   function initTheme() {
-    var saved; try { saved = localStorage.getItem('pp-theme'); } catch {}
-    var sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(saved ? saved === 'dark' : sys);
+    applyTheme();
+    // Limpiar cualquier preferencia oscura antigua
+    try { localStorage.removeItem('practicape-theme'); } catch {}
   }
 
   // ── Datos nav ────────────────────────────────────────────────────────
@@ -116,9 +65,6 @@
         + '</div>'
         // Acciones
         + '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">'
-          + '<button id="pp-theme" aria-label="Cambiar tema claro/oscuro" type="button" style="width:40px;height:40px;border-radius:50%;border:1.5px solid #E5E7EB;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6B7280;transition:all 0.15s;flex-shrink:0" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'white\'">'
-            + '<span class="material-symbols-outlined" style="font-size:20px;line-height:1">light_mode</span>'
-          + '</button>'
           + cta
           + '<button id="pp-burger" aria-label="Abrir menú" aria-expanded="false" type="button" style="width:40px;height:40px;border-radius:10px;border:1.5px solid #E5E7EB;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#111827;transition:all 0.15s;flex-shrink:0" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'white\'">'
             + '<span class="material-symbols-outlined" style="font-size:22px;line-height:1">menu</span>'
@@ -132,10 +78,6 @@
       + '<div style="position:absolute;top:72px;left:12px;right:12px;background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:12px;display:flex;flex-direction:column;gap:4px;max-height:calc(100vh - 90px);overflow-y:auto">'
         + '<div id="pp-mobile-nav" style="display:flex;flex-direction:column;gap:4px"></div>'
         + '<div style="height:1px;background:#E5E7EB;margin:8px 0"></div>'
-        + '<button id="pp-mobile-theme" type="button" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:none;background:transparent;cursor:pointer;font-size:0.95rem;color:#111827;width:100%;text-align:left;transition:background 0.15s" onmouseover="this.style.background=\'#F3F4F6\'" onmouseout="this.style.background=\'transparent\'">'
-          + '<span class="material-symbols-outlined" id="pp-mobile-theme-icon" style="font-size:20px;color:#6B7280;line-height:1">light_mode</span>'
-          + '<span id="pp-mobile-theme-label">Modo claro</span>'
-        + '</button>'
         + '<div id="pp-mobile-user" style="padding:8px 12px;font-size:0.875rem;color:#6B7280"></div>'
       + '</div>'
     + '</div>';
@@ -180,12 +122,12 @@
       }
     }
 
-    // Aplicar tema al panel del menú si está abierto
-    var dark = isDark();
+    // Panel del menú móvil — siempre claro
     var panel = document.querySelector('#pp-mobile > div:last-child');
-    if (panel) panel.style.background = dark ? '#1F2937' : 'white';
-    var allMobileLinks = document.querySelectorAll('#pp-mobile-nav a');
-    allMobileLinks.forEach(function(a) { a.style.color = dark ? (a.style.color === '#0E7C66' ? '#0E7C66' : '#F9FAFB') : a.style.color; });
+    if (panel) panel.style.background = 'white';
+    document.querySelectorAll('#pp-mobile-nav a').forEach(function(a) {
+      if (a.style.color !== '#0E7C66') a.style.color = '#111827';
+    });
   }
 
   // ── Menú móvil ───────────────────────────────────────────────────────
@@ -267,13 +209,13 @@
     var bd = document.getElementById('pp-mobile-backdrop');
     if (bd) bd.addEventListener('click', closeMobile);
 
-    // Toggle tema — header
+    // Toggle tema — eliminado (solo modo claro)
     var themeBtn = document.getElementById('pp-theme');
-    if (themeBtn) themeBtn.addEventListener('click', function() { applyTheme(!isDark()); });
+    if (themeBtn) themeBtn.addEventListener('click', function() { applyTheme(); });
 
-    // Toggle tema — menú móvil
+    // Toggle tema — menú móvil — eliminado (solo modo claro)
     var mTheme = document.getElementById('pp-mobile-theme');
-    if (mTheme) mTheme.addEventListener('click', function() { applyTheme(!isDark()); });
+    if (mTheme) mTheme.addEventListener('click', function() { applyTheme(); });
 
     // Cambio de ruta
     window.addEventListener('hashchange', function() { closeMobile(); renderNav(); });
@@ -282,7 +224,7 @@
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobile(); });
   }
 
-  window.PPChrome = { mount: mount, renderNav: renderNav, applyTheme: applyTheme, closeMobile: closeMobile, isDark: isDark };
+  window.PPChrome = { mount: mount, renderNav: renderNav, applyTheme: applyTheme, closeMobile: closeMobile };
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', mount);
   } else {
