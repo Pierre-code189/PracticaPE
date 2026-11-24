@@ -5,6 +5,25 @@ import { api, ui, debounce, currentUser } from './api.js';
 window.PP_FLOW = window.PP_FLOW || {};
 const F = window.PP_FLOW;
 
+// ---------- normalización de sectores (la API trae texto libre) ----------
+const SECTOR_ALIASES = [
+  [/agro|agrícola|agricola|agropecuar|pesquera/i, 'agroindustria'],
+  [/banca|finanza|seguro|banco|cajal?/i, 'banca'],
+  [/salud|médic|medic|farmacia|hospital|clínica|clinica/i, 'salud'],
+  [/educaci|academia|instituto|universidad|colegio/i, 'educacion'],
+  [/turismo|hotel|gastronom|hostal|hospedaje/i, 'turismo'],
+  [/restaurante|cafeter|restauraci|bar |cocina/i, 'restauracion'],
+  [/tecnolog|sistemas|software|informát|informatic|computo|digital|ti\b/i, 'tecnologia'],
+  [/comercio|comercial|retail|ventas|market|tienda|supermerc/i, 'retail'],
+  [/logís|logist|transporte|puerto|operario|almacén|almacen|supply/i, 'logistica'],
+];
+function sectorKey(s) {
+  const t = String(s || '').trim().toLowerCase();
+  if (!t) return '';
+  for (const [re, key] of SECTOR_ALIASES) if (re.test(t)) return key;
+  return t.replace(/\s+/g, '-');
+}
+
 // ---------- localización estructural (los ids de Stitch no son estables) ----------
 async function fillDistricts(select, selected = '') {
   if (!select) return;
@@ -778,16 +797,17 @@ F.empresas = async (root) => {
   try { const res = await api.companies(); items = Array.isArray(res) ? res : (res.items || []); }
   catch (e) { list.innerHTML = `<div class="col-span-full pp-empty"><span class="material-symbols-outlined">cloud_off</span><p class="font-headline-s text-headline-s">No se pudieron cargar las empresas</p></div>`; return; }
   stripFakeCounters(root, null);
-  const count = q(root, '#results-count');
-  if (count) count.textContent = items.length + ' empresas';
   if (!items.length) {
     list.innerHTML = emptyState('Aún no hay empresas registradas', 'Cuando se sumen empresas de Piura, aparecerán aquí.');
     return;
   }
-  list.innerHTML = items.map(c => `
-    <div class="bg-surface-light rounded-2xl p-space-lg border border-border-light flex flex-col gap-2">
+  list.innerHTML = items.map(c => {
+    const dKey = String(c.district || '').toLowerCase().replace(/\s+/g, '-');
+    const sKey = sectorKey(c.sector);
+    return `
+    <article class="company-card bg-surface-light rounded-2xl p-space-lg border border-border-light flex flex-col gap-2" data-name="${ui.esc(String(c.name || '').toLowerCase())}" data-district="${ui.esc(dKey)}" data-sector="${ui.esc(sKey)}">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-xl bg-primary-container-light text-primary flex items-center justify-center font-headline-s font-bold">${ui.initials(c.name)}</div>
+        <div class="w-12 h-12 rounded-xl bg-primary-container-light text-primary flex items-center justify-center font-headline-s font-bold shrink-0">${ui.initials(c.name)}</div>
         <div class="min-w-0">
           <h3 class="font-headline-s text-headline-s text-ink-light truncate">${ui.esc(c.name)}</h3>
           <p class="text-body-s text-ink-secondary-light truncate">${ui.esc(c.sector || c.district || 'Piura')}</p>
@@ -795,21 +815,74 @@ F.empresas = async (root) => {
       </div>
       <p class="text-body-s text-ink-secondary-light line-clamp-2">${ui.esc(c.description || '')}</p>
       <p class="text-body-s text-ink-secondary-light">Ofertas publicadas: ${c.published_jobs || 0}</p>
-    </div>`).join('');
-  const search = q(root, '#company-search') || q(root, 'input[type="text"]');
-  if (search) search.addEventListener('input', debounce(() => {
-    const v = search.value.trim().toLowerCase();
-    qa(list, 'h3').forEach(h => {
-      const card = h.closest('div');
-      if (card) card.style.display = (h.textContent || '').toLowerCase().includes(v) ? '' : 'none';
+    </article>`;
+  }).join('');
+
+  // ── Motor de filtros (búsqueda + distrito + sector) ────────────────────
+  const count = q(root, '#results-count');
+  const empty = q(root, '#empty-state');
+  const search = q(root, '#company-search');
+  const chipDist = qa(root, '.filter-chip-district');
+  const chipSect = qa(root, '.filter-chip-sector');
+  let fDist = 'all', fSect = 'all', fQuery = '';
+
+  const CHIP_ON  = 'bg-primary text-on-primary shadow-sm';
+  const CHIP_OFF = 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+
+  function pintar() {
+    let vis = 0;
+    qa(list, '.company-card').forEach(card => {
+      const nombre = card.getAttribute('data-name') || '';
+      const dist   = card.getAttribute('data-district') || '';
+      const sect   = card.getAttribute('data-sector') || '';
+      const ok = (fDist === 'all' || dist === fDist)
+              && (fSect === 'all' || sect === fSect)
+              && (!fQuery || nombre.includes(fQuery) || sect.includes(fQuery) || dist.includes(fQuery));
+      card.classList.toggle('hidden', !ok);
+      if (ok) vis++;
     });
-  }, 250));
+    if (count) {
+      count.innerHTML = `Mostrando <strong class="text-ink-light font-semibold tabular-nums">${vis}</strong> empresa${vis === 1 ? '' : 's'}`;
+    }
+    if (empty) {
+      const vacio = vis === 0;
+      empty.classList.toggle('hidden', !vacio);
+      empty.classList.toggle('flex', vacio);
+    }
+  }
+
+  function marcarChips(chips, activo, attr) {
+    chips.forEach(c => {
+      const on = c.getAttribute(attr) === activo;
+      c.className = c.className.replace(/\bbg-(?:primary|surface-container)\b/g, '').trim();
+      c.className = c.className.replace(/\btext-(?:on-primary|on-surface-variant)\b/g, '').trim();
+      c.className = c.className.replace(/\bshadow-sm\b/g, '').trim();
+      c.classList.add(...(on ? CHIP_ON.split(' ') : CHIP_OFF.split(' ')));
+    });
+  }
+
+  if (search) search.addEventListener('input', debounce(() => { fQuery = search.value.trim().toLowerCase(); pintar(); }, 250));
+  chipDist.forEach(c => c.addEventListener('click', () => {
+    fDist = c.getAttribute('data-district') || 'all'; marcarChips(chipDist, fDist, 'data-district'); pintar();
+  }));
+  chipSect.forEach(c => c.addEventListener('click', () => {
+    fSect = c.getAttribute('data-sector') || 'all'; marcarChips(chipSect, fSect, 'data-sector'); pintar();
+  }));
+
   const reset = q(root, '#reset-filters') || byText(root, 'button', 'Limpiar filtros');
   if (reset) reset.addEventListener('click', () => {
     if (search) search.value = '';
-    qa(list, 'h3').forEach(h => { const card = h.closest('div'); if (card) card.style.display = ''; });
-    if (count) count.textContent = items.length + ' empresas';
+    fQuery = ''; fDist = 'all'; fSect = 'all';
+    marcarChips(chipDist, 'all', 'data-district');
+    marcarChips(chipSect, 'all', 'data-sector');
+    pintar();
   });
+  const emptyReset = q(root, '#empty-reset-button');
+  if (emptyReset) emptyReset.addEventListener('click', () => { if (reset) reset.click(); });
+
+  marcarChips(chipDist, 'all', 'data-district');
+  marcarChips(chipSect, 'all', 'data-sector');
+  pintar();
 };
 
 // ---------- MAPA ----------
@@ -833,7 +906,7 @@ F.mapa = async (root) => {
     pins.innerHTML = items.slice(0, 40).map(j => {
       const left = Math.min(92, Math.max(4, ((j.lng + 81.3) / 1.4) * 100));
       const top = Math.min(88, Math.max(6, ((j.lat + 5.4) / 5.6) * 100));
-      return `<a href="#/oferta/${j.id}" class="absolute group" style="left:${left.toFixed(1)}%;top:${top.toFixed(1)}%" title="${ui.esc(j.title)}">
+      return `<a href="#/oferta/${j.id}" class="absolute group pp-pin" data-district="${ui.esc(String(j.district || 'Piura').toLowerCase().replace(/\\s+/g, '-'))}" style="left:${left.toFixed(1)}%;top:${top.toFixed(1)}%" title="${ui.esc(j.title)}">
         <span class="flex flex-col items-center">
           <span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center material-symbols-outlined text-[18px] shadow-lg group-hover:scale-110 transition-transform">work</span>
           <span class="mt-1 px-2 py-0.5 rounded-full bg-surface-light text-ink-light text-body-s shadow whitespace-nowrap">${ui.esc((j.title || '').slice(0, 22))}</span>
@@ -841,31 +914,30 @@ F.mapa = async (root) => {
     }).join('');
   }
 
-  // chips de distrito con conteos reales — scroll horizontal en móvil, sin overflow de página
+  // chips de distrito con conteos reales — delegación de eventos (robusto ante re-render)
   const chipBox = q(root, '#district-chips-container') || byText(root, 'button', 'Todos');
   if (chipBox) {
     const holder = chipBox.closest('div') || chipBox;
-    // Forzar contenedor con scroll interno, nunca expande el body
     holder.style.overflowX = 'auto';
     holder.style.overflowY = 'hidden';
     holder.style.maxWidth = '100%';
     holder.style.webkitOverflowScrolling = 'touch';
     holder.style.flexWrap = 'nowrap';
-    const chips = qa(holder, 'button');
-    if (chips.length) {
-      chips.forEach(b => {
-        b.style.flexShrink = '0'; // evitar que se compriman
-        const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
-        const name = t.replace(/\s*\(\d+\)\s*$/, '').trim();
-        if (name === 'Todos') { b.textContent = 'Todos (' + items.length + ')'; return; }
-        const n = byDistrict[name] || 0;
-        b.textContent = name + ' (' + n + ')';
-        b.addEventListener('click', () => {
-          qa(holder, 'button').forEach(x => x.classList.remove('bg-primary', 'text-on-primary'));
-          b.classList.add('bg-primary', 'text-on-primary');
-        });
-      });
-    }
+    qa(holder, 'button').forEach(b => {
+      b.style.flexShrink = '0';
+      const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
+      const name = t.replace(/\s*\(\d+\)\s*$/, '').trim();
+      const n = name === 'Todos' ? items.length : (byDistrict[name] || 0);
+      b.textContent = name + ' (' + n + ')';
+      b.setAttribute('data-distrito', name === 'Todos' ? '' : name.toLowerCase().replace(/\s+/g, '-'));
+    });
+    holder.addEventListener('click', (e) => {
+      const b = e.target.closest ? e.target.closest('button') : null;
+      if (!b) return;
+      qa(holder, 'button').forEach(x => x.classList.remove('bg-primary', 'text-on-primary'));
+      b.classList.add('bg-primary', 'text-on-primary');
+      pintarLista(b.getAttribute('data-distrito') || '');
+    });
   }
   // contador de ofertas cerca (Stitch lo deja en 32)
   qa(root, 'span, p, div').forEach(el => {
@@ -875,10 +947,11 @@ F.mapa = async (root) => {
     }
   });
   // el panel lateral del mapa trae ofertas inventadas: se sustituyen por las reales
-  const cardSel = q(root, '#card-job-1');
-  const panelList = cardSel && cardSel.parentElement;
-  if (panelList) {
-    const lista = items.slice(0, 6);
+  function pintarLista(filtro) {
+    const panelList = q(root, '#map-list') || (q(root, '#card-job-1') || {}).parentElement;
+    if (!panelList) return;
+    const key = String(filtro || '').trim().toLowerCase().replace(/\s+/g, '-');
+    const lista = items.filter(j => !key || String(j.district || 'Piura').toLowerCase().replace(/\s+/g, '-') === key).slice(0, 6);
     panelList.innerHTML = lista.length
       ? lista.map((j, i) => `
         <article class="relative bg-surface-light p-space-md rounded-2xl shadow-md transition-all flex flex-col gap-space-sm hover:-translate-y-0.5 border ${i === 0 ? 'border-primary' : 'border-border-light'}">
@@ -902,8 +975,12 @@ F.mapa = async (root) => {
             <a href="#/oferta/${j.id}" class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-body-s font-bold shrink-0">Ver oferta</a>
           </div>
         </article>`).join('')
-      : '<div class="pp-empty"><span class="material-symbols-outlined">location_off</span><p class="font-headline-s text-headline-s">Sin ofertas en el mapa</p></div>';
+      : '<div class="pp-empty"><span class="material-symbols-outlined">location_off</span><p class="font-headline-s text-headline-s">Sin ofertas en este distrito</p></div>';
+    qa(pins, '.pp-pin').forEach(p => {
+      p.style.display = (!key || p.getAttribute('data-district') === key) ? '' : 'none';
+    });
   }
+  pintarLista('');
   // el popover de muestra de Stitch se rellena con la primera oferta real
   const pop = q(root, '#pin-job-1') || qa(root, 'div').find(d => /Terminal Portuario/.test(d.textContent || '') && d.querySelector('a'));
   if (pop && items.length) {
