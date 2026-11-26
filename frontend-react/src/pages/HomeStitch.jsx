@@ -59,7 +59,7 @@ export default function HomeStitch(){
 <div className="md:col-span-2 relative flex items-center bg-surface-container-low rounded-xl px-3.5 py-2.5 transition-colors focus-within:bg-surface-light focus-within:shadow-[0_0_0_2px_#00614f]">
 <span className="material-symbols-outlined text-ink-secondary-light mr-2 text-[20px]">business_center</span>
 <div className="flex flex-col w-full min-w-0">
-<label className="font-label text-label uppercase text-ink-secondary-light font-bold" htmlFor="search-mode">Modalidad</label>
+<label className="font-label text-label uppercase text-ink-secondary-light font-bold text-[10px] tracking-normal" htmlFor="search-mode">Modalidad</label>
 <select className="bg-transparent border-0 p-0 text-ink-light font-body-m text-body-m focus:outline-none w-full cursor-pointer appearance-none pr-4" id="search-mode" name="modalidad">
 <option value="">Todas</option>
 <option value="presencial">Presencial</option>
