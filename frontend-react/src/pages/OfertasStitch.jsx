@@ -2,7 +2,7 @@
 export default function OfertasStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-light shadow-[0_1px_8px_rgba(20,32,27,0.05)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-sm group" data-path="ofertas" href="/ofertas"><div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-[0_1px_2px_rgba(20,32,27,0.05)]"><span className="material-symbols-outlined text-on-primary text-[22px]">work</span></div><div className="flex items-center gap-space-xs"><span className="font-headline-s text-headline-s text-ink-light tracking-tight">Práctica<span className="text-primary">PE</span></span><span className="inline-flex items-center px-space-xs py-0.5 rounded-full bg-accent-container-light text-accent-light font-label text-label uppercase ml-space-xs">Piura</span></div></a><nav className="hidden md:flex items-center gap-space-xs p-1 rounded-full bg-surface-container-low" data-active-classes="bg-primary-container-light text-primary font-bold"><a aria-current="page" className="px-space-md py-1.5 rounded-full transition-colors bg-primary-container-light text-primary font-bold" data-path="ofertas" href="/ofertas">Ofertas</a><a className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="mapa" href="/mapa">Mapa</a><a className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="empresas" href="/empresas">Empresas</a><span className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="mis-postulaciones">Mis postulaciones</span></nav></div><div className="flex items-center gap-space-sm"><button aria-label="Cambiar tema" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><span className="hidden sm:inline-flex items-center justify-center px-space-md py-2 font-body-m text-body-m font-medium text-on-surface-variant hover:text-primary transition-colors" data-path="login">Ingresar</span><span className="inline-flex items-center gap-space-xs px-space-lg py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-semibold shadow-[0_1px_2px_rgba(20,32,27,0.05)] transition-all" data-path="publicar-oferta"><span className="material-symbols-outlined text-[18px]">add_circle</span><span className="hidden lg:inline">Publicar oferta</span></span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ml-space-xs"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background"><div className="max-w-[1200px] mx-auto px-margin py-space-xl min-h-[calc(100vh-4rem-20rem)]"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-light shadow-[0_1px_8px_rgba(20,32,27,0.05)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-sm group" data-path="ofertas" href="/ofertas"><div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-[0_1px_2px_rgba(20,32,27,0.05)]"><span className="material-symbols-outlined text-on-primary text-[22px]">work</span></div><div className="flex items-center gap-space-xs"><span className="font-headline-s text-headline-s text-ink-light tracking-tight">Práctica<span className="text-primary">PE</span></span><span className="inline-flex items-center px-space-xs py-0.5 rounded-full bg-accent-container-light text-accent-light font-label text-label uppercase ml-space-xs">Piura</span></div></a><nav className="hidden md:flex items-center gap-space-xs p-1 rounded-full bg-surface-container-low" data-active-classes="bg-primary-container-light text-primary font-bold"><a aria-current="page" className="px-space-md py-1.5 rounded-full transition-colors bg-primary-container-light text-primary font-bold" data-path="ofertas" href="/ofertas">Ofertas</a><a className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="mapa" href="/mapa">Mapa</a><a className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="empresas" href="/empresas">Empresas</a><span className="px-space-md py-1.5 rounded-full text-on-surface-variant font-body-m text-body-m transition-colors hover:bg-surface-container hover:text-on-surface" data-path="mis-postulaciones">Mis postulaciones</span></nav></div><div className="flex items-center gap-space-sm"><span aria-label="Cambiar tema" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></span><span className="hidden sm:inline-flex items-center justify-center px-space-md py-2 font-body-m text-body-m font-medium text-on-surface-variant hover:text-primary transition-colors" data-path="login">Ingresar</span><span className="inline-flex items-center gap-space-xs px-space-lg py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-semibold shadow-[0_1px_2px_rgba(20,32,27,0.05)] transition-all" data-path="publicar-oferta"><span className="material-symbols-outlined text-[18px]">add_circle</span><span className="hidden lg:inline">Publicar oferta</span></span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ml-space-xs"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background"><div className="max-w-[1200px] mx-auto px-margin py-space-xl min-h-[calc(100vh-4rem-20rem)]"><div className="flex flex-col w-full">
 {/* ENCABEZADO DE PÁGINA (HERO COMPACTO) */}
 <section className="relative bg-surface-light rounded-3xl p-6 md:p-10 mb-8 shadow-sm overflow-hidden">
 <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
@@ -273,9 +273,9 @@ export default function OfertasStitch(){
 <button aria-label="Guardada" className="w-9 h-9 rounded-full bg-primary-container-light text-primary flex items-center justify-center transition-colors" title="Oferta guardada" type="button">
 <span className="material-symbols-outlined text-[20px]" style={{fontVariationSettings: '\'FILL\' 1'}}>bookmark</span>
 </button>
-<button className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
+<span className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
                   Postular
-                </button>
+                </span>
 </div>
 </div>
 </div>
@@ -321,9 +321,9 @@ export default function OfertasStitch(){
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-ink-secondary-light hover:text-ink-light flex items-center justify-center transition-colors" type="button">
 <span className="material-symbols-outlined text-[20px]">bookmark</span>
 </button>
-<button className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
+<span className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
                   Postular
-                </button>
+                </span>
 </div>
 </div>
 </div>
@@ -419,9 +419,9 @@ export default function OfertasStitch(){
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-ink-secondary-light hover:text-ink-light flex items-center justify-center transition-colors" type="button">
 <span className="material-symbols-outlined text-[20px]">bookmark</span>
 </button>
-<button className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
+<span className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
                   Postular
-                </button>
+                </span>
 </div>
 </div>
 </div>
@@ -466,9 +466,9 @@ export default function OfertasStitch(){
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-ink-secondary-light hover:text-ink-light flex items-center justify-center transition-colors" type="button">
 <span className="material-symbols-outlined text-[20px]">bookmark</span>
 </button>
-<button className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
+<span className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
                   Postular
-                </button>
+                </span>
 </div>
 </div>
 </div>
@@ -514,9 +514,9 @@ export default function OfertasStitch(){
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-ink-secondary-light hover:text-ink-light flex items-center justify-center transition-colors" type="button">
 <span className="material-symbols-outlined text-[20px]">bookmark</span>
 </button>
-<button className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
+<span className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-body-m text-body-m font-bold transition-all shadow-sm" type="button">
                   Postular
-                </button>
+                </span>
 </div>
 </div>
 </div>

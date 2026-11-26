@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
+import StitchInteractions from './components/StitchInteractions';
 
 // Pantallas migradas desde .stitch/designs/ — diseño oficial de Stitch en React.
 import HomeStitch from './pages/HomeStitch';
@@ -48,6 +49,7 @@ function Contenido() {
         <Route path="/privacidad"   element={<PrivacidadStitch />} />
         <Route path="*"             element={<NotFound />} />
       </Routes>
+      {esStitch && <StitchInteractions key={pathname} />}
     </>
   );
 }

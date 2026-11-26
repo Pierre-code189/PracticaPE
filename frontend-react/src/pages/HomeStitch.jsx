@@ -2,7 +2,7 @@
 export default function HomeStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 right-0 z-50 bg-surface-light/95 backdrop-blur-md shadow-[0_1px_8px_rgba(20,32,27,0.06)]"><div className="max-w-[1200px] mx-auto px-margin h-16 flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-xl"><a className="flex items-center gap-2 group" data-path="ofertas" href="/ofertas"><div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(0,97,79,0.24)] group-hover:scale-105 transition-transform"><span className="w-4 h-4 rounded-sm border-2 border-on-primary rotate-45 flex items-center justify-center"><span className="w-1.5 h-1.5 bg-accent-light rounded-full"></span></span></div><div className="flex flex-col"><span className="font-headline-s text-headline-s tracking-tight text-ink-light flex items-center">Práctica<span className="text-primary">PE</span></span><span className="font-label text-label uppercase tracking-wider text-ink-secondary-light -mt-1">Piura</span></div></a><nav className="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-primary-container-light text-primary font-bold rounded-full px-space-md py-1.5"><a aria-current="page" className="transition-colors bg-primary-container-light text-primary font-bold rounded-full px-space-md py-1.5" data-path="ofertas" href="/ofertas">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="mapa" href="/mapa">Mapa</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="empresas" href="/empresas">Empresas</a><span className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="mis-postulaciones">Mis postulaciones</span></nav></div><div className="flex items-center gap-space-sm"><button aria-label="Cambiar modo claro y oscuro" className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><span className="hidden sm:inline-flex items-center justify-center font-body-m text-body-m font-semibold text-secondary px-space-lg py-2 rounded-full hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="login">Ingresar</span><span className="inline-flex items-center justify-center font-body-m text-body-m font-bold bg-primary text-on-primary px-space-lg py-2 rounded-full shadow-[0_2px_12px_rgba(0,97,79,0.25)] hover:bg-primary-container transition-all hover:scale-[1.02]" data-path="publicar-oferta">Publicar oferta</span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 right-0 z-50 bg-surface-light/95 backdrop-blur-md shadow-[0_1px_8px_rgba(20,32,27,0.06)]"><div className="max-w-[1200px] mx-auto px-margin h-16 flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-xl"><a className="flex items-center gap-2 group" data-path="ofertas" href="/ofertas"><div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(0,97,79,0.24)] group-hover:scale-105 transition-transform"><span className="w-4 h-4 rounded-sm border-2 border-on-primary rotate-45 flex items-center justify-center"><span className="w-1.5 h-1.5 bg-accent-light rounded-full"></span></span></div><div className="flex flex-col"><span className="font-headline-s text-headline-s tracking-tight text-ink-light flex items-center">Práctica<span className="text-primary">PE</span></span><span className="font-label text-label uppercase tracking-wider text-ink-secondary-light -mt-1">Piura</span></div></a><nav className="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-primary-container-light text-primary font-bold rounded-full px-space-md py-1.5"><a aria-current="page" className="transition-colors bg-primary-container-light text-primary font-bold rounded-full px-space-md py-1.5" data-path="ofertas" href="/ofertas">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="mapa" href="/mapa">Mapa</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="empresas" href="/empresas">Empresas</a><span className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-md py-1.5 rounded-full transition-colors" data-path="mis-postulaciones">Mis postulaciones</span></nav></div><div className="flex items-center gap-space-sm"><span aria-label="Cambiar modo claro y oscuro" className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></span><span className="hidden sm:inline-flex items-center justify-center font-body-m text-body-m font-semibold text-secondary px-space-lg py-2 rounded-full hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="login">Ingresar</span><span className="inline-flex items-center justify-center font-body-m text-body-m font-bold bg-primary text-on-primary px-space-lg py-2 rounded-full shadow-[0_2px_12px_rgba(0,97,79,0.25)] hover:bg-primary-container transition-all hover:scale-[1.02]" data-path="publicar-oferta">Publicar oferta</span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]"><div className="flex flex-col w-full">
 {/* SECCIÓN HERO DE IMPACTO REGIONAL */}
 <section className="relative w-full overflow-hidden bg-gradient-to-b from-primary-container-light/35 via-surface to-surface pb-16 pt-8">
 {/* Fondos decorativos cálidos y sutiles propios de la costa norte */}
@@ -162,9 +162,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 2 horas
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 {/* TARJETA 2 */}
@@ -205,9 +205,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 5 horas
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 {/* TARJETA 3 */}
@@ -248,9 +248,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 1 día
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 {/* TARJETA 4 */}
@@ -291,9 +291,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 1 día
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 {/* TARJETA 5 */}
@@ -334,9 +334,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 2 días
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 {/* TARJETA 6 */}
@@ -377,9 +377,9 @@ export default function HomeStitch(){
 <span className="material-symbols-outlined text-[15px]">schedule</span>
               Hace 3 días
             </span>
-<button className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span className="btn-postular inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary text-on-primary font-body-m text-body-m font-bold hover:bg-primary-container transition-colors shadow-sm" type="button">
               Postular
-            </button>
+            </span>
 </div>
 </article>
 </div>

@@ -34,7 +34,7 @@ export default function PrivacidadStitch(){
         <div className="h-5 w-[1px] bg-[#E3E0D5] dark:bg-[#243833]"></div>
 
         {/* Conmutador Sol/Luna Siempre Visible */}
-        <button id="themeToggle" type="button" aria-label="Cambiar modo de luz" className="p-2 rounded-xl border border-[#E3E0D5] dark:border-[#243833] bg-[#FAF9F4] dark:bg-[#1A2E27] text-[#14201B] dark:text-[#EAF4EF] hover:border-[#0E7C66] dark:hover:border-[#4FC3A7] transition-colors">
+        <span id="themeToggle" type="button" aria-label="Cambiar modo de luz" className="p-2 rounded-xl border border-[#E3E0D5] dark:border-[#243833] bg-[#FAF9F4] dark:bg-[#1A2E27] text-[#14201B] dark:text-[#EAF4EF] hover:border-[#0E7C66] dark:hover:border-[#4FC3A7] transition-colors">
           {/* Sol Icono */}
           <svg id="sunIcon" className="w-5 h-5 hidden dark:block text-[#F2B85C]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <circle cx="12" cy="12" r="5"></circle>
@@ -51,7 +51,7 @@ export default function PrivacidadStitch(){
           <svg id="moonIcon" className="w-5 h-5 block dark:hidden text-[#5A6B63]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
-        </button>
+        </span>
       </div>
     </div>
   </header>

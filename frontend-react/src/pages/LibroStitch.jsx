@@ -31,7 +31,7 @@ export default function LibroStitch(){
         </nav>
 
         {/* Conmutador Sol/Luna inline SVG */}
-        <button id="themeToggleBtn" aria-label="Cambiar tema visual" className="p-2 rounded-xl text-[#5A6B63] dark:text-[#9DB3AA] hover:bg-[#F1EFE6] dark:hover:bg-[#1A2E27] border border-[#E3E0D5] dark:border-[#243833] transition-all">
+        <span id="themeToggleBtn" aria-label="Cambiar tema visual" className="p-2 rounded-xl text-[#5A6B63] dark:text-[#9DB3AA] hover:bg-[#F1EFE6] dark:hover:bg-[#1A2E27] border border-[#E3E0D5] dark:border-[#243833] transition-all">
           {/* Icono Sol (visible en modo oscuro) */}
           <svg className="hidden dark:block w-5 h-5 text-[#F2B85C]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
@@ -40,7 +40,7 @@ export default function LibroStitch(){
           <svg className="block dark:hidden w-5 h-5 text-[#5A6B63]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
           </svg>
-        </button>
+        </span>
       </div>
     </div>
   </header>
@@ -447,7 +447,7 @@ export default function LibroStitch(){
 
           {/* BOTÓN DE ENVÍO Y NOTA */}
           <div className="pt-2">
-            <button id="submitBtn" type="button" className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#0E7C66] hover:bg-[#0A5C4D] dark:bg-[#4FC3A7] dark:hover:bg-[#3ea98f] text-white dark:text-[#0B1512] font-display font-bold text-sm tracking-wide shadow-md transition-all duration-200 flex items-center justify-center gap-2 group">
+            <button id="submitBtn" type="submit" className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#0E7C66] hover:bg-[#0A5C4D] dark:bg-[#4FC3A7] dark:hover:bg-[#3ea98f] text-white dark:text-[#0B1512] font-display font-bold text-sm tracking-wide shadow-md transition-all duration-200 flex items-center justify-center gap-2 group">
               <span id="btnText">Enviar reclamación</span>
               <svg id="btnIcon" className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
