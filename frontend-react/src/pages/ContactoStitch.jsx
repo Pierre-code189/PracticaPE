@@ -2,7 +2,7 @@
 export default function ContactoStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-light border-b border-border-light"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-xs" data-path="inicio" href="#"><span className="font-headline-m text-headline-m text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span><span className="px-space-xs py-0.5 bg-primary-container-light text-primary font-label text-label uppercase rounded">PIURA</span></a><nav className="hidden md:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="#">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="#">Empresas</a><a aria-current="page" className="transition-colors text-primary font-bold" data-path="contacto" href="#">Contacto</a></nav></div><div className="flex items-center gap-space-md"><a className="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-full bg-primary text-on-primary font-headline-s text-body-m hover:bg-primary-container transition-colors shadow-sm" data-path="publicar-oferta" href="#">Publicar oferta</a><button aria-label="Cambiar tema" className="w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><a aria-label="Acceso de usuario" className="flex items-center gap-space-xs pl-space-xs pr-space-sm py-space-xs rounded-full bg-surface-container-low hover:bg-secondary-container transition-colors" data-path="login" href="#"><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span className="hidden lg:inline font-body-s text-body-s text-on-surface font-semibold">Ingresar</span></a></div></div></header><main className="w-full pt-16 min-h-screen bg-background-light"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-light border-b border-border-light"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><span className="flex items-center gap-space-xs" data-path="inicio"><span className="font-headline-m text-headline-m text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span><span className="px-space-xs py-0.5 bg-primary-container-light text-primary font-label text-label uppercase rounded">PIURA</span></span><nav className="hidden md:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="/ofertas">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="/empresas">Empresas</a><a aria-current="page" className="transition-colors text-primary font-bold" data-path="contacto" href="/contacto">Contacto</a></nav></div><div className="flex items-center gap-space-md"><span className="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-full bg-primary text-on-primary font-headline-s text-body-m hover:bg-primary-container transition-colors shadow-sm" data-path="publicar-oferta">Publicar oferta</span><button aria-label="Cambiar tema" className="w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><span aria-label="Acceso de usuario" className="flex items-center gap-space-xs pl-space-xs pr-space-sm py-space-xs rounded-full bg-surface-container-low hover:bg-secondary-container transition-colors" data-path="login"><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span className="hidden lg:inline font-body-s text-body-s text-on-surface font-semibold">Ingresar</span></span></div></div></header><main className="w-full pt-16 min-h-screen bg-background-light"><div className="flex flex-col w-full">
 {/* Decorative Ambient Underlay */}
 <div className="relative w-full max-w-[1200px] mx-auto px-margin">
 <div className="absolute -top-12 right-10 w-96 h-96 bg-primary-container-light/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
@@ -11,7 +11,7 @@ export default function ContactoStitch(){
 <section className="pt-8 pb-10">
 {/* Breadcrumb */}
 <nav aria-label="Ruta de navegación" className="flex items-center gap-space-xs text-body-s font-body-s text-on-surface-variant mb-space-sm">
-<a className="hover:text-primary transition-colors" data-path="inicio" href="#">Inicio</a>
+<a className="hover:text-primary transition-colors" data-path="inicio" href="/">Inicio</a>
 <span className="text-outline-variant">/</span>
 <span className="text-on-surface font-semibold">Contacto y Soporte</span>
 </nav>
@@ -148,7 +148,7 @@ export default function ContactoStitch(){
 {/* Legal & Privacy Note */}
 <p className="font-body-s text-[11px] leading-relaxed text-on-surface-variant pt-2">
             Tus datos están protegidos conforme a la <span className="font-medium text-on-surface">Ley N° 29733</span> de Protección de Datos Personales de Perú. Al enviar aceptas nuestras
-            <a className="text-primary hover:underline font-medium" data-path="politica-privacidad" href="#">Políticas de Privacidad</a> y el uso para fines exclusivos de soporte regional.
+            <a className="text-primary hover:underline font-medium" data-path="politica-privacidad" href="/privacidad">Políticas de Privacidad</a> y el uso para fines exclusivos de soporte regional.
           </p>
 </form>
 </div>
@@ -167,9 +167,9 @@ export default function ContactoStitch(){
 </div>
 <div className="flex-1 min-w-0">
 <p className="font-headline-s text-body-s font-semibold text-on-surface leading-tight">Mesa de Ayuda Regional</p>
-<a className="font-body-m text-body-m text-primary hover:underline font-semibold block truncate" href="#">
+<span className="font-body-m text-body-m text-primary hover:underline font-semibold block truncate">
                 [correo institucional]
-              </a>
+              </span>
 <div className="flex items-center gap-1.5 mt-1 text-[11px] font-body-s text-on-surface-variant">
 <span className="material-symbols-outlined text-[14px] text-accent-light">schedule</span>
 <span>Respuesta promedio: 2 horas</span>
@@ -188,10 +188,10 @@ export default function ContactoStitch(){
 </div>
 <p className="font-body-m text-body-m font-semibold text-on-surface mt-0.5">[número de WhatsApp]</p>
 <p className="text-[11px] font-body-s text-on-surface-variant mt-0.5">Lunes a viernes de 8:30 am a 6:00 pm</p>
-<a className="inline-flex items-center gap-1 text-[12px] font-body-s font-semibold text-primary hover:text-primary-container mt-2" href="#" rel="noopener noreferrer" target="_blank">
+<span className="inline-flex items-center gap-1 text-[12px] font-body-s font-semibold text-primary hover:text-primary-container mt-2" rel="noopener noreferrer" target="_blank">
 <span>Abrir chat de WhatsApp</span>
 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </div>
 {/* Canal 3: Oficina Regional */}
@@ -248,10 +248,10 @@ export default function ContactoStitch(){
 <span className="material-symbols-outlined text-primary text-[18px]">location_on</span>
 <h4 className="font-headline-s text-body-s font-bold text-on-surface uppercase tracking-wide">Ubicación en Piura</h4>
 </div>
-<a className="font-body-s text-[11px] text-primary hover:underline font-semibold flex items-center gap-0.5" href="#" target="_blank">
+<span className="font-body-s text-[11px] text-primary hover:underline font-semibold flex items-center gap-0.5" target="_blank">
 <span>Cómo llegar</span>
 <span className="material-symbols-outlined text-[13px]">open_in_new</span>
-</a>
+</span>
 </div>
 {/* Data Location Element with Visual Pin styling overlay */}
 <div className="relative w-full h-48 rounded-lg overflow-hidden shadow-inner group">
@@ -363,17 +363,17 @@ export default function ContactoStitch(){
           </p>
 </div>
 <div className="relative z-10 shrink-0">
-<a className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-surface-light text-primary font-headline-s text-body-m hover:bg-surface-elevated-light transition-all shadow-md active:scale-95 text-center" data-path="alianzas-institucionales" href="#">
+<span className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-surface-light text-primary font-headline-s text-body-m hover:bg-surface-elevated-light transition-all shadow-md active:scale-95 text-center" data-path="alianzas-institucionales">
 <span>Agendar reunión de convenio</span>
 <span className="material-symbols-outlined text-[18px]">calendar_month</span>
-</a>
+</span>
 </div>
 </div>
 </section>
 </div>
 {/* Interactive script for Chips, FAQ, and Form Simulation */}
 
-</div></main><footer className="w-full bg-surface-light border-t border-border-light mt-space-xl"><div className="max-w-[1200px] mx-auto px-margin py-space-xl"><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl"><div className="lg:col-span-2 flex flex-col gap-space-sm"><div className="flex items-center gap-space-xs"><span className="font-headline-s text-headline-s text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span><span className="px-space-xs py-0.5 bg-primary-container-light text-primary font-label text-label uppercase rounded">PIURA</span></div><p className="font-body-m text-body-m text-on-surface-variant max-w-sm">Plataforma regional que conecta a estudiantes y egresados de universidades e institutos de Piura con las mejores oportunidades laborales y formativas del norte del país.</p><div className="flex items-center gap-space-xs text-on-surface-variant font-body-s text-body-s"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú — Región Grau</span></div></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Para Candidatos</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="ofertas" href="#">Prácticas Preprofesionales</a></li><li><a className="hover:text-primary transition-colors" data-path="ofertas-pro" href="#">Prácticas Profesionales</a></li><li><a className="hover:text-primary transition-colors" data-path="empresas" href="#">Directorio de Empresas</a></li><li><a className="hover:text-primary transition-colors" data-path="guia-cv" href="#">Consejos de Postulación</a></li></ul></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Para Empleadores</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="publicar-oferta" href="#">Publicar Oportunidad</a></li><li><a className="hover:text-primary transition-colors" data-path="planes" href="#">Convenios Universitarios</a></li><li><a className="hover:text-primary transition-colors" data-path="portal-empresas" href="#">Panel de Reclutamiento</a></li><li><a className="hover:text-primary transition-colors" data-path="contacto" href="#">Soporte Institucional</a></li></ul></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Legal y Cumplimiento</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="terminos-condiciones" href="#">Términos y Condiciones</a></li><li><a className="hover:text-primary transition-colors" data-path="politica-privacidad" href="#">Política de Privacidad</a></li><li><a className="hover:text-primary transition-colors flex items-center gap-space-xs" data-path="libro-reclamaciones" href="#"><span className="material-symbols-outlined text-[16px] text-accent-light">menu_book</span>Libro de Reclamaciones</a></li><li><a className="hover:text-primary transition-colors" data-path="ley-modalidades" href="#">Ley N° 28518 (Perú)</a></li></ul></div></div><div className="border-t border-border-light mt-space-xl pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-body-s text-body-s"><div>© 2025 PrácticaPE. Plataforma de Empleabilidad Juvenil Regional.</div><div>Diseñado con calidez costeña para el talento de Piura.</div></div></div></footer>
+</div></main><footer className="w-full bg-surface-light border-t border-border-light mt-space-xl"><div className="max-w-[1200px] mx-auto px-margin py-space-xl"><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl"><div className="lg:col-span-2 flex flex-col gap-space-sm"><div className="flex items-center gap-space-xs"><span className="font-headline-s text-headline-s text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span><span className="px-space-xs py-0.5 bg-primary-container-light text-primary font-label text-label uppercase rounded">PIURA</span></div><p className="font-body-m text-body-m text-on-surface-variant max-w-sm">Plataforma regional que conecta a estudiantes y egresados de universidades e institutos de Piura con las mejores oportunidades laborales y formativas del norte del país.</p><div className="flex items-center gap-space-xs text-on-surface-variant font-body-s text-body-s"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú — Región Grau</span></div></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Para Candidatos</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="ofertas" href="/ofertas">Prácticas Preprofesionales</a></li><li><span className="hover:text-primary transition-colors" data-path="ofertas-pro">Prácticas Profesionales</span></li><li><a className="hover:text-primary transition-colors" data-path="empresas" href="/empresas">Directorio de Empresas</a></li><li><span className="hover:text-primary transition-colors" data-path="guia-cv">Consejos de Postulación</span></li></ul></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Para Empleadores</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><span className="hover:text-primary transition-colors" data-path="publicar-oferta">Publicar Oportunidad</span></li><li><span className="hover:text-primary transition-colors" data-path="planes">Convenios Universitarios</span></li><li><span className="hover:text-primary transition-colors" data-path="portal-empresas">Panel de Reclutamiento</span></li><li><a className="hover:text-primary transition-colors" data-path="contacto" href="/contacto">Soporte Institucional</a></li></ul></div><div><h4 className="font-headline-s text-headline-s text-on-surface mb-space-sm">Legal y Cumplimiento</h4><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="terminos-condiciones" href="/terminos">Términos y Condiciones</a></li><li><a className="hover:text-primary transition-colors" data-path="politica-privacidad" href="/privacidad">Política de Privacidad</a></li><li><a className="hover:text-primary transition-colors flex items-center gap-space-xs" data-path="libro-reclamaciones" href="/reclamaciones"><span className="material-symbols-outlined text-[16px] text-accent-light">menu_book</span>Libro de Reclamaciones</a></li><li><span className="hover:text-primary transition-colors" data-path="ley-modalidades">Ley N° 28518 (Perú)</span></li></ul></div></div><div className="border-t border-border-light mt-space-xl pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-body-s text-body-s"><div>© 2025 PrácticaPE. Plataforma de Empleabilidad Juvenil Regional.</div><div>Diseñado con calidez costeña para el talento de Piura.</div></div></div></footer>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 export default function TerminosStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest shadow-[0_1px_8px_rgba(20,32,27,0.06)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-xs" data-path="ofertas" href="#"><span className="font-headline-m text-headline-m text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span></a><nav className="hidden md:flex items-center gap-space-lg ml-space-md" data-active-classes="text-primary font-headline-s font-bold"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="#">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="#">Empresas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="convenios" href="#">Convenios</a><a aria-current="page" className="transition-colors text-primary font-headline-s font-bold" data-path="legal" href="#">Legal</a></nav></div><div className="flex items-center gap-space-md"><button aria-label="Cambiar tema" className="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" type="button"><svg className="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg className="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></button><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background min-h-screen"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest shadow-[0_1px_8px_rgba(20,32,27,0.06)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-xs" data-path="ofertas" href="/ofertas"><span className="font-headline-m text-headline-m text-primary tracking-tight">Práctica<span className="text-accent-light">PE</span></span></a><nav className="hidden md:flex items-center gap-space-lg ml-space-md" data-active-classes="text-primary font-headline-s font-bold"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="/ofertas">Ofertas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="/empresas">Empresas</a><span className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="convenios">Convenios</span><span aria-current="page" className="transition-colors text-primary font-headline-s font-bold" data-path="legal">Legal</span></nav></div><div className="flex items-center gap-space-md"><button aria-label="Cambiar tema" className="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" type="button"><svg className="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg className="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></button><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background min-h-screen"><div className="flex flex-col w-full">
 {/* Top Breadcrumb & Institutional Header Container */}
 <section className="w-full bg-surface-container-low/70 py-space-xl">
 <div className="max-w-[1200px] mx-auto px-margin">
@@ -10,7 +10,7 @@ export default function TerminosStitch(){
 <nav aria-label="Migas de pan" className="mb-space-md">
 <ol className="flex items-center gap-space-xs font-body-s text-body-s text-on-surface-variant">
 <li>
-<a className="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<a className="hover:text-primary transition-colors flex items-center gap-1" href="/">
 <span className="material-symbols-outlined text-[16px]">home</span>
 <span>Inicio</span>
 </a>
@@ -81,7 +81,7 @@ export default function TerminosStitch(){
 </div>
 {/* Interactive Nav List */}
 <nav aria-label="Secciones del documento" className="space-y-1" id="legal-index-nav">
-<a className="group flex items-center justify-between px-3 py-2 rounded-lg bg-primary-container-light text-primary font-headline-s text-body-m font-semibold transition-all" data-section="1" href="#seccion-1">
+<a className="group flex items-center justify-between px-3 py-2 rounded-lg bg-primary-container-light text-primary font-headline-s text-body-m font-semibold transition-all" data-section="1" href="/terminos">
 <span className="truncate">1. Aceptación de los términos</span>
 <span className="material-symbols-outlined text-[18px] text-primary">arrow_right</span>
 </a>
@@ -429,7 +429,7 @@ export default function TerminosStitch(){
 <span className="material-symbols-outlined text-[20px]">check_circle</span>
 <span id="btn-text">Aceptar y continuar</span>
 </button>
-<a className="inline-flex items-center gap-1.5 font-headline-s text-body-m font-semibold text-primary hover:text-primary-container transition-colors" href="#">
+<a className="inline-flex items-center gap-1.5 font-headline-s text-body-m font-semibold text-primary hover:text-primary-container transition-colors" href="/privacidad">
 <span>Leer la Política de Privacidad</span>
 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
 </a>

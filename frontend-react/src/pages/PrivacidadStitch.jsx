@@ -8,7 +8,7 @@ export default function PrivacidadStitch(){
   <header className="fixed top-0 left-0 right-0 h-16 bg-[#FFFFFF] dark:bg-[#12201B] border-b border-[#E3E0D5] dark:border-[#243833] z-50 flex items-center transition-colors">
     <div className="max-w-[1200px] w-full mx-auto px-6 flex items-center justify-between">
       {/* Logotipo PrácticaPE */}
-      <a href="#" className="flex items-center gap-2.5 group">
+      <span className="flex items-center gap-2.5 group">
         <div className="w-9 h-9 rounded-xl bg-[#0E7C66] text-[#FFFFFF] flex items-center justify-center font-display font-extrabold text-lg shadow-sm">
           P
         </div>
@@ -20,15 +20,15 @@ export default function PrivacidadStitch(){
             Piura Conecta
           </span>
         </div>
-      </a>
+      </span>
 
       {/* Navegación y Conmutador de tema */}
       <div className="flex items-center gap-6">
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#5A6B63] dark:text-[#9DB3AA]">
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Ofertas</a>
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Empresas</a>
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Convenios</a>
-          <a href="#" className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold">Legal</a>
+          <a href="/ofertas" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Ofertas</a>
+          <a href="/empresas" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Empresas</a>
+          <span className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Convenios</span>
+          <span className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold">Legal</span>
         </nav>
 
         <div className="h-5 w-[1px] bg-[#E3E0D5] dark:bg-[#243833]"></div>
@@ -62,9 +62,9 @@ export default function PrivacidadStitch(){
 
       {/* MIGAS DE PAN */}
       <nav className="flex items-center gap-2 text-xs font-medium text-[#5A6B63] dark:text-[#9DB3AA] mb-6">
-        <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Inicio</a>
+        <a href="/" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Inicio</a>
         <span>/</span>
-        <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Legal</a>
+        <span className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Legal</span>
         <span>/</span>
         <span className="text-[#14201B] dark:text-[#EAF4EF] font-semibold">Política de Privacidad</span>
       </nav>
@@ -407,9 +407,9 @@ export default function PrivacidadStitch(){
                   Escribir a protección de datos
                 </button>
                 {/* Enlace secundario */}
-                <a href="#" className="inline-flex items-center text-sm font-semibold text-[#0E7C66] dark:text-[#4FC3A7] hover:underline underline-offset-4">
+                <span className="inline-flex items-center text-sm font-semibold text-[#0E7C66] dark:text-[#4FC3A7] hover:underline underline-offset-4">
                   Ver aviso de cookies &rarr;
-                </a>
+                </span>
               </div>
             </div>
           </div>
@@ -451,11 +451,11 @@ export default function PrivacidadStitch(){
             Legal y Cumplimiento
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="text-[#EAF4EF] font-medium hover:text-[#4FC3A7] transition-colors">Política de Privacidad</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Términos y Condiciones</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Aviso de Cookies</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Convenios Formativos</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Libro de Reclamaciones</a></li>
+            <li><a href="/privacidad" className="text-[#EAF4EF] font-medium hover:text-[#4FC3A7] transition-colors">Política de Privacidad</a></li>
+            <li><a href="/terminos" className="hover:text-[#4FC3A7] transition-colors">Términos y Condiciones</a></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Aviso de Cookies</span></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Convenios Formativos</span></li>
+            <li><a href="/reclamaciones" className="hover:text-[#4FC3A7] transition-colors">Libro de Reclamaciones</a></li>
           </ul>
         </div>
 
@@ -465,11 +465,11 @@ export default function PrivacidadStitch(){
             Para Candidatos
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Buscar Prácticas</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Validación de Estudios</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Guías y Derechos Formativos</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Estado de Postulaciones</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Preguntas Frecuentes</a></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Buscar Prácticas</span></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Validación de Estudios</span></li>
+            <li><a href="/guias" className="hover:text-[#4FC3A7] transition-colors">Guías y Derechos Formativos</a></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Estado de Postulaciones</span></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Preguntas Frecuentes</span></li>
           </ul>
         </div>
 
@@ -479,11 +479,11 @@ export default function PrivacidadStitch(){
             Para Empleadores
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Publicar Oportunidades</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Directorio Institucional</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Convenios con Universidades</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Marco de Prácticas en el Perú</a></li>
-            <li><a href="#" className="hover:text-[#4FC3A7] transition-colors">Contacto Corporativo</a></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Publicar Oportunidades</span></li>
+            <li><a href="/empresas" className="hover:text-[#4FC3A7] transition-colors">Directorio Institucional</a></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Convenios con Universidades</span></li>
+            <li><span className="hover:text-[#4FC3A7] transition-colors">Marco de Prácticas en el Perú</span></li>
+            <li><a href="/contacto" className="hover:text-[#4FC3A7] transition-colors">Contacto Corporativo</a></li>
           </ul>
         </div>
 

@@ -8,7 +8,7 @@ export default function LibroStitch(){
   <header className="sticky top-0 z-50 h-16 w-full bg-white dark:bg-[#12201B] border-b border-[#E3E0D5] dark:border-[#243833] transition-colors duration-200">
     <div className="max-w-[1200px] mx-auto h-full px-6 flex items-center justify-between">
       {/* Logo PrácticaPE */}
-      <a href="#" className="flex items-center gap-2.5 text-decoration-none group">
+      <span className="flex items-center gap-2.5 text-decoration-none group">
         <div className="w-9 h-9 rounded-xl bg-[#0E7C66] dark:bg-[#4FC3A7] flex items-center justify-center text-white dark:text-[#0B1512] font-display font-extrabold text-lg shadow-sm">
           P
         </div>
@@ -19,15 +19,15 @@ export default function LibroStitch(){
         <span className="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-[#D7F0E7] text-[#0A5C4D] dark:bg-[#14382F] dark:text-[#4FC3A7]">
           Región Grau
         </span>
-      </a>
+      </span>
 
       {/* Controles a la derecha: Navegación breve + Modo oscuro */}
       <div className="flex items-center gap-4">
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#5A6B63] dark:text-[#9DB3AA]">
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Ofertas</a>
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Empresas</a>
-          <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Convenios</a>
-          <a href="#" className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold">Atención al ciudadano</a>
+          <a href="/ofertas" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Ofertas</a>
+          <a href="/empresas" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Empresas</a>
+          <span className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Convenios</span>
+          <span className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold">Atención al ciudadano</span>
         </nav>
 
         {/* Conmutador Sol/Luna inline SVG */}
@@ -50,9 +50,9 @@ export default function LibroStitch(){
     
     {/* MIGAS DE PAN */}
     <nav className="flex items-center gap-2 text-xs font-medium text-[#5A6B63] dark:text-[#9DB3AA] mb-6" aria-label="Migas de pan">
-      <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Inicio</a>
+      <a href="/" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Inicio</a>
       <span className="text-[#E3E0D5] dark:text-[#243833]">/</span>
-      <a href="#" className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Legal</a>
+      <span className="hover:text-[#0E7C66] dark:hover:text-[#4FC3A7] transition-colors">Legal</span>
       <span className="text-[#E3E0D5] dark:text-[#243833]">/</span>
       <span className="text-[#14201B] dark:text-[#EAF4EF] font-semibold">Libro de Reclamaciones</span>
     </nav>
@@ -440,7 +440,7 @@ export default function LibroStitch(){
               <input type="checkbox" id="declaracionCheckbox" className="mt-1 w-4 h-4 rounded text-[#0E7C66] focus:ring-[#0E7C66] border-[#E3E0D5] dark:border-[#243833]" />
               <span className="text-xs text-[#14201B] dark:text-[#EAF4EF] leading-relaxed">
                 Declaro que la información brindada es verdadera y acepto el tratamiento de mis datos conforme a la 
-                <a href="#" className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold underline hover:text-[#0A5C4D] dark:hover:text-[#4FC3A7] ml-0.5">Política de Privacidad</a>.
+                <a href="/privacidad" className="text-[#0E7C66] dark:text-[#4FC3A7] font-semibold underline hover:text-[#0A5C4D] dark:hover:text-[#4FC3A7] ml-0.5">Política de Privacidad</a>.
               </span>
             </label>
           </div>
@@ -505,13 +505,13 @@ export default function LibroStitch(){
             Legal y Cumplimiento
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Política de Privacidad</a></li>
-            <li><a href="#" className="text-[#4FC3A7] font-semibold flex items-center gap-1.5">
+            <li><a href="/terminos" className="hover:text-white transition-colors">Términos y Condiciones</a></li>
+            <li><a href="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</a></li>
+            <li><a href="/reclamaciones" className="text-[#4FC3A7] font-semibold flex items-center gap-1.5">
               <span>Libro de Reclamaciones</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#4FC3A7]"></span>
             </a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Convenios Formativos</a></li>
+            <li><span className="hover:text-white transition-colors">Convenios Formativos</span></li>
           </ul>
         </div>
 
@@ -521,10 +521,10 @@ export default function LibroStitch(){
             Para Candidatos
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="hover:text-white transition-colors">Bolsa de Prácticas</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Convenios Preprofesionales</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Subvención y Seguro FOLA</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+            <li><span className="hover:text-white transition-colors">Bolsa de Prácticas</span></li>
+            <li><span className="hover:text-white transition-colors">Convenios Preprofesionales</span></li>
+            <li><span className="hover:text-white transition-colors">Subvención y Seguro FOLA</span></li>
+            <li><span className="hover:text-white transition-colors">Preguntas Frecuentes</span></li>
           </ul>
         </div>
 
@@ -534,10 +534,10 @@ export default function LibroStitch(){
             Para Empleadores
           </h4>
           <ul className="space-y-2.5 text-xs text-[#9DB3AA]">
-            <li><a href="#" className="hover:text-white transition-colors">Publicar Oportunidad</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Validación de Centros de Estudio</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Convenios con Universidades</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Mesa de Ayuda Regional</a></li>
+            <li><span className="hover:text-white transition-colors">Publicar Oportunidad</span></li>
+            <li><span className="hover:text-white transition-colors">Validación de Centros de Estudio</span></li>
+            <li><span className="hover:text-white transition-colors">Convenios con Universidades</span></li>
+            <li><span className="hover:text-white transition-colors">Mesa de Ayuda Regional</span></li>
           </ul>
         </div>
 

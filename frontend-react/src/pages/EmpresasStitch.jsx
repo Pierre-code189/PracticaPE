@@ -2,7 +2,7 @@
 export default function EmpresasStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 right-0 h-16 w-full z-50 bg-surface-light border-b border-outline-variant/30"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-xs text-on-surface select-none group" data-path="ofertas" href="#"><div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm"><span className="material-symbols-outlined text-[20px]">school</span></div><span className="font-headline-s text-headline-s tracking-tight text-ink-light">Práctica<span className="text-primary">PE</span></span></a><nav className="hidden lg:flex items-center gap-space-lg h-16" data-active-classes="text-primary font-semibold border-b-2 border-primary"><a className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="ofertas" href="#">Ofertas</a><a aria-current="page" className="h-full inline-flex items-center transition-colors text-primary font-semibold border-b-2 border-primary" data-path="directorio-de-empresas" href="#">Directorio de empresas</a><a className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="instituciones" href="#">Instituciones</a><a className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="para-empresas" href="#">Para empresas</a></nav></div><div className="flex items-center gap-space-sm sm:gap-space-md"><button aria-label="Cambiar tema claro u oscuro" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><a className="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-full border-[1.5px] border-outline-variant/60 font-body-m text-body-m font-semibold text-on-surface hover:bg-surface-container-low transition-colors" data-path="login" href="#">Iniciar sesión</a><a className="hidden sm:inline-flex items-center justify-center px-space-lg py-space-xs rounded-full bg-primary text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:bg-primary-container transition-colors" data-path="registro" href="#">Registrarme</a><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center select-none"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Abrir menú de navegación" className="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" id="mobile-nav-toggle" type="button"><span className="material-symbols-outlined text-[24px]">menu</span></button></div></div><div className="hidden lg:hidden w-full bg-surface-light border-b border-outline-variant/40 shadow-lg px-margin py-space-lg flex flex-col gap-space-md" id="mobile-menu"><nav className="flex flex-col gap-space-xs" data-active-classes="text-primary font-bold bg-primary-container-light rounded-lg"><a className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="ofertas" href="#">Ofertas</a><a aria-current="page" className="px-space-md py-space-sm text-primary font-bold bg-primary-container-light rounded-lg" data-path="directorio-de-empresas" href="#">Directorio de empresas</a><a className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="instituciones" href="#">Instituciones</a><a className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="para-empresas" href="#">Para empresas</a></nav><div className="flex flex-col gap-space-sm pt-space-sm border-t border-outline-variant/30"><a className="w-full py-space-sm text-center rounded-full border-[1.5px] border-outline-variant/60 font-body-m text-body-m font-semibold text-on-surface hover:bg-surface-container transition-colors" data-path="login" href="#">Iniciar sesión</a><a className="w-full py-space-sm text-center rounded-full bg-primary text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:bg-primary-container transition-colors" data-path="registro" href="#">Registrarme</a></div></div></header><main className="w-full pt-16 bg-surface min-h-screen"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 right-0 h-16 w-full z-50 bg-surface-light border-b border-outline-variant/30"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md"><div className="flex items-center gap-space-lg"><a className="flex items-center gap-space-xs text-on-surface select-none group" data-path="ofertas" href="/ofertas"><div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm"><span className="material-symbols-outlined text-[20px]">school</span></div><span className="font-headline-s text-headline-s tracking-tight text-ink-light">Práctica<span className="text-primary">PE</span></span></a><nav className="hidden lg:flex items-center gap-space-lg h-16" data-active-classes="text-primary font-semibold border-b-2 border-primary"><a className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="ofertas" href="/ofertas">Ofertas</a><a aria-current="page" className="h-full inline-flex items-center transition-colors text-primary font-semibold border-b-2 border-primary" data-path="directorio-de-empresas" href="/empresas">Directorio de empresas</a><span className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="instituciones">Instituciones</span><a className="h-full inline-flex items-center text-on-surface-variant hover:text-on-surface transition-colors font-body-m text-body-m" data-path="para-empresas" href="/empresas">Para empresas</a></nav></div><div className="flex items-center gap-space-sm sm:gap-space-md"><button aria-label="Cambiar tema claro u oscuro" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><span className="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-full border-[1.5px] border-outline-variant/60 font-body-m text-body-m font-semibold text-on-surface hover:bg-surface-container-low transition-colors" data-path="login">Iniciar sesión</span><span className="hidden sm:inline-flex items-center justify-center px-space-lg py-space-xs rounded-full bg-primary text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:bg-primary-container transition-colors" data-path="registro">Registrarme</span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center select-none"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Abrir menú de navegación" className="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" id="mobile-nav-toggle" type="button"><span className="material-symbols-outlined text-[24px]">menu</span></button></div></div><div className="hidden lg:hidden w-full bg-surface-light border-b border-outline-variant/40 shadow-lg px-margin py-space-lg flex flex-col gap-space-md" id="mobile-menu"><nav className="flex flex-col gap-space-xs" data-active-classes="text-primary font-bold bg-primary-container-light rounded-lg"><a className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="ofertas" href="/ofertas">Ofertas</a><a aria-current="page" className="px-space-md py-space-sm text-primary font-bold bg-primary-container-light rounded-lg" data-path="directorio-de-empresas" href="/empresas">Directorio de empresas</a><span className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="instituciones">Instituciones</span><a className="px-space-md py-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg font-body-m text-body-m" data-path="para-empresas" href="/empresas">Para empresas</a></nav><div className="flex flex-col gap-space-sm pt-space-sm border-t border-outline-variant/30"><span className="w-full py-space-sm text-center rounded-full border-[1.5px] border-outline-variant/60 font-body-m text-body-m font-semibold text-on-surface hover:bg-surface-container transition-colors" data-path="login">Iniciar sesión</span><span className="w-full py-space-sm text-center rounded-full bg-primary text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:bg-primary-container transition-colors" data-path="registro">Registrarme</span></div></div></header><main className="w-full pt-16 bg-surface min-h-screen"><div className="flex flex-col w-full">
 {/* Sub-Hero & Page Title Header Section */}
 <section className="w-full bg-surface-container-low/70 py-space-xl border-b border-outline-variant/30">
 <div className="max-w-[1200px] mx-auto px-margin">
@@ -115,10 +115,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             5 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 2: Caja Piura */}
@@ -154,10 +154,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             8 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 3: Agroindustrias del Alto Piura */}
@@ -193,10 +193,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             4 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 4: Wong Piura */}
@@ -231,10 +231,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             3 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 5: Clínica de la Costa */}
@@ -270,10 +270,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             2 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 6: Universidad Nacional de Piura */}
@@ -309,10 +309,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             6 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 7: Transportes Piura Bus */}
@@ -347,10 +347,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             3 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 8: Hotel Máncora Village */}
@@ -385,10 +385,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             2 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 9: Confecciones Talara */}
@@ -423,10 +423,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             1 oferta activa
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 10: Frutos del Chira */}
@@ -462,10 +462,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             3 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 11: Banco del Norte */}
@@ -501,10 +501,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             4 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 {/* Company 12: Ladrillos Castilla */}
@@ -539,10 +539,10 @@ export default function EmpresasStitch(){
 <span className="w-2 h-2 rounded-full bg-primary"></span>
             2 ofertas activas
           </span>
-<a className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all" href="#">
+<span className="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full border-[1.5px] border-outline-variant/80 font-body-s text-body-s font-semibold text-ink-light group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
 <span>Ver perfil</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</span>
 </div>
 </article>
 </div>
@@ -601,19 +601,19 @@ export default function EmpresasStitch(){
         </p>
 </div>
 <div className="flex flex-col sm:flex-row items-center gap-space-sm z-10 w-full sm:w-auto">
-<a className="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-full bg-primary text-on-primary font-headline-s text-body-m font-bold shadow-md hover:bg-primary-container transition-all" href="#">
+<span className="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-full bg-primary text-on-primary font-headline-s text-body-m font-bold shadow-md hover:bg-primary-container transition-all">
 <span className="material-symbols-outlined text-[20px]">add_business</span>
 <span>Publicar ofertas gratis</span>
-</a>
-<a className="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-md py-3 rounded-full border-[1.5px] border-outline-variant/80 bg-surface-light text-ink-light font-headline-s text-body-m font-bold hover:bg-surface-container transition-all" href="#">
+</span>
+<span className="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-md py-3 rounded-full border-[1.5px] border-outline-variant/80 bg-surface-light text-ink-light font-headline-s text-body-m font-bold hover:bg-surface-container transition-all">
 <span>Más información</span>
-</a>
+</span>
 </div>
 </div>
 </section>
 {/* Interactive Search & Filter Behavior Script */}
 
-</div></main><footer className="w-full bg-surface-container-low border-t border-outline-variant/20 pt-space-xl pb-space-lg"><div className="max-w-[1200px] mx-auto px-margin"><div className="grid grid-cols-1 md:grid-cols-4 gap-space-xl mb-space-xl"><div className="md:col-span-1 flex flex-col gap-space-sm"><div className="flex items-center gap-space-xs"><div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-on-primary"><span className="material-symbols-outlined text-[18px]">school</span></div><span className="font-headline-s text-headline-s text-ink-light">Práctica<span className="text-primary">PE</span></span></div><p className="font-body-s text-body-s text-on-surface-variant leading-relaxed">El punto de encuentro digital para prácticas pre-profesionales y profesionales en Piura y todo el norte peruano.</p><div className="flex items-center gap-space-xs text-ink-secondary-light font-body-s text-body-s mt-space-xs"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú</span></div></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Plataforma</span><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="ofertas" href="#">Ofertas laborales</a></li><li><a className="hover:text-primary transition-colors" data-path="directorio-de-empresas" href="#">Directorio de empresas</a></li><li><a className="hover:text-primary transition-colors" data-path="instituciones" href="#">Convenios universitarios</a></li><li><a className="hover:text-primary transition-colors" data-path="para-empresas" href="#">Publicar ofertas</a></li></ul></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Legal &amp; Transparencia</span><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="terminos-y-condiciones" href="#">Términos y Condiciones</a></li><li><a className="hover:text-primary transition-colors" data-path="politica-de-privacidad" href="#">Política de Privacidad</a></li><li><a className="hover:text-primary transition-colors flex items-center gap-space-xs" data-path="libro-de-reclamaciones" href="#"><span className="material-symbols-outlined text-[16px] text-accent-light">menu_book</span>Libro de Reclamaciones</a></li></ul></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Contacto Corporativo</span><p className="font-body-s text-body-s text-on-surface-variant">Atención prioritaria para empleadores e instituciones educativas de la región.</p><a className="inline-flex items-center gap-space-xs text-primary font-body-m text-body-m font-semibold hover:underline" data-path="contacto-empresas" href="#"><span className="material-symbols-outlined text-[18px]">mail</span>Contacto Empresas</a></div></div><div className="pt-space-md border-t border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-s text-body-s text-on-surface-variant"><span>© 2025 PrácticaPE. Todos los derechos reservados.</span><span>Piura, Perú • Hecho con compromiso universitario</span></div></div></footer>
+</div></main><footer className="w-full bg-surface-container-low border-t border-outline-variant/20 pt-space-xl pb-space-lg"><div className="max-w-[1200px] mx-auto px-margin"><div className="grid grid-cols-1 md:grid-cols-4 gap-space-xl mb-space-xl"><div className="md:col-span-1 flex flex-col gap-space-sm"><div className="flex items-center gap-space-xs"><div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-on-primary"><span className="material-symbols-outlined text-[18px]">school</span></div><span className="font-headline-s text-headline-s text-ink-light">Práctica<span className="text-primary">PE</span></span></div><p className="font-body-s text-body-s text-on-surface-variant leading-relaxed">El punto de encuentro digital para prácticas pre-profesionales y profesionales en Piura y todo el norte peruano.</p><div className="flex items-center gap-space-xs text-ink-secondary-light font-body-s text-body-s mt-space-xs"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú</span></div></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Plataforma</span><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="ofertas" href="/ofertas">Ofertas laborales</a></li><li><a className="hover:text-primary transition-colors" data-path="directorio-de-empresas" href="/empresas">Directorio de empresas</a></li><li><span className="hover:text-primary transition-colors" data-path="instituciones">Convenios universitarios</span></li><li><span className="hover:text-primary transition-colors" data-path="para-empresas">Publicar ofertas</span></li></ul></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Legal &amp; Transparencia</span><ul className="flex flex-col gap-space-xs font-body-m text-body-m text-on-surface-variant"><li><a className="hover:text-primary transition-colors" data-path="terminos-y-condiciones" href="/terminos">Términos y Condiciones</a></li><li><a className="hover:text-primary transition-colors" data-path="politica-de-privacidad" href="/privacidad">Política de Privacidad</a></li><li><a className="hover:text-primary transition-colors flex items-center gap-space-xs" data-path="libro-de-reclamaciones" href="/reclamaciones"><span className="material-symbols-outlined text-[16px] text-accent-light">menu_book</span>Libro de Reclamaciones</a></li></ul></div><div className="flex flex-col gap-space-sm"><span className="font-headline-s text-body-m font-semibold text-on-surface">Contacto Corporativo</span><p className="font-body-s text-body-s text-on-surface-variant">Atención prioritaria para empleadores e instituciones educativas de la región.</p><a className="inline-flex items-center gap-space-xs text-primary font-body-m text-body-m font-semibold hover:underline" data-path="contacto-empresas" href="/empresas"><span className="material-symbols-outlined text-[18px]">mail</span>Contacto Empresas</a></div></div><div className="pt-space-md border-t border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-s text-body-s text-on-surface-variant"><span>© 2025 PrácticaPE. Todos los derechos reservados.</span><span>Piura, Perú • Hecho con compromiso universitario</span></div></div></footer>
     </div>
   );
 }

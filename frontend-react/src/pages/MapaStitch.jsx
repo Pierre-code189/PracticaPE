@@ -2,7 +2,7 @@
 export default function MapaStitch(){
   return (
     <div className="stitch-root">
-<header className="fixed top-0 left-0 w-full z-50 bg-surface-light border-b border-border-light shadow-[0_1px_8px_rgba(20,32,27,0.04)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between"><div className="flex items-center gap-space-xl"><a className="flex items-center gap-space-sm" data-path="ofertas" href="#"><div className="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm"><span className="material-symbols-outlined text-[22px]">work</span></div><span className="font-headline-s text-headline-s tracking-tight text-ink-light font-bold">Práctica<span className="text-primary-container font-extrabold">PE</span></span></a><nav className="hidden md:flex items-center gap-space-lg h-16 pt-1" data-active-classes="text-primary-container font-semibold border-b-2 border-primary-container pb-[21px]"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="#">Ofertas</a><a aria-current="page" className="transition-colors text-primary-container font-semibold border-b-2 border-primary-container pb-[21px]" data-path="mapa" href="#">Mapa</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="#">Empresas</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="instituciones" href="#">Instituciones</a></nav></div><div className="flex items-center gap-space-md"><button aria-label="Cambiar tema" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><a className="hidden sm:inline-flex items-center px-4 py-2 rounded-full border border-border-light text-on-surface font-body-m text-body-m font-medium hover:bg-surface-container transition-colors" data-path="iniciar-sesion" href="#">Iniciar sesión</a><a className="inline-flex items-center px-5 py-2 rounded-full bg-primary-container text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:opacity-95 transition-opacity" data-path="publicar-oferta" href="#">Publicar oferta</a><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background min-h-screen"><div className="flex flex-col w-full">
+<header className="fixed top-0 left-0 w-full z-50 bg-surface-light border-b border-border-light shadow-[0_1px_8px_rgba(20,32,27,0.04)]"><div className="h-16 max-w-[1200px] mx-auto px-margin flex items-center justify-between"><div className="flex items-center gap-space-xl"><a className="flex items-center gap-space-sm" data-path="ofertas" href="/ofertas"><div className="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm"><span className="material-symbols-outlined text-[22px]">work</span></div><span className="font-headline-s text-headline-s tracking-tight text-ink-light font-bold">Práctica<span className="text-primary-container font-extrabold">PE</span></span></a><nav className="hidden md:flex items-center gap-space-lg h-16 pt-1" data-active-classes="text-primary-container font-semibold border-b-2 border-primary-container pb-[21px]"><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="ofertas" href="/ofertas">Ofertas</a><a aria-current="page" className="transition-colors text-primary-container font-semibold border-b-2 border-primary-container pb-[21px]" data-path="mapa" href="/mapa">Mapa</a><a className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="empresas" href="/empresas">Empresas</a><span className="font-body-m text-body-m text-on-surface-variant hover:text-on-surface transition-colors" data-path="instituciones">Instituciones</span></nav></div><div className="flex items-center gap-space-md"><button aria-label="Cambiar tema" className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span className="material-symbols-outlined text-[20px]">light_mode</span></button><span className="hidden sm:inline-flex items-center px-4 py-2 rounded-full border border-border-light text-on-surface font-body-m text-body-m font-medium hover:bg-surface-container transition-colors" data-path="iniciar-sesion">Iniciar sesión</span><span className="inline-flex items-center px-5 py-2 rounded-full bg-primary-container text-on-primary font-body-m text-body-m font-semibold shadow-sm hover:opacity-95 transition-opacity" data-path="publicar-oferta">Publicar oferta</span><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main className="w-full pt-16 bg-background min-h-screen"><div className="flex flex-col w-full">
 <div className="max-w-[1200px] w-full mx-auto px-margin py-space-md sm:py-space-lg flex flex-col gap-space-lg">
 {/* Header Section */}
 <header className="flex flex-col gap-space-sm">
@@ -351,9 +351,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-2 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-primary-container text-on-primary font-body-s text-body-s font-bold hover:opacity-95 shadow-sm transition-opacity" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-primary-container text-on-primary font-body-s text-body-s font-bold hover:opacity-95 shadow-sm transition-opacity">
                 Ver oferta y postular
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -398,9 +398,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-1 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors">
                 Ver oferta
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -442,9 +442,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-1 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors">
                 Ver oferta
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -486,9 +486,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-1 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors">
                 Ver oferta
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -530,9 +530,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-1 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors">
                 Ver oferta
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -574,9 +574,9 @@ export default function MapaStitch(){
               </div>
 </div>
 <div className="pl-2 pt-1 flex items-center gap-space-sm">
-<a className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors" href="#">
+<span className="flex-1 text-center py-2 px-4 rounded-full bg-surface-container text-ink-light font-body-s text-body-s font-semibold hover:bg-surface-container-high transition-colors">
                 Ver oferta
-              </a>
+              </span>
 <button aria-label="Guardar oferta" className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span className="material-symbols-outlined text-[18px]">bookmark</span>
 </button>
@@ -606,7 +606,7 @@ export default function MapaStitch(){
 </aside>
 </div>
 </div>
-</main><footer className="w-full bg-surface-container-lowest border-t border-border-light py-space-xl"><div className="max-w-[1200px] mx-auto px-margin"><div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-lg pb-space-lg border-b border-border-light"><div className="flex items-center gap-space-sm"><div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-white"><span className="material-symbols-outlined text-[18px]">work</span></div><span className="font-headline-s text-headline-s text-ink-light font-bold">Práctica<span className="text-primary-container">PE</span></span><span className="ml-space-sm px-2 py-0.5 rounded-full bg-primary-container-light text-on-primary-fixed-variant font-label text-label uppercase">Piura, Perú</span></div><nav className="flex flex-wrap items-center gap-x-space-lg gap-y-space-sm"><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="ofertas" href="#">Ofertas laborales</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="empresas" href="#">Directorio de empresas</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="instituciones" href="#">Convenios universitarios</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="terminos-y-condiciones" href="#">Términos y Condiciones</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="libro-de-reclamaciones" href="#">Libro de Reclamaciones</a></nav></div><div className="pt-space-lg flex flex-col sm:flex-row justify-between items-center gap-space-sm text-on-surface-variant font-body-s text-body-s"><p>© 2024 PrácticaPE. La plataforma de prácticas y primer empleo de Piura. Todos los derechos reservados.</p><div className="flex items-center gap-space-xs text-ink-secondary-light"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú</span></div></div></div></footer>
+</main><footer className="w-full bg-surface-container-lowest border-t border-border-light py-space-xl"><div className="max-w-[1200px] mx-auto px-margin"><div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-lg pb-space-lg border-b border-border-light"><div className="flex items-center gap-space-sm"><div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-white"><span className="material-symbols-outlined text-[18px]">work</span></div><span className="font-headline-s text-headline-s text-ink-light font-bold">Práctica<span className="text-primary-container">PE</span></span><span className="ml-space-sm px-2 py-0.5 rounded-full bg-primary-container-light text-on-primary-fixed-variant font-label text-label uppercase">Piura, Perú</span></div><nav className="flex flex-wrap items-center gap-x-space-lg gap-y-space-sm"><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="ofertas" href="/ofertas">Ofertas laborales</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="empresas" href="/empresas">Directorio de empresas</a><span className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="instituciones">Convenios universitarios</span><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="terminos-y-condiciones" href="/terminos">Términos y Condiciones</a><a className="font-body-s text-body-s text-on-surface-variant hover:text-primary transition-colors" data-path="libro-de-reclamaciones" href="/reclamaciones">Libro de Reclamaciones</a></nav></div><div className="pt-space-lg flex flex-col sm:flex-row justify-between items-center gap-space-sm text-on-surface-variant font-body-s text-body-s"><p>© 2024 PrácticaPE. La plataforma de prácticas y primer empleo de Piura. Todos los derechos reservados.</p><div className="flex items-center gap-space-xs text-ink-secondary-light"><span className="material-symbols-outlined text-[16px] text-primary">location_on</span><span>Piura, Perú</span></div></div></div></footer>
     </div>
   );
 }
