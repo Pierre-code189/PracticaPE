@@ -19,6 +19,11 @@ Plataforma peruana de prácticas preprofesionales y primer empleo en Piura.
 - **Backend:** FastAPI (Python) en `backend/app/` con SQLite; expone la API y los estáticos.
 - **Stitch** aporta el design system: `.stitch/designs/*.html` son los diseños fuente y los
   tokens de marca viven en `.stitch/DESIGN.md`.
+- Las **10 pantallas del sitio** (7 principales + 3 legales) están migradas a React en
+  `frontend-react/src/pages/*Stitch.jsx` y son lo que sirve el dominio principal. El script
+  `scripts/convertir_stitch.py` documenta la conversión HTML → JSX. Las pantallas de administración,
+  panel, perfiles, postulaciones y publicación se eliminaron del sitio; el backend sigue teniendo
+  sus rutas API para la demostración.
 
 ## Estado
 - Proyecto Stitch `16989794354844657044`, design system `assets/145e3a73db4a45a1906045fca09873b9`.
